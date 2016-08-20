@@ -1,5 +1,9 @@
 package io.xchris6041x.devin;
 
+/**
+ * A static class that validates data.
+ * @author Christopher Bishop
+ */
 public final class Validator {
 
 	/**

@@ -4,14 +4,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.Validator;
 
 public class HelpCommand implements CommandExecutor {
 
+	private MessageSender msgSender;
 	private String[] help;
 	private int linesPerPage = 5;
 	
-	public HelpCommand(String[] help) {
+	public HelpCommand(MessageSender msgSender, String[] help) {
+		this.msgSender = msgSender;
 		this.help = help;
 	}
 
@@ -33,15 +36,16 @@ public class HelpCommand implements CommandExecutor {
 			page = maxPage;
 		}
 		
+		msgSender.info("Command Help (Page " + (page + 1) + ")");
+		msgSender.info("--------------------------------------");
 		for(int i = 0; i < linesPerPage; i++) {
 			int index = page * linesPerPage + i;
 			if(index >= help.length) {
 				break;
 			}
 			
-			// TODO: Send message to sender.
+			msgSender.info(sender, help[i]);
 		}
-		
 		return true;
 	}
 	
@@ -52,6 +56,10 @@ public class HelpCommand implements CommandExecutor {
 		return help;
 	}
 	
+	/**
+	 * The number of lines on each page.
+	 * @return
+	 */
 	public int getLinesPerPage() { return linesPerPage; }
 	public void setLinesPerPage(int linesPerPage) { this.linesPerPage = linesPerPage; }
 	

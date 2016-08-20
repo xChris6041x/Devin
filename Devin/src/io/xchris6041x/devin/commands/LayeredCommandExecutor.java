@@ -8,6 +8,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+/**
+ * @author Christopher Bishop
+ */
 public class LayeredCommandExecutor implements CommandExecutor {
 	
 	private CommandExecutor executor;
@@ -82,6 +85,13 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	public LayeredCommandExecutor addLayer(String label, CommandExecutor executor) {
 		layers.put(label, new LayeredCommandExecutor(executor));
 		return this;
+	}
+	
+	/**
+	 * @return all the layers with their name.
+	 */
+	public Map<String, LayeredCommandExecutor> getLayerMap() {
+		return layers;
 	}
 	
 }

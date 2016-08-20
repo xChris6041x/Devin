@@ -1,39 +1,30 @@
 package io.xchris6041x.devin.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import java.util.ArrayList;
+import java.util.List;
 
-public final class HelpBuilder {
+public final class HelpCommandBuilder {
 
-	public static CommandExecutor build(final String[] help) {
-		return new CommandExecutor() {
-			
-			@Override
-			public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-				int page = 0;
-				if(args.length > 0) {
-					if(Validator.isInteger(args[0])) {
-						page = Integer.parseInt(args[0]) - 1;
-						if(page < 0) {
-							page = 0;
-						}
-						else if(page > Math.ceil(args.length / 5.0)) {
-							page = (int) Math.ceil(args.length / 5.0);
-						}
-					}
-					else{
-						return true;
-					}
-				}
-				
-				for(int i = 0; i < help.length; i++) {
-					
-				}
-				return true;
-			}
-			
-		};
+	/**
+	 * Build a help command with specific help text.
+	 * @param help - Help text.
+	 * @return The help command built by this method.
+	 */
+	public static HelpCommand build(final String[] help) {
+		return new HelpCommand(help);
+	}
+	
+	/**
+	 * Build a help command automatically by giving it the LayeredCommandExecutor and
+	 * using the HelpDescription annotation.
+	 * @param lce - LayeredCommandExecutor.
+	 * @return The help command built by this method.
+	 */
+	public static HelpCommand build(LayeredCommandExecutor lce) {
+		List<String> help = new ArrayList<String>();
+		
+		
+		return new HelpCommand(help.toArray(new String[0]));
 	}
 	
 }

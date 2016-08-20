@@ -13,7 +13,7 @@ public final class Validator {
 		}
 	}
 	public static boolean isInteger(String str) {
-		return isInteger(str);
+		return isInteger(str, null);
 	}
 	
 }

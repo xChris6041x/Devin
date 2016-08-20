@@ -4,6 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import io.xchris6041x.devin.Validator;
+
 public class HelpCommand implements CommandExecutor {
 
 	private String[] help;

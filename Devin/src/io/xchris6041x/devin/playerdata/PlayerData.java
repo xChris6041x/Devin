@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class PlayerData implements ConfigurationSerializable {
 
@@ -34,12 +35,13 @@ public class PlayerData implements ConfigurationSerializable {
 	 * @param key
 	 * @return the element with the same type as T and the same key.
 	 */
-	public <T> T get(String key) {
+	public <T> T get(JavaPlugin plugin, String key) {
 		try {
-			T value = getFromMap(key, temperary);
+			String fullKey = toFullKey(plugin, key);
+			T value = getFromMap(fullKey, temperary);
 			if(value != null) return value;
 			
-			value = getFromMap(key, persistant);
+			value = getFromMap(fullKey, persistant);
 			return value;
 		}
 		catch(ClassCastException e) {
@@ -62,16 +64,17 @@ public class PlayerData implements ConfigurationSerializable {
 	 * @param key
 	 * @param value
 	 */
-	public void set(String key, Object value) {
-		removeFromMap(key, persistant);
+	public void set(JavaPlugin plugin, String key, Object value) {
+		String fullKey = toFullKey(plugin, key);
+		removeFromMap(fullKey, persistant);
 		for(Entry<String, Object> entry : temperary.entrySet()) {
-			if(entry.getKey().equalsIgnoreCase(key)) {
+			if(entry.getKey().equalsIgnoreCase(fullKey)) {
 				temperary.put(entry.getKey(), value);
 				return;
 			}
 		}
 		
-		temperary.put(key, value);
+		temperary.put(fullKey, value);
 	}
 	
 	/**
@@ -79,25 +82,20 @@ public class PlayerData implements ConfigurationSerializable {
 	 * @param key
 	 * @param value
 	 */
-	public void persist(String key, Object value) {
-		removeFromMap(key, temperary);
-		for(Entry<String, Object> entry : temperary.entrySet()) {
-			if(entry.getKey().equalsIgnoreCase(key)) {
-				persistant.put(entry.getKey(), value);
-				return;
-			}
-		}
-		
-		persistant.put(key, value);
+	public void persist(JavaPlugin plugin, String key, Object value) {
+		String fullKey = toFullKey(plugin, key);
+		removeFromMap(fullKey, temperary);
+		persistant.put(fullKey, value);
 	}
 	
 	/**
 	 * Remove an element with the same key from either temperary or persistant.
 	 * @param key
 	 */
-	public void remove(String key) {
-		removeFromMap(key, temperary);
-		removeFromMap(key, persistant);
+	public void remove(JavaPlugin plugin, String key) {
+		String fullKey = toFullKey(plugin, key);
+		removeFromMap(fullKey, temperary);
+		removeFromMap(fullKey, persistant);
 	}
 	private void removeFromMap(String key, Map<String, Object> map) {
 		for(Entry<String, Object> entry : map.entrySet()) {
@@ -106,6 +104,10 @@ public class PlayerData implements ConfigurationSerializable {
 				break;
 			}
 		}
+	}
+	
+	private String toFullKey(JavaPlugin plugin, String key) {
+		return (plugin.getClass().getPackage().getName() + key).toLowerCase();
 	}
 	
 	@Override

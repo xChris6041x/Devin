@@ -3,6 +3,10 @@ package io.xchris6041x.devin.commands;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;;
 
+/**
+ * Command Options annotations to give more control and ease of use with less code.
+ * @author Christopher Bishop
+ */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandOptions {
 

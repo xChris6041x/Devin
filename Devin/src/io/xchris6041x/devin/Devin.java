@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.playerdata.PlayerData;
@@ -19,6 +20,7 @@ public class Devin extends JavaPlugin {
 		if(!getDataFolder().exists()) getDataFolder().mkdir();
 		Devin.instance = this;
 		
+		ConfigurationSerialization.registerClass(PlayerData.class);
 		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
 	}
 	

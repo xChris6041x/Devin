@@ -17,6 +17,7 @@ public class PlayerData implements ConfigurationSerializable {
 	
 	protected PlayerData(UUID owner) {
 		this.owner = owner;
+		persistant = new HashMap<String, Object>();
 	}
 	@SuppressWarnings("unchecked")
 	public PlayerData(Map<String, Object> map) {

@@ -15,12 +15,9 @@ import io.xchris6041x.devin.playerdata.PlayerDataManager;
  * @author Christopher Bishop
  */
 public class Devin extends JavaPlugin {
-<<<<<<< HEAD
-=======
 
 	private static Devin instance;
 	private PlayerDataManager dataManager;
->>>>>>> refs/heads/development
 	
 	@Override
 	public void onLoad() {

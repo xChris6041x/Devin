@@ -10,6 +10,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.xchris6041x.devin.playerdata.PlayerData;
 import io.xchris6041x.devin.playerdata.PlayerDataManager;
 
+/**
+ * Main plugin class for DEVIN.
+ * @author Christopher Bishop
+ */
 public class Devin extends JavaPlugin {
 
 	private static Devin instance;

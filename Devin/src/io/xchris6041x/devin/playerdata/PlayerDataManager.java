@@ -9,6 +9,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * A manager that manages PlayerData so it can be easily grabbed.
+ * @author Christopher Bishop
+ */
 public class PlayerDataManager {
 
 	private List<PlayerData> datas;

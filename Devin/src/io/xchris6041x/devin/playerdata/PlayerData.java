@@ -8,6 +8,10 @@ import java.util.UUID;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Custom data that is linked to a player.
+ * @author Christopher Bishop
+ */
 public class PlayerData implements ConfigurationSerializable {
 
 	private UUID owner;

@@ -21,7 +21,7 @@ public class PlayerDataManager {
 	
 	/**
 	 * @param player
-	 * @return Get the PlayerData that belongs to a player, if that PlayerData doesn't exist it is created.
+	 * @return Get the PlayerData that belongs to a player. If that PlayerData doesn't exist, it is created.
 	 */
 	public PlayerData getPlayerData(OfflinePlayer player) {
 		for(PlayerData data : datas) {

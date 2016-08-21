@@ -129,7 +129,7 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	 * @return
 	 */
 	public LayeredCommandExecutor addHelpLayer(String label, String cmdLabel) {
-		addLayer(label, HelpCommandBuilder.build(msgSender, cmdLabel, this));
+		addLayer(label, new HelpCommand(this, msgSender, cmdLabel));
 		return this;
 	}
 	

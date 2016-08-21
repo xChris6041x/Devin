@@ -1,21 +1,28 @@
 package io.xchris6041x.devin.commands;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map.Entry;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.Validator;
 
 public class HelpCommand implements CommandExecutor {
 
+	private LayeredCommandExecutor lce;
+	private String cmdLabel;
 	private MessageSender msgSender;
-	private String[] help;
-	private int linesPerPage = 5;
+	private int linesPerPage = 7;
 	
-	public HelpCommand(MessageSender msgSender, String[] help) {
+	public HelpCommand(LayeredCommandExecutor lce, MessageSender msgSender, String cmdLabel) {
+		this.lce = lce;
 		this.msgSender = msgSender;
-		this.help = help;
+		this.cmdLabel = cmdLabel;
 	}
 
 	
@@ -28,7 +35,12 @@ public class HelpCommand implements CommandExecutor {
 			}
 		}
 		
-		int maxPage = (int) Math.ceil(page / (double) linesPerPage);
+		
+		// Build Command
+		List<String> help = new ArrayList<String>();
+		buildList(sender, help, cmdLabel, lce);
+		
+		int maxPage = (int) Math.ceil(help.size() / (double) linesPerPage);
 		if(page < 0) {
 			page = 0;
 		}
@@ -36,24 +48,34 @@ public class HelpCommand implements CommandExecutor {
 			page = maxPage;
 		}
 		
-		msgSender.info("Command Help (Page " + (page + 1) + ")");
-		msgSender.info("--------------------------------------");
+		msgSender.info(sender, cmdLabel + " Command Help (Page " + (page + 1) + ")");
+		msgSender.info(sender, "---------------------------------------");
 		for(int i = 0; i < linesPerPage; i++) {
 			int index = page * linesPerPage + i;
-			if(index >= help.length) {
-				break;
-			}
+			if(help.size() <= index) break;
 			
-			msgSender.info(sender, help[i]);
+			msgSender.info(sender, help.get(index));
 		}
+		
 		return true;
 	}
-	
-	/**
-	 * @return the help text for each line.
-	 */
-	public String[] getHelpText() {
-		return help;
+	private void buildList(CommandSender sender, List<String> help, String label, LayeredCommandExecutor lce) {
+		if(lce.getExecutor() != null) {
+			CommandOptions co = lce.getExecutor().getClass().getAnnotation(CommandOptions.class);
+			if(co == null) {
+				help.add("/" + label + ": Unknown parameters and description.");
+			}
+			else {
+				if((!co.onlyPlayers() || (sender instanceof Player)) && (!co.onlyOps() || sender.isOp()) && (co.permission().equals("[NULL]") || sender.hasPermission(co.permission())))
+				{
+					help.add("/" + label + " " + co.permission() + ": " + co.description());
+				}
+			}
+		}
+		
+		for(Entry<String, LayeredCommandExecutor> layer : lce.getLayerMap().entrySet()) {
+			buildList(sender, help, label + " " + layer.getKey(), layer.getValue());
+		}
 	}
 	
 	/**

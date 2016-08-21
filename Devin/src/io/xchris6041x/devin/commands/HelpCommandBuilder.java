@@ -38,10 +38,13 @@ public final class HelpCommandBuilder {
 	}
 	private static void buildList(List<String> help, String label, LayeredCommandExecutor lce) {
 		if(lce.getExecutor() != null) {
-			Class<? extends CommandExecutor> exClass = lce.getExecutor().getClass();
-			HelpDescription hd = exClass.getAnnotation(HelpDescription.class);
-			
-			help.add("/" + label + hd.usage() + "|" + hd.description());
+			CommandOptions co = lce.getExecutor().getClass().getAnnotation(CommandOptions.class);
+			if(co == null) {
+				help.add("/" + label + ": Unknown parameters and description.");
+			}
+			else {
+				help.add("/" + label + co.parameters() + ": " + co.description());
+			}
 		}
 		
 		for(Entry<String, LayeredCommandExecutor> layer : lce.getLayerMap().entrySet()) {

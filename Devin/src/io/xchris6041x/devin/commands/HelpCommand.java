@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.Validator;
 
+@CommandOptions(parameters = "<page>")
 public class HelpCommand implements CommandExecutor {
 
 	private LayeredCommandExecutor lce;
@@ -48,8 +49,7 @@ public class HelpCommand implements CommandExecutor {
 			page = maxPage;
 		}
 		
-		msgSender.info(sender, cmdLabel + " Command Help (Page " + (page + 1) + ")");
-		msgSender.info(sender, "---------------------------------------");
+		msgSender.info(sender, cmdLabel.toUpperCase() + " Command Help (Page " + (page + 1) + ")");
 		for(int i = 0; i < linesPerPage; i++) {
 			int index = page * linesPerPage + i;
 			if(help.size() <= index) break;
@@ -68,7 +68,7 @@ public class HelpCommand implements CommandExecutor {
 			else {
 				if((!co.onlyPlayers() || (sender instanceof Player)) && (!co.onlyOps() || sender.isOp()) && (co.permission().equals("[NULL]") || sender.hasPermission(co.permission())))
 				{
-					help.add("/" + label + " " + co.permission() + ": " + co.description());
+					help.add("/" + label + " " + co.parameters());
 				}
 			}
 		}

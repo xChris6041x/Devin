@@ -50,6 +50,7 @@ public class HelpCommand implements CommandExecutor {
 		}
 		
 		msgSender.info(sender, cmdLabel.toUpperCase() + " Command Help (Page " + (page + 1) + ")");
+		msgSender.verbose(sender, "-----------------------------");
 		for(int i = 0; i < linesPerPage; i++) {
 			int index = page * linesPerPage + i;
 			if(help.size() <= index) break;

@@ -21,7 +21,16 @@ public class MessageSender {
 	}
 	
 	/**
-	 * Send message to command sender.
+	 * Send message to the command sender.
+	 * @param sender
+	 * @param message
+	 */
+	public void verbose(CommandSender sender, String message) {
+		sender.sendMessage(message);
+	}
+	
+	/**
+	 * Send info message to command sender.
 	 * @param sender - The recipient of the message.
 	 * @param message - The message to send.
 	 */
@@ -39,14 +48,22 @@ public class MessageSender {
 	}
 	
 	/**
-	 * Send message to console.
+	 * Send message to the console.
+	 * @param message
+	 */
+	public void verbose(String message) {
+		verbose(Bukkit.getConsoleSender(), message);
+	}
+	
+	/**
+	 * Send info message to the console.
 	 * @param message - The message to send.
 	 */
 	public void info(String message) {
 		info(Bukkit.getConsoleSender(), message);
 	}
 	/**
-	 * Send error to console.
+	 * Send error to the console.
 	 * @param message - The message to send.
 	 */
 	public void error(String message) {

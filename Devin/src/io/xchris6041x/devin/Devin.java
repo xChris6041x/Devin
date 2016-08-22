@@ -3,6 +3,7 @@ package io.xchris6041x.devin;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,8 @@ import io.xchris6041x.devin.playerdata.request.PlayerRequest;
 public class Devin extends JavaPlugin {
 
 	private static Devin instance;
+	
+	private final MessageSender msgSender = new MessageSender(ChatColor.GREEN + "", ChatColor.YELLOW + "", ChatColor.RED + "[DEVIN ERROR] ");
 	private PlayerDataManager dataManager;
 	
 	@Override
@@ -37,6 +40,13 @@ public class Devin extends JavaPlugin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * @return The message sender DEVIN uses.
+	 */
+	public static MessageSender getMessageSender() {
+		return instance.msgSender;
 	}
 	
 	/**

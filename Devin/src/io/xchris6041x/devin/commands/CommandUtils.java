@@ -32,4 +32,15 @@ public final class CommandUtils {
 		return page.toArray(new String[0]);
 	}
 	
+	/**
+	 * Divide the book into pages and output one page.
+	 * @param book - All the possible lines that could be on a page.
+	 * @param pageLength - The length of one page (The max length of the return array).
+	 * @param pageNumber - The page number (starting at 0).
+	 * @return one page.
+	 */
+	public static String[] pagination(List<String> book, int pageLength, int pageNumber) {
+		return pagination(book.toArray(new String[0]), pageLength, pageNumber);
+	}
+	
 }

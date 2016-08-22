@@ -20,7 +20,7 @@ public class Devin extends JavaPlugin {
 
 	private static Devin instance;
 	
-	private final MessageSender msgSender = new MessageSender(ChatColor.GREEN + "", ChatColor.YELLOW + "", ChatColor.RED + "[DEVIN ERROR] ");
+	private final MessageSender msgSender = new MessageSender(ChatColor.GREEN + "", ChatColor.RED + "[DEVIN ERROR] ");
 	private PlayerDataManager dataManager;
 	
 	@Override

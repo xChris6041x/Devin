@@ -27,7 +27,7 @@ public class MessageSender {
 	 * @param sender
 	 * @param message
 	 */
-	public void verbose(CommandSender sender, String message) {
+	public void send(CommandSender sender, String message) {
 		sender.sendMessage(message);
 	}
 	
@@ -59,30 +59,67 @@ public class MessageSender {
 	}
 	
 	/**
-	 * Send message to the console.
+	 * Broadcast a message.
+	 * @param message
+	 * @param permission
+	 */
+	public void broadcast(String message, String permission) {
+		Bukkit.broadcast(message, permission);
+	}
+	/**
+	 * Broadcast a message.
 	 * @param message
 	 */
-	public void verbose(String message) {
-		verbose(Bukkit.getConsoleSender(), message);
-	}
-	
-	public void warning(String message) {
-		warning(Bukkit.getConsoleSender(), message);
+	public void broadcast(String message) {
+		Bukkit.broadcastMessage(message);
 	}
 	
 	/**
-	 * Send info message to the console.
-	 * @param message - The message to send.
+	 * Broadcast a info message.
+	 * @param message
+	 * @param permission
+	 */
+	public void info(String message, String permission) {
+		broadcast(headerInfo + message, permission);
+	}
+	/**
+	 * Broadcast a info message.
+	 * @param message
 	 */
 	public void info(String message) {
-		info(Bukkit.getConsoleSender(), message);
+		broadcast(headerInfo + message);
+	}
+	
+	/**
+	 * Broadcast a warning message.
+	 * @param message
+	 * @param permission
+	 */
+	public void warning(String message, String permission) {
+		broadcast(headerWarning + message, permission);
 	}
 	/**
-	 * Send error to the console.
-	 * @param message - The message to send.
+	 * Broadcast a warning message.
+	 * @param message
+	 */
+	public void warning(String message) {
+		broadcast(headerWarning + message);
+	}
+	
+	/**
+	 * Broadcast an error message.
+	 * @param message
+	 * @param permission
+	 */
+	public void error(String message, String permission) {
+		broadcast(headerError + message, permission);
+	}
+	/**
+	 * Broadcast error message.
+	 * @param message
 	 */
 	public void error(String message) {
-		error(Bukkit.getConsoleSender(), message);
+		broadcast(headerError + message);
 	}
 	
 }

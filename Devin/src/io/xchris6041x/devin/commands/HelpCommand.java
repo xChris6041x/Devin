@@ -17,7 +17,7 @@ import io.xchris6041x.devin.Validator;
  * It also hides commands the sender doesn't have access to.
  * @author Christopher Bishop
  */
-@CommandOptions(parameters = "<page>")
+@CommandOptions(parameters = "[page]")
 public class HelpCommand implements CommandExecutor {
 
 	private LayeredCommandExecutor lce;

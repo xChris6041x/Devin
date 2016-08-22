@@ -22,6 +22,9 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	
 	
 	public LayeredCommandExecutor() { }
+	public LayeredCommandExecutor(MessageSender msgSender) {
+		this.msgSender = msgSender;
+	}
 	public LayeredCommandExecutor(CommandExecutor executor, MessageSender msgSender) {
 		this.msgSender = msgSender;
 		this.executor = executor;

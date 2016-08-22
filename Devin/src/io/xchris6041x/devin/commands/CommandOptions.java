@@ -1,13 +1,16 @@
 package io.xchris6041x.devin.commands;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;;
 
 /**
  * Command Options annotations to give more control and ease of use with less code.
  * @author Christopher Bishop
  */
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
 public @interface CommandOptions {
 
 	/**

@@ -45,7 +45,11 @@ public class PlayerDataManager {
 		return data;
 	}
 	
-	
+	/**
+	 * Send a player request to an OfflinePlayer.
+	 * @param request
+	 * @return whether the request was succesfully sent.
+	 */
 	public boolean sendRequest(PlayerRequest request) {
 		OfflinePlayer p = Bukkit.getOfflinePlayer(request.getSenderUniqueId());
 		if(p == null) return false;

@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.playerdata.PlayerData;
 import io.xchris6041x.devin.playerdata.PlayerDataManager;
+import io.xchris6041x.devin.playerdata.request.PlayerRequest;
 
 /**
  * Main plugin class for DEVIN.
@@ -25,6 +26,7 @@ public class Devin extends JavaPlugin {
 		Devin.instance = this;
 		
 		ConfigurationSerialization.registerClass(PlayerData.class);
+		ConfigurationSerialization.registerClass(PlayerRequest.class);
 		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
 	}
 	

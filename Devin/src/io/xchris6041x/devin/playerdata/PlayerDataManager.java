@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import io.xchris6041x.devin.Devin;
+import io.xchris6041x.devin.event.PlayerRequestSendEvent;
 import io.xchris6041x.devin.playerdata.request.PlayerRequest;
 import io.xchris6041x.devin.playerdata.request.RequestOptions;
 
@@ -48,6 +49,10 @@ public class PlayerDataManager {
 	public boolean sendRequest(PlayerRequest request) {
 		OfflinePlayer p = Bukkit.getOfflinePlayer(request.getSenderUniqueId());
 		if(p == null) return false;
+		
+		PlayerRequestSendEvent e = new PlayerRequestSendEvent(this, request);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		if(e.isCancelled()) return false;
 		
 		PlayerData data = getPlayerData(p);
 		data.requests.add(request);

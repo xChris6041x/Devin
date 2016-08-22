@@ -8,6 +8,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.xchris6041x.devin.commands.LayeredCommandExecutor;
+import io.xchris6041x.devin.commands.request.RequestListCommand;
 import io.xchris6041x.devin.playerdata.PlayerData;
 import io.xchris6041x.devin.playerdata.PlayerDataManager;
 import io.xchris6041x.devin.playerdata.request.PlayerRequest;
@@ -31,6 +33,14 @@ public class Devin extends JavaPlugin {
 		ConfigurationSerialization.registerClass(PlayerData.class);
 		ConfigurationSerialization.registerClass(PlayerRequest.class);
 		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
+	}
+	
+	@Override
+	public void onEnable() {
+		getCommand("request").setExecutor(
+				new LayeredCommandExecutor(msgSender)
+				.addLayer("list", new RequestListCommand())
+		);
 	}
 	
 	@Override

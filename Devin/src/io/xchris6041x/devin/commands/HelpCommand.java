@@ -79,8 +79,8 @@ public class HelpCommand implements CommandExecutor {
 			}
 		}
 		
-		for(Entry<String, LayeredCommandExecutor> layer : lce.getLayerMap().entrySet()) {
-			buildList(sender, help, label + " " + layer.getKey(), layer.getValue());
+		for(Entry<List<String>, LayeredCommandExecutor> layer : lce.getLayerMap().entrySet()) {
+			buildList(sender, help, label + " " + layer.getKey().get(0), layer.getValue());
 		}
 	}
 	

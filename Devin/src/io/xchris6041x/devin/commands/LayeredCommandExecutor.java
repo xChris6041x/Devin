@@ -1,6 +1,8 @@
 package io.xchris6041x.devin.commands;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -18,7 +20,7 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	
 	private MessageSender msgSender;
 	private CommandExecutor executor;
-	private Map<String, LayeredCommandExecutor> layers = new HashMap<String, LayeredCommandExecutor>();
+	private Map<List<String>, LayeredCommandExecutor> layers = new HashMap<List<String>, LayeredCommandExecutor>();
 	
 	
 	public LayeredCommandExecutor() { }
@@ -35,8 +37,16 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(args.length > 0) {
 			// Search through each layer to find a matching layer.
-			for(Entry<String, LayeredCommandExecutor> layer : layers.entrySet()) {
-				if(args[0].equalsIgnoreCase(layer.getKey())) {
+			for(Entry<List<String>, LayeredCommandExecutor> layer : layers.entrySet()) {
+				boolean isLayer = false;
+				for(String layerLabel : layer.getKey()) {
+					if(layerLabel.equalsIgnoreCase(args[0])) {
+						isLayer = true;
+						break;
+					}
+				}
+				
+				if(isLayer) {
 					// If a layer matches, build new args without the first element (the sub-command name).
 					String[] newArgs = new String[args.length - 1];
 					for(int i = 0; i < args.length - 1; i++) {
@@ -106,11 +116,22 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	/**
 	 * Add a new command layer (sub command).
 	 * @param label - The label the new layer will use when called.
-	 * @param executor - The LayredCommandExecutor which will be executed when the first argument is the label.
+	 * @param executor - The LayredCommandExecutor which will be executed if the first onCommand argument is the label.
 	 * @return This LayeredCommandExecutor for chaining.
 	 */
 	public LayeredCommandExecutor addLayer(String label, LayeredCommandExecutor executor) {
-		layers.put(label, executor);
+		layers.put(Arrays.asList(label), executor);
+		return this;
+	}
+	
+	/**
+	 * Add a new command layer (sub command).
+	 * @param labels - Multiple valid labels that can be used to call the new layer.
+	 * @param executor - The LayredCommandExecutor which will be executed if the first onCommand argument is any of the labels.
+	 * @return This LayeredCommandExecutor for chaining.
+	 */
+	public LayeredCommandExecutor addLayer(List<String> labels, LayeredCommandExecutor executor) {
+		layers.put(labels, executor);
 		return this;
 	}
 	
@@ -121,6 +142,17 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	 * @return This LayeredCommandExecutor for chaining.
 	 */
 	public LayeredCommandExecutor addLayer(String label, CommandExecutor executor) {
+		layers.put(Arrays.asList(label), new LayeredCommandExecutor(executor, msgSender));
+		return this;
+	}
+	
+	/**
+	 * Add a new command layer (sub command).
+	 * @param labels - Multiple valid labels that can be used to call the new layer..
+	 * @param executor - The CommandExecutor which will be executed if the first onCommand argument is any of the labels.
+	 * @return This LayeredCommandExecutor for chaining.
+	 */
+	public LayeredCommandExecutor addLayer(List<String> label, CommandExecutor executor) {
 		layers.put(label, new LayeredCommandExecutor(executor, msgSender));
 		return this;
 	}
@@ -140,7 +172,7 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	/**
 	 * @return all the layers with their name.
 	 */
-	public Map<String, LayeredCommandExecutor> getLayerMap() {
+	public Map<List<String>, LayeredCommandExecutor> getLayerMap() {
 		return layers;
 	}
 	

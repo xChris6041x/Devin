@@ -10,13 +10,15 @@ import org.bukkit.command.CommandSender;
 public class MessageSender {
 
 	private String headerInfo;
+	private String headerWarning;
 	private String headerError;
 	
 	public MessageSender() {
-		this("", "");
+		this("", "", "");
 	}
-	public MessageSender(String headerInfo, String headerError) {
+	public MessageSender(String headerInfo, String headerWarning, String headerError) {
 		this.headerInfo = headerInfo;
+		this.headerWarning = headerWarning;
 		this.headerError = headerError;
 	}
 	
@@ -39,6 +41,15 @@ public class MessageSender {
 	}
 	
 	/**
+	 * Send warning message to commands sender.
+	 * @param sender - The recipient of the message.
+	 * @param message - The message to send.
+	 */
+	public void warning(CommandSender sender, String message) {
+		sender.sendMessage(headerWarning + message);
+	}
+	
+	/**
 	 * Send error message to commands sender.
 	 * @param sender - The recipient of the message.
 	 * @param message - The message to send.
@@ -53,6 +64,10 @@ public class MessageSender {
 	 */
 	public void verbose(String message) {
 		verbose(Bukkit.getConsoleSender(), message);
+	}
+	
+	public void warning(String message) {
+		warning(Bukkit.getConsoleSender(), message);
 	}
 	
 	/**

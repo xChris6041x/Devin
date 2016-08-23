@@ -27,7 +27,7 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	public LayeredCommandExecutor(MessageSender msgSender) {
 		this.msgSender = msgSender;
 	}
-	public LayeredCommandExecutor(CommandExecutor executor, MessageSender msgSender) {
+	public LayeredCommandExecutor(MessageSender msgSender, CommandExecutor executor) {
 		this.msgSender = msgSender;
 		this.executor = executor;
 	}
@@ -142,7 +142,7 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	 * @return This LayeredCommandExecutor for chaining.
 	 */
 	public LayeredCommandExecutor addLayer(String label, CommandExecutor executor) {
-		layers.put(Arrays.asList(label), new LayeredCommandExecutor(executor, msgSender));
+		layers.put(Arrays.asList(label), new LayeredCommandExecutor(msgSender, executor));
 		return this;
 	}
 	
@@ -153,7 +153,7 @@ public class LayeredCommandExecutor implements CommandExecutor {
 	 * @return This LayeredCommandExecutor for chaining.
 	 */
 	public LayeredCommandExecutor addLayer(List<String> label, CommandExecutor executor) {
-		layers.put(label, new LayeredCommandExecutor(executor, msgSender));
+		layers.put(label, new LayeredCommandExecutor(msgSender, executor));
 		return this;
 	}
 	

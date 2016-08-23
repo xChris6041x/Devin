@@ -7,21 +7,21 @@ import org.bukkit.entity.Player;
 
 public class AttachableMail extends Mail {
 
-	private MailAttachment attachment;
+	private IMailAttachment attachment;
 	
-	public AttachableMail(Player sender, OfflinePlayer receiver, String subject, String message, MailAttachment attachment) {
+	public AttachableMail(Player sender, OfflinePlayer receiver, String subject, String message, IMailAttachment attachment) {
 		super(sender, receiver, subject, message);
 		this.attachment = attachment;
 	}
 	public AttachableMail(Map<String, Object> map) {
 		super(map);
-		attachment = (MailAttachment) map.get("attachment");
+		attachment = (IMailAttachment) map.get("attachment");
 	}
 	
 	/**
 	 * @return the attachment attched to this mail.
 	 */
-	public MailAttachment getAttachment() {
+	public IMailAttachment getAttachment() {
 		return attachment;
 	}
 	

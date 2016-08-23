@@ -25,8 +25,16 @@ public abstract class PlayerRequest implements ConfigurationSerializable {
 		receiver = UUID.fromString((String) map.get("receiver"));
 	}
 	
+	/**
+	 * @return the description for the request.
+	 */
 	public abstract String getDescription();
 	
+	/**
+	 * Send a repsonse to the PlayerRequest.
+	 * @param response - Which response was sent to the request.
+	 */
+	public abstract void respond(String response);
 	
 	/**
 	 * @return the unique id of the player who sent the request.

@@ -43,4 +43,58 @@ public final class CommandUtils {
 		return pagination(book.toArray(new String[0]), pageLength, pageNumber);
 	}
 	
+	/**
+	 * Combine all the args that are contained in "" or '' into a single argument.
+	 * @param args - the arguments from the command.
+	 * @return the new arguments with combined string arguments.
+	 */
+	public static String[] stringify(String[] args) {
+		List<String> list = new ArrayList<String>();
+		
+		String str = "";
+		char delimiter = '"';
+		boolean insideString = false;
+		for(int i = 0; i < args.length; i++) {
+			String arg = args[i];
+			
+			if(insideString) {
+				if(arg.charAt(arg.length() - 1) == delimiter) {
+					arg = arg.substring(0, arg.length() - 1);
+					
+					str += " " + arg;
+					list.add(str);
+					
+					str = "";
+					insideString = false;
+				}
+				else{
+					str += " " + arg;
+				}
+			}
+			else{
+				if(arg.charAt(0) == '"' || arg.charAt(0) == '\'') {
+					delimiter = arg.charAt(0);
+					arg = arg.substring(1);
+					
+					if(arg.charAt(arg.length() - 1) == delimiter) {
+						arg = arg.substring(0, arg.length() - 1);
+						list.add(arg);
+					}
+					else {
+						str = arg;
+						insideString = true;
+					}
+				}
+				else{
+					list.add(arg);
+				}
+			}
+		}
+		
+		if(str.length() > 0) {
+			list.add(str);
+		}
+		return list.toArray(new String[0]);
+	}
+	
 }

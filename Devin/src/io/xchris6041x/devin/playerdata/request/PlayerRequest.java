@@ -26,6 +26,11 @@ public abstract class PlayerRequest implements ConfigurationSerializable {
 	}
 	
 	/**
+	 * @return the title of the request.
+	 */
+	public abstract String getTitle();
+	
+	/**
 	 * @return the description for the request.
 	 */
 	public abstract String getDescription();
@@ -33,8 +38,9 @@ public abstract class PlayerRequest implements ConfigurationSerializable {
 	/**
 	 * Send a repsonse to the PlayerRequest.
 	 * @param response - Which response was sent to the request.
+	 * @return whether the response was successfull.
 	 */
-	public abstract void respond(String response);
+	public abstract boolean respond(PlayerRequestResponse response);
 	
 	/**
 	 * @return the unique id of the player who sent the request.

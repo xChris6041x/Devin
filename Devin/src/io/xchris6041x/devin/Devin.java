@@ -44,6 +44,11 @@ public class Devin extends JavaPlugin {
 		}
 	}
 	
+	
+	public static Devin getPlugin() {
+		return instance;
+	}
+	
 	/**
 	 * @return The message sender DEVIN uses.
 	 */

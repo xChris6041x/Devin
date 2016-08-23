@@ -65,13 +65,20 @@ public class LayeredCommandExecutor implements CommandExecutor {
 			CommandOptions options = executor.getClass().getAnnotation(CommandOptions.class);
 			if(options != null) {
 				if(options.onlyPlayers() && !(sender instanceof Player)) {
-					return false;
+					msgSender.error(sender, "You must be a player to use this command.");
+					return true;
 				}
 				if(options.onlyOps() && !sender.isOp()) {
-					return false;
+					msgSender.error(sender, "You must be an op to use this command.");
+					return true;
 				}
 				if(!options.permission().equals("[NULL]") && !sender.hasPermission(options.permission())) {
-					return false;
+					msgSender.error(sender, "You must have permission to use this command.");
+					return true;
+				}
+				if(args.length < options.minArgs()) {
+					msgSender.error(sender, "Not enough arguments.");
+					return true;
 				}
 			}
 			return executor.onCommand(sender, cmd, label, args);

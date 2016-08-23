@@ -38,4 +38,9 @@ public @interface CommandOptions {
 	 */
 	public boolean onlyOps() default false;
 	
+	/**
+	 * @return The minimum number of arguments that are needed to execute this command.
+	 */
+	public int minArgs() default 0;
+	
 }

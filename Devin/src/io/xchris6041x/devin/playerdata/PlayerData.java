@@ -1,15 +1,12 @@
 package io.xchris6041x.devin.playerdata;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.plugin.Plugin;
-
-import io.xchris6041x.devin.playerdata.request.PlayerRequest;
 
 /**
  * Custom data that is linked to a player.
@@ -21,8 +18,6 @@ public class PlayerData implements ConfigurationSerializable {
 	
 	private Map<String, Object> temperary = new HashMap<String, Object>();
 	private Map<String, Object> persistant;
-	
-	protected List<PlayerRequest> requests;
 	
 	protected PlayerData(UUID owner) {
 		this.owner = owner;
@@ -39,21 +34,6 @@ public class PlayerData implements ConfigurationSerializable {
 	 */
 	public UUID getOwnerId() {
 		return owner;
-	}
-	
-	/**
-	 * @return All active requests this player has.
-	 */
-	public PlayerRequest[] getRequests() {
-		return requests.toArray(new PlayerRequest[0]);
-	}
-	
-	/**
-	 * @param index - The index of the PlayerRequest in the array.
-	 * @return the PlayerRequest at that index.
-	 */
-	public PlayerRequest getRequest(int index) {
-		return requests.get(index);
 	}
 	
 	/**

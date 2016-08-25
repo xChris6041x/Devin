@@ -1,27 +1,16 @@
 package io.xchris6041x.devin.commands;
 
-public final class CommandArg {
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-	private String name;
-	private boolean optional = false;
+@Retention(RetentionPolicy.RUNTIME)
+@Repeatable(CommandArgs.class)
+public @interface CommandArg {
 	
-	private CommandArgType type = CommandArgType.STRING;
+	public String value();
+	public boolean optional() default false;
 	
-	public CommandArg(String name) {
-		this.name = name;
-	}
-	public CommandArg(String name, boolean optional) {
-		this(name);
-		this.optional = optional;
-	}
-	
-	public CommandArg(String name, CommandArgType type) {
-		this(name);
-		this.type = type;
-	}
-	public CommandArg(String name, CommandArgType type, boolean optional) {
-		this(name, type);
-		this.optional = optional;
-	}
+	public CommandArgType type() default CommandArgType.STRING;
 	
 }

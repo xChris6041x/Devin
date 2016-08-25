@@ -7,7 +7,7 @@ import io.xchris6041x.devin.Validator;
  * @author Christopher Bishop
  */
 public enum CommandArgType {
-	STRING("String"), INT("Integer"), REAL("Number"), BOOLEAN("True or false");
+	STRING("String"), INT("Integer"), FLOAT("Number"), DOUBLE("Number"), BOOLEAN("True or false");
 	
 	private String displayName;
 	
@@ -29,7 +29,9 @@ public enum CommandArgType {
 			return true;
 		case INT:
 			return Validator.isInteger(str);
-		case REAL:
+		case FLOAT:
+			return Validator.isFloat(str);
+		case DOUBLE:
 			return Validator.isDouble(str);
 		case BOOLEAN:
 			return Validator.isBoolean(str);

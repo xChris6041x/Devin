@@ -8,8 +8,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.xchris6041x.devin.commands.LayeredCommandExecutor;
+import io.xchris6041x.devin.commands.mail.MailCommand;
 import io.xchris6041x.devin.mail.AttachableMail;
 import io.xchris6041x.devin.mail.Mail;
+import io.xchris6041x.devin.mail.MailService;
 import io.xchris6041x.devin.playerdata.PlayerData;
 import io.xchris6041x.devin.playerdata.PlayerDataManager;
 
@@ -21,6 +24,7 @@ public class Devin extends JavaPlugin {
 
 	private static Devin instance;
 	
+	private final MailService mailService = new MailService();
 	private final MessageSender msgSender = new MessageSender(ChatColor.GREEN + "", ChatColor.RED + "[DEVIN ERROR] ");
 	private PlayerDataManager dataManager;
 	
@@ -38,6 +42,7 @@ public class Devin extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
+		getCommand("mail").setExecutor(new LayeredCommandExecutor(msgSender, new MailCommand()));
 	}
 	
 	@Override
@@ -52,6 +57,13 @@ public class Devin extends JavaPlugin {
 	
 	public static Devin getPlugin() {
 		return instance;
+	}
+	
+	/**
+	 * @return the default mail service in Devin.
+	 */
+	public static MailService getMailService() {
+		return instance.mailService;
 	}
 	
 	/**

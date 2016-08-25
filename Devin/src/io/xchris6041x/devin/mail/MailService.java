@@ -67,6 +67,15 @@ public class MailService implements ConfigurationSerializable {
 		mailbox.getMail().add(mail); 
 	}
 	
+	/**
+	 * @param player
+	 * @return all the mail in a player's mailbox.
+	 */
+	public Mail[] getAllMail(OfflinePlayer player) {
+		Mailbox mailbox = findMailbox(player.getUniqueId());
+		return mailbox.getMail().toArray(new Mail[0]);
+	}
+	
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();

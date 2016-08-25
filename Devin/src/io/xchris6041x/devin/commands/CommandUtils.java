@@ -3,6 +3,8 @@ package io.xchris6041x.devin.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.command.CommandExecutor;
+
 public final class CommandUtils {
 	
 	/**
@@ -95,6 +97,14 @@ public final class CommandUtils {
 			list.add(str);
 		}
 		return list.toArray(new String[0]);
+	}
+	
+	
+	static CommandOptions getCommandOptions(CommandExecutor executor) {
+		return executor.getClass().getAnnotation(CommandOptions.class);
+	}
+	static CommandArg[] getCommandArgs(CommandExecutor executor) {
+		return executor.getClass().getAnnotationsByType(CommandArg.class);
 	}
 	
 }

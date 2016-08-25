@@ -106,5 +106,9 @@ public final class CommandUtils {
 	static CommandArg[] getCommandArgs(CommandExecutor executor) {
 		return executor.getClass().getAnnotationsByType(CommandArg.class);
 	}
+	static boolean isValidArgumentLength(CommandArg[] args, int argsLength) {
+		if(argsLength >= args.length) return true;
+		return args[argsLength].optional();
+	}
 	
 }

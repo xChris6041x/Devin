@@ -1,5 +1,6 @@
 package io.xchris6041x.devin.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,8 @@ public class LayeredCommandExecutor implements CommandExecutor {
 		if(executor == null)
 			return false;
 		else {
-			CommandOptions options = executor.getClass().getAnnotation(CommandOptions.class);
+			CommandContext ctx = null;
+			CommandOptions options = CommandUtils.getCommandOptions(executor);
 			if(options != null) {
 				if(options.onlyPlayers() && !(sender instanceof Player)) {
 					msgSender.error(sender, "You must be a player to use this command.");
@@ -76,9 +78,27 @@ public class LayeredCommandExecutor implements CommandExecutor {
 					msgSender.error(sender, "You must have permission to use this command.");
 					return true;
 				}
-				// TODO: Check args size;
 			}
-			return executor.onCommand(sender, cmd, label, args);
+			
+			CommandArg[] cmdArgs = CommandUtils.getCommandArgs(executor);
+			if(CommandUtils.isValidArgumentLength(cmdArgs, args.length)) {
+				msgSender.error(sender, "Not enough arguments.");
+				return true;
+			}
+			
+			List<Object> objs = new ArrayList<Object>();
+			for(int i = 0; i < cmdArgs.length; i++) {
+				if(!cmdArgs[i].type().isValid(args[i])) {
+					msgSender.error("Expecting " + cmdArgs[i].type().getDisplayName() + " for argument " + cmdArgs[i].name());
+				}
+			}
+			
+			if(executor instanceof ContextCommandExecutor) {
+				return ((ContextCommandExecutor) executor).onCommand(new CommandContext(sender, cmd, label, objs.toArray(new Object[0])));
+			}
+			else {
+				return executor.onCommand(sender, cmd, label, args);
+			}
 		}
 	}
 	

@@ -17,7 +17,8 @@ import io.xchris6041x.devin.Validator;
  * It also hides commands the sender doesn't have access to.
  * @author Christopher Bishop
  */
-@CommandOptions(parameters = "[page]")
+@CommandOptions
+@CommandArg(name = "page", optional = true)
 public class HelpCommand implements CommandExecutor {
 
 	private LayeredCommandExecutor lce;
@@ -67,14 +68,21 @@ public class HelpCommand implements CommandExecutor {
 	}
 	private void buildList(CommandSender sender, List<String> help, String label, LayeredCommandExecutor lce) {
 		if(lce.getExecutor() != null) {
-			CommandOptions co = lce.getExecutor().getClass().getAnnotation(CommandOptions.class);
-			if(co == null) {
-				help.add("/" + label + ": Unknown parameters and description.");
+			CommandOptions co = CommandUtils.getCommandOptions(lce.getExecutor());
+			CommandArg[] args = CommandUtils.getCommandArgs(lce.getExecutor());
+			
+			if(args.length == 0) {
+				help.add("/" + label);
 			}
 			else {
 				if((!co.onlyPlayers() || (sender instanceof Player)) && (!co.onlyOps() || sender.isOp()) && (co.permission().equals("[NULL]") || sender.hasPermission(co.permission())))
 				{
-					help.add("/" + label + " " + co.parameters());
+					String msg = "/" + label;
+					for(CommandArg arg : args) {
+						msg += (arg.optional() ? "[" : "<") + arg.name() + (arg.optional() ? "]" : ">") + " ";
+					}
+					
+					help.add(msg.trim());
 				}
 			}
 		}

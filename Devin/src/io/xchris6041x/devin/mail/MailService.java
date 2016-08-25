@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Map.Entry;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
 
 public class MailService implements ConfigurationSerializable {
 
@@ -25,8 +27,45 @@ public class MailService implements ConfigurationSerializable {
 	}
 
 	
+	private Mailbox findMailbox(UUID owner) {
+		for(Mailbox mailbox : mailboxes) {
+			if(mailbox.getOwnerId().equals(owner)) return mailbox;
+		}
+		
+		Mailbox mailbox = new Mailbox(owner);
+		mailboxes.add(mailbox);
+		
+		return mailbox;
+	}
 	
+	/**
+	 * Send a message to a player by mail.
+	 * @param sender
+	 * @param receiver
+	 * @param subject
+	 * @param message
+	 */
+	public void sendMessage(Player sender, OfflinePlayer receiver, String subject, String message) {
+		Mailbox mailbox = findMailbox(receiver.getUniqueId());
+		
+		Mail mail = new Mail(sender, receiver, subject, message);
+		mailbox.getMail().add(mail); 
+	}
 	
+	/**
+	 * Send a message to a player by mail with an attachment.
+	 * @param sender
+	 * @param receiver
+	 * @param subject
+	 * @param message
+	 * @param attachment
+	 */
+	public void sendMessage(Player sender, OfflinePlayer receiver, String subject, String message, IMailAttachment attachment) {
+		Mailbox mailbox = findMailbox(receiver.getUniqueId());
+		
+		Mail mail = new AttachableMail(sender, receiver, subject, message, attachment);
+		mailbox.getMail().add(mail); 
+	}
 	
 	@Override
 	public Map<String, Object> serialize() {

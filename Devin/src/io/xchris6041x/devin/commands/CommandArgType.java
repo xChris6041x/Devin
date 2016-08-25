@@ -7,7 +7,17 @@ import io.xchris6041x.devin.Validator;
  * @author Christopher Bishop
  */
 public enum CommandArgType {
-	STRING, INT, REAL, BOOLEAN;
+	STRING("String"), INT("Integer"), REAL("Number"), BOOLEAN("True or false");
+	
+	private String displayName;
+	
+	CommandArgType(String displayName) {
+		this.displayName = displayName;
+	}
+	
+	public String getDisplayName() {
+		return displayName;
+	}
 	
 	/**
 	 * @param str

@@ -76,10 +76,7 @@ public class LayeredCommandExecutor implements CommandExecutor {
 					msgSender.error(sender, "You must have permission to use this command.");
 					return true;
 				}
-				if(args.length < options.minArgs()) {
-					msgSender.error(sender, "Not enough arguments.");
-					return true;
-				}
+				// TODO: Check args size;
 			}
 			return executor.onCommand(sender, cmd, label, args);
 		}

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.Validator;
+import io.xchris6041x.devin.commands.CommandArg;
 import io.xchris6041x.devin.commands.CommandOptions;
 import io.xchris6041x.devin.commands.CommandUtils;
 import io.xchris6041x.devin.mail.Mail;
@@ -19,7 +20,8 @@ import io.xchris6041x.devin.mail.Mail;
  * Shows a list of mail in your mailbox.
  * @author Christopher Bishop
  */
-@CommandOptions(onlyPlayers = true, parameters = "[page]")
+@CommandOptions(onlyPlayers = true)
+@CommandArg(name = "page", optional = true)
 public class MailCommand implements CommandExecutor {
 
 	@Override

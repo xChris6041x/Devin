@@ -19,11 +19,6 @@ public @interface CommandOptions {
 	public String description() default "";
 	
 	/**
-	 * @return The command paramters in <required> [optional] format.
-	 */
-	public String parameters() default "";
-	
-	/**
 	 * @return Whether this command can only be executed by players.
 	 */
 	public boolean onlyPlayers() default false;
@@ -37,10 +32,5 @@ public @interface CommandOptions {
 	 * @return Whether this command can only be executed by ops.
 	 */
 	public boolean onlyOps() default false;
-	
-	/**
-	 * @return The minimum number of arguments that are needed to execute this command.
-	 */
-	public int minArgs() default 0;
 	
 }

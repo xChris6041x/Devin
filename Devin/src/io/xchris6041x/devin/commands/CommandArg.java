@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 @Repeatable(CommandArgs.class)
 public @interface CommandArg {
 	
-	public String value();
+	public String name();
 	public boolean optional() default false;
 	
 	public CommandArgType type() default CommandArgType.STRING;

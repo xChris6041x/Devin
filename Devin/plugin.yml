@@ -1,3 +1,7 @@
 name: DEVIN
 version: 0.1.0
 main: io.xchris6041x.devin.Devin
+
+commands:
+  mail:
+    description: Send and open mail.

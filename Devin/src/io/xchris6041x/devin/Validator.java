@@ -52,4 +52,27 @@ public final class Validator {
 		return isDouble(str, null);
 	}
 	
+	/**
+	 * @param str - The string to check.
+	 * @param msgSender - The message sender used to send a message on failed.
+	 * @return whether the string is a boolean.
+	 */
+	public static boolean isBoolean(String str, MessageSender msgSender) {
+		try {
+			Boolean.parseBoolean(str);
+			return true;
+		}
+		catch (NumberFormatException e) {
+			if(msgSender != null) msgSender.error("Invalid number \"" + str + "\".");
+			return false;
+		}
+	}
+	/**
+	 * @param str - The string to check.
+	 * @return whether the string is a boolean.
+	 */
+	public static boolean isBoolean(String str) {
+		return isBoolean(str, null);
+	}
+	
 }

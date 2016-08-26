@@ -63,7 +63,6 @@ public class LayeredCommandExecutor implements CommandExecutor {
 		if(executor == null)
 			return false;
 		else {
-			CommandContext ctx = null;
 			CommandOptions options = CommandUtils.getCommandOptions(executor);
 			if(options != null) {
 				if(options.onlyPlayers() && !(sender instanceof Player)) {

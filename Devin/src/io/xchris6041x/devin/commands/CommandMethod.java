@@ -1,5 +1,6 @@
 package io.xchris6041x.devin.commands;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -24,6 +25,23 @@ class CommandMethod {
 	
 	public int size() {
 		return method.getParameterCount();
+	}
+	public boolean invoke(CommandSender sender, String[] rawArgs) throws DevinException {
+		if(rawArgs.length < size()) throw new IllegalArgumentException("Invalid args. Not enough string arguments.");
+		if(sender.getClass() != method.getParameterTypes()[0]) throw new IllegalArgumentException("Invalid CommandSender, must be a " + method.getParameterTypes()[0].getName());
+		
+		// Build argument array.
+		Object[] args = new Object[size()];
+		for(int i = 0; i < args.length; i++) {
+			args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], rawArgs[i]);
+		}
+		
+		
+		try {
+			return (boolean) method.invoke(commandable, args);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new DevinException("Problem invoking method.", e);
+		}
 	}
 	
 	public static CommandMethod build(Commandable commandable, Method method) throws DevinException {

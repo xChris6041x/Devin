@@ -3,6 +3,7 @@ package io.xchris6041x.devin.commands;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 
 class CommandHandler extends CommandHandlerContainer implements CommandExecutor {
@@ -26,6 +27,7 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 			CommandHandler handler = getHandler(sub);
 			
 			if(handler != null) {
+				// Remove first arg.
 				String[] newArgs = new String[args.length - 1];
 				for(int i = 1; i < args.length; i++) {
 					newArgs[i - 1] = args[i];
@@ -37,12 +39,12 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 		
 		// Execute method.
 		if(method.size() >= args.length) {
-			Object[] methodArgs = new Object[method.size()];
-			for(int i = 0; i < args.length && i < methodArgs.length; i++) {
-				methodArgs[i] = args[i];
+			try {
+				method.invoke(sender, args);
+			} catch (DevinException e) {
+				if(e.getCause() != null) e.printStackTrace();
+				else msgSender.error(sender, e.getMessage());
 			}
-			
-			return true;
 		}
 		return false;
 	}

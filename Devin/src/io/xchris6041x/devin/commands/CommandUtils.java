@@ -5,6 +5,7 @@ import java.util.List;
 
 public final class CommandUtils {
 	
+	
 	/**
 	 * Divide the book into pages and output one page.
 	 * @param book - All the possible lines that could be on a page.

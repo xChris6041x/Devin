@@ -8,8 +8,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.xchris6041x.devin.commands.LayeredCommandExecutor;
-import io.xchris6041x.devin.commands.mail.MailCommand;
 import io.xchris6041x.devin.mail.AttachableMail;
 import io.xchris6041x.devin.mail.Mail;
 import io.xchris6041x.devin.mail.MailService;
@@ -42,7 +40,7 @@ public class Devin extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		getCommand("mail").setExecutor(new LayeredCommandExecutor(msgSender, new MailCommand()));
+		
 	}
 	
 	@Override

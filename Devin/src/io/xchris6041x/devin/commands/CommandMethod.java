@@ -26,6 +26,14 @@ class CommandMethod {
 	public int size() {
 		return method.getParameterCount();
 	}
+	
+	/**
+	 * Execute the CommandMethod.
+	 * @param sender - The CommandSender who executed the command.
+	 * @param rawArgs - The arguments being passed into the method, in string form.
+	 * @return whatever the method returns.
+	 * @throws DevinException
+	 */
 	public boolean invoke(CommandSender sender, String[] rawArgs) throws DevinException {
 		if(rawArgs.length < size()) throw new IllegalArgumentException("Invalid args. Not enough string arguments.");
 		if(sender.getClass() != method.getParameterTypes()[0]) throw new IllegalArgumentException("Invalid CommandSender, must be a " + method.getParameterTypes()[0].getName());
@@ -44,6 +52,13 @@ class CommandMethod {
 		}
 	}
 	
+	/**
+	 * Build the CommandMethod.
+	 * @param commandable
+	 * @param method
+	 * @return
+	 * @throws DevinException
+	 */
 	public static CommandMethod build(Commandable commandable, Method method) throws DevinException {
 		if(!isValidCommandMethod(method)) throw new IllegalArgumentException("Invalid command method.");
 		

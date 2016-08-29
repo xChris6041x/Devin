@@ -32,4 +32,12 @@ public final class ObjectParsing {
 		return objParser.parseObject(str);
 	}
 	
+	/**
+	 * @param type
+	 * @return whether a parser exists for {@code type}
+	 */
+	public static boolean parserExistsFor(Class<?> type) {
+		return parsers.get(type) != null;
+	}
+	
 }

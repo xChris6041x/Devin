@@ -8,6 +8,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.xchris6041x.devin.commands.ObjectParsing;
 import io.xchris6041x.devin.mail.AttachableMail;
 import io.xchris6041x.devin.mail.Mail;
 import io.xchris6041x.devin.mail.MailService;
@@ -37,6 +38,9 @@ public class Devin extends JavaPlugin {
 		ConfigurationSerialization.registerClass(AttachableMail.class);
 		
 		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
+		
+		// Setup ObjectParsing
+		ObjectParsing.registerParser(String.class, (s) -> { return s; });
 	}
 	
 	@Override

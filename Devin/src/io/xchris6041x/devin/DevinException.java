@@ -1,5 +1,6 @@
 package io.xchris6041x.devin;
 
+@SuppressWarnings("serial")
 public class DevinException extends Exception {
 
 	public DevinException() {

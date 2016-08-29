@@ -25,9 +25,9 @@ public final class ObjectParsing {
 	 * @param str
 	 * @return
 	 */
-	public static Object parseObject(Class<?> type, String str) {
+	public static Object parseObject(Class<?> type, String str) throws ObjectParsingException {
 		ObjectParser objParser = parsers.get(type);
-		if(objParser == null) throw new IllegalArgumentException("There is no registered object parser for " + type.getCanonicalName() + ".");
+		if(objParser == null) throw new ObjectParsingException("There is no registered object parser for " + type.getCanonicalName() + ".");
 		
 		return objParser.parseObject(str);
 	}

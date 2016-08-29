@@ -26,8 +26,6 @@ class CommandMethod {
 		return method.getParameterCount();
 	}
 	
-	
-	
 	public static CommandMethod build(Commandable commandable, Method method) throws DevinException {
 		if(!isValidCommandMethod(method)) throw new IllegalArgumentException("Invalid command method.");
 		

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.PluginCommand;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.DevinException;

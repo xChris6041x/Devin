@@ -3,6 +3,8 @@ package io.xchris6041x.devin.commands;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.xchris6041x.devin.DevinException;
+
 public final class ObjectParsing {
 
 	private static Map<Class<?>, ObjectParser> parsers = new HashMap<Class<?>, ObjectParser>();
@@ -25,9 +27,9 @@ public final class ObjectParsing {
 	 * @param str
 	 * @return
 	 */
-	public static Object parseObject(Class<?> type, String str) throws ObjectParsingException {
+	public static Object parseObject(Class<?> type, String str) throws DevinException {
 		ObjectParser objParser = parsers.get(type);
-		if(objParser == null) throw new ObjectParsingException("There is no registered object parser for " + type.getCanonicalName() + ".");
+		if(objParser == null) throw new DevinException("There is no registered object parser for " + type.getCanonicalName() + ".");
 		
 		return objParser.parseObject(str);
 	}

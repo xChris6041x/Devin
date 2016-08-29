@@ -35,6 +35,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				}
 				
 				CommandHandler handler = getHandler(command.struct().split(" "));
+				handler.setMethod(commandMethod);
 			}
 			catch(DevinException e) {
 				e.printStackTrace();

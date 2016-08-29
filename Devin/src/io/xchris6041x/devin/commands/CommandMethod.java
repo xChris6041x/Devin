@@ -23,6 +23,10 @@ class CommandMethod {
 		return method;
 	}
 	
+	public Command getCommandAnnotation() {
+		return method.getAnnotation(Command.class);
+	}
+	
 	public int size() {
 		return method.getParameterCount();
 	}

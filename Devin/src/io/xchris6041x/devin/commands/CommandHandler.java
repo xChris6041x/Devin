@@ -9,10 +9,9 @@ import io.xchris6041x.devin.MessageSender;
 class CommandHandler extends CommandHandlerContainer implements CommandExecutor {
 	
 	private CommandMethod method;
-	private MessageSender msgSender;
 	
 	public CommandHandler(MessageSender msgSender){
-		this.msgSender = msgSender;
+		super(msgSender);
 	}
 	
 	public void setMethod(CommandMethod method) {
@@ -43,7 +42,7 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 				method.invoke(sender, args);
 			} catch (DevinException e) {
 				if(e.getCause() != null) e.printStackTrace();
-				else msgSender.error(sender, e.getMessage());
+				else getMessageSender().error(sender, e.getMessage());
 			}
 		}
 		return false;

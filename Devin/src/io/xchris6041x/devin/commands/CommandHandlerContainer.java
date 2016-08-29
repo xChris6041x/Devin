@@ -1,8 +1,12 @@
 package io.xchris6041x.devin.commands;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import io.xchris6041x.devin.MessageSender;
 
 /**
  * A class that contains CommandHandlers.
@@ -10,10 +14,17 @@ import java.util.Map.Entry;
  */
 class CommandHandlerContainer {
 
-	private Map<String[], CommandHandler> handlers;
+	private MessageSender msgSender;
+	private Map<List<String>, CommandHandler> handlers;
 	
-	public CommandHandlerContainer() {
-		handlers = new HashMap<String[], CommandHandler>();
+	public CommandHandlerContainer(MessageSender msgSender) {
+		this.msgSender = msgSender;
+		handlers = new HashMap<List<String>, CommandHandler>();
+	}
+	
+	
+	public MessageSender getMessageSender() {
+		return msgSender;
 	}
 	
 	
@@ -23,7 +34,38 @@ class CommandHandlerContainer {
 	 * @param handler - The handler.
 	 */
 	public void addHandler(String name, CommandHandler handler) {
-		handlers.put(new String[]{ name }, handler);
+		handlers.put(Arrays.asList(name), handler);
+	}
+	
+	/**
+	 * Add a handler to the container with aliases.
+	 * @param name - The name of the handler.
+	 * @param handler - The handler.
+	 */
+	public void addHandler(String name, String[] aliases, CommandHandler handler) {
+		List<String> ids = Arrays.asList(aliases);
+		ids.add(name);
+		
+		handlers.put(ids, handler);
+	}
+	
+	/**
+	 * Add alises to a CommandHandler.
+	 * @param name
+	 * @param aliases
+	 */
+	public void addAliases(String name, String[] aliases) {
+		for(Entry<List<String>, CommandHandler> handler : handlers.entrySet()) {
+			for(String str : handler.getKey()) {
+				if(name.equalsIgnoreCase(str)) {
+					handler.getKey().addAll(Arrays.asList(aliases));
+					return;
+				}
+			}
+		}
+		
+		CommandHandler handler = new CommandHandler(msgSender);
+		addHandler(name, aliases, handler);
 	}
 	
 	/**
@@ -31,7 +73,7 @@ class CommandHandlerContainer {
 	 * @return a CommandHandler with the same name or alias as {@code name}
 	 */
 	public CommandHandler getHandler(String name) {
-		for(Entry<String[], CommandHandler> handler : handlers.entrySet()) {
+		for(Entry<List<String>, CommandHandler> handler : handlers.entrySet()) {
 			for(String str : handler.getKey()) {
 				if(name.equalsIgnoreCase(str)) {
 					return handler.getValue();
@@ -39,7 +81,10 @@ class CommandHandlerContainer {
 			}
 		}
 		
-		return null;
+		CommandHandler handler = new CommandHandler(msgSender);
+		addHandler(name, handler);
+		
+		return handler;
 	}
 	
 }

@@ -1,12 +1,13 @@
 package io.xchris6041x.devin.commands;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class ObjectParserManager {
+public final class ObjectParsing {
 
-	private Map<Class<?>, ObjectParser> parsers;
+	private static Map<Class<?>, ObjectParser> parsers = new HashMap<Class<?>, ObjectParser>();
 	
-	public ObjectParserManager() {
+	private ObjectParsing(){
 	}
 	
 	/**
@@ -14,7 +15,7 @@ public class ObjectParserManager {
 	 * @param type
 	 * @param objParser
 	 */
-	public void registerParser(Class<?> type, ObjectParser objParser) {
+	public static void registerParser(Class<?> type, ObjectParser objParser) {
 		parsers.put(type, objParser);
 	}
 	
@@ -24,7 +25,7 @@ public class ObjectParserManager {
 	 * @param str
 	 * @return
 	 */
-	public Object parseObject(Class<?> type, String str) {
+	public static Object parseObject(Class<?> type, String str) {
 		ObjectParser objParser = parsers.get(type);
 		if(objParser == null) throw new IllegalArgumentException("There is no registered object parser for " + type.getCanonicalName() + ".");
 		

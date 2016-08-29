@@ -9,7 +9,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.commands.ObjectParser;
-import io.xchris6041x.devin.commands.ObjectParserManager;
+import io.xchris6041x.devin.commands.ObjectParsing;
 import io.xchris6041x.devin.mail.AttachableMail;
 import io.xchris6041x.devin.mail.Mail;
 import io.xchris6041x.devin.mail.MailService;
@@ -26,7 +26,6 @@ public class Devin extends JavaPlugin {
 	
 	private final MailService mailService = new MailService();
 	private final MessageSender msgSender = new MessageSender(ChatColor.GREEN + "", ChatColor.RED + "[DEVIN ERROR] ");
-	private final ObjectParserManager parsers = new ObjectParserManager();
 	private PlayerDataManager dataManager;
 	
 	@Override
@@ -34,6 +33,7 @@ public class Devin extends JavaPlugin {
 		if(!getDataFolder().exists()) getDataFolder().mkdir();
 		Devin.instance = this;
 		
+		// Setup YAML and PlayerData.
 		ConfigurationSerialization.registerClass(PlayerData.class);
 		ConfigurationSerialization.registerClass(Mail.class);
 		ConfigurationSerialization.registerClass(AttachableMail.class);
@@ -87,17 +87,6 @@ public class Devin extends JavaPlugin {
 	 */
 	public static PlayerData getPlayerData(OfflinePlayer player) {
 		return instance.dataManager.getPlayerData(player);
-	}
-	
-	/**
-	 * @return the main parameter parser.
-	 */
-	public static ObjectParserManager getObjectParsers() {
-		return instance.parsers;
-	}
-	
-	public static void registerParser(Class<?> type, ObjectParser objParser) {
-		Devin.getObjectParsers().registerParser(type, objParser);
 	}
 	
 }

@@ -71,6 +71,11 @@ public class Mail implements ConfigurationSerializable {
 	
 	
 	@Override
+	public String toString() {
+		return subject + " - " + getSender().getName();
+	}
+	
+	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sender", sender.toString());

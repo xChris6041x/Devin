@@ -14,7 +14,6 @@ public class MailCommands implements Commandable {
 	
 	@Command(struct = "mail")
 	public boolean listMail(Player p) {
-		
 		return true;
 	}
 	

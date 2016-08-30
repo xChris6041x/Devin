@@ -5,9 +5,8 @@ import java.io.IOException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.commands.Command;
@@ -63,9 +62,10 @@ public class Devin extends JavaPlugin implements Commandable {
 		}
 	}
 	
+	
 	@Command(struct = "devin")
-	public boolean test(Player p) {
-		msgSender.info(p, "This command works!");
+	public boolean test(ConsoleCommandSender console, String subject, String message) {
+		msgSender.info(console, subject + ": " + message);
 		return true;
 	}
 	

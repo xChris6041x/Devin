@@ -38,7 +38,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				PluginCommand cmd = plugin.getCommand(struct[0]);
 				if(cmd != null) {
 					System.out.println("[DEVIN] \t\tFound PluginCommand.");
-					cmd.setExecutor(getHandler(struct[0]));
+					cmd.setExecutor(getHandler(struct[0], true));
 				}
 				else{
 					System.out.println(ChatColor.RED + "[DEVIN] \t\tMissing PluginCommand.");
@@ -59,13 +59,13 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	}
 	private CommandHandler getHandler(CommandHandlerContainer container, List<String> structure) {
 		if(structure.size() == 1) {
-			return container.getHandler(structure.get(0));
+			return container.getHandler(structure.get(0), true);
 		}
 		else{
 			String next = structure.get(0);
 			structure.remove(0);
 			
-			return getHandler(getHandler(next), structure);
+			return getHandler(getHandler(next, true), structure);
 		}
 	}
 	

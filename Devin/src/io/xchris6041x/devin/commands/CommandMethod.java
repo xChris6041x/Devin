@@ -40,9 +40,12 @@ class CommandMethod {
 	 * @throws DevinException
 	 */
 	public boolean invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
-		if(rawArgs.length < size() - 1) throw new IllegalArgumentException("Invalid args. Not enough string arguments.");
 		if(!method.getParameterTypes()[0].isInstance(sender)){
-			msgSender.error("You cannot use this command.");
+			msgSender.error(sender, "You cannot use this command.");
+			return true;
+		}
+		if(rawArgs.length < size() - 1){
+			msgSender.error(sender, "Invalid number of arguments.");
 			return true;
 		}
 		

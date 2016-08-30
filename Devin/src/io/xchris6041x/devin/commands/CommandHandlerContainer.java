@@ -68,11 +68,16 @@ class CommandHandlerContainer {
 		addHandler(name, aliases, handler);
 	}
 	
+	
+	public CommandHandler getHandler(String name) {
+		return getHandler(name, false);
+	}
+	
 	/**
 	 * @param name
 	 * @return a CommandHandler with the same name or alias as {@code name}
 	 */
-	public CommandHandler getHandler(String name) {
+	public CommandHandler getHandler(String name, boolean create) {
 		for(Entry<List<String>, CommandHandler> handler : handlers.entrySet()) {
 			for(String str : handler.getKey()) {
 				if(name.equalsIgnoreCase(str)) {
@@ -81,10 +86,15 @@ class CommandHandlerContainer {
 			}
 		}
 		
-		CommandHandler handler = new CommandHandler(msgSender);
-		addHandler(name, handler);
-		
-		return handler;
+		if(create) {
+			CommandHandler handler = new CommandHandler(msgSender);
+			addHandler(name, handler);
+			
+			return handler;
+		}
+		else {
+			return null;
+		}
 	}
 	
 }

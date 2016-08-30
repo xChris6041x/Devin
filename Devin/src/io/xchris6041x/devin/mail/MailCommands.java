@@ -13,11 +13,11 @@ import io.xchris6041x.devin.commands.Commandable;
 import io.xchris6041x.devin.commands.DevinInject;
 
 public class MailCommands implements Commandable {
-
+	
 	@DevinInject
 	public MessageSender msgSender;
 	
-	@Command(struct = "mail", params = { "page number" })
+	@Command(struct = "mail", params = { "page" })
 	public boolean listMail(Player p, int pageNumber) {
 		Mail[] mailbox = Devin.getMailService().getAllMail(p);
 		
@@ -26,7 +26,7 @@ public class MailCommands implements Commandable {
 		
 		List<String> mailboxString = new ArrayList<String>();
 		for(int i = 0; i < mailbox.length; i++) {
-			mailboxString.add(i + "|" + mailbox[i].toString());
+			mailboxString.add(i + " | " + mailbox[i].toString());
 		}
 		
 		String[] page = CommandUtils.pagination(mailboxString, 5, pageNumber - 1);
@@ -35,9 +35,13 @@ public class MailCommands implements Commandable {
 		return true;
 	}
 	
-	@Command(struct = "mail send", params = { "receiver", "subject" })
+	@Command(struct = "mail send", params = { "receiver", "subject", "message" })
 	public boolean sendMail(Player p, Player receiver, String subject, String message) {
 		Devin.getMailService().sendMessage(p, receiver, subject, message);
+		
+		msgSender.info(p, "Successfully sent mail.");
+		msgSender.info(receiver, "You received mail from " + p.getName());
+		
 		return true;
 	}
 	

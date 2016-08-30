@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.MessageSender;
+import io.xchris6041x.devin.commands.ArgumentStream;
 import io.xchris6041x.devin.commands.Command;
 import io.xchris6041x.devin.commands.CommandUtils;
 import io.xchris6041x.devin.commands.Commandable;
@@ -36,8 +37,8 @@ public class MailCommands implements Commandable {
 	}
 	
 	@Command(struct = "mail send", params = { "receiver", "subject", "message" })
-	public boolean sendMail(Player p, Player receiver, String subject, String message) {
-		Devin.getMailService().sendMessage(p, receiver, subject, message);
+	public boolean sendMail(Player p, Player receiver, String subject, ArgumentStream args) {
+		Devin.getMailService().sendMessage(p, receiver, subject, args.implode());
 		
 		msgSender.info(p, "Successfully sent mail.");
 		msgSender.info(receiver, "You received mail from " + p.getName());

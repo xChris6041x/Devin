@@ -23,7 +23,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		System.out.println("---------------------------------------------------------------");
 		System.out.println("Looking for @Inject...");
 		for(Field field : commandable.getClass().getFields()) {
-			Inject inject = field.getAnnotation(Inject.class);
+			DevinInject inject = field.getAnnotation(DevinInject.class);
 			if(inject == null) continue;
 			
 			System.out.println("\tAttempting to auto-inject " + field.getName() + ":");

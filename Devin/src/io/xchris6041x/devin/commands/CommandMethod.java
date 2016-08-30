@@ -54,7 +54,13 @@ class CommandMethod {
 		args[0] = sender;
 		
 		for(int i = 1; i < args.length; i++) {
-			args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], rawArgs[i - 1]);
+			try {
+				args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], rawArgs[i - 1]);
+			}
+			catch(DevinException | IllegalArgumentException e) {
+				msgSender.error(sender, e.getMessage());
+				return true;
+			}
 		}
 		
 		

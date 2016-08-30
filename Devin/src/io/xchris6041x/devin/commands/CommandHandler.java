@@ -20,11 +20,12 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 	
 	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
+		
 		// Check if it belongs to sub-command.
 		if(args.length > 0) {
 			String sub = args[0];
-			CommandHandler handler = getHandler(sub);
 			
+			CommandHandler handler = getHandler(sub);
 			if(handler != null) {
 				// Remove first arg.
 				String[] newArgs = new String[args.length - 1];
@@ -32,7 +33,7 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 					newArgs[i - 1] = args[i];
 				}
 				
-				handler.onCommand(sender, cmd, label + " " + sub, newArgs);
+				return handler.onCommand(sender, cmd, label + " " + sub, newArgs);
 			}
 		}
 		

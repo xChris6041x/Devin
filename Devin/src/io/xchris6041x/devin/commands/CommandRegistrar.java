@@ -23,7 +23,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	public void registerCommand(Commandable commandable) {
 		System.out.println("[DEVIN] Registering " + commandable.getClass().getSimpleName() + ": ");
 		for(Method method : commandable.getClass().getMethods()) {
-			System.out.println("[DEVIN] \tAttempting to register " + method.getName() + "...");
+			System.out.println("[DEVIN] \tAttempting to register " + method.getName() + ":");
 			if(method.getAnnotation(Command.class) == null) continue;
 			try {
 				CommandMethod commandMethod = CommandMethod.build(commandable, method);
@@ -42,10 +42,13 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				}
 				else{
 					System.out.println(ChatColor.RED + "[DEVIN] \t\tMissing PluginCommand.");
+					continue;
 				}
 				
 				CommandHandler handler = getHandler(struct);
 				handler.setMethod(commandMethod);
+				
+				System.out.println("[DEVIN] \t\tSuccessfully registered command.");
 			}
 			catch(DevinException e) {
 				e.printStackTrace();
@@ -55,17 +58,14 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	
 	
 	private CommandHandler getHandler(String[] structure) {
-		return getHandler(this, Arrays.asList(structure));
+		return getHandler(this, structure, 0);
 	}
-	private CommandHandler getHandler(CommandHandlerContainer container, List<String> structure) {
-		if(structure.size() == 1) {
-			return container.getHandler(structure.get(0), true);
+	private CommandHandler getHandler(CommandHandlerContainer container, String[] structure, int offset) {
+		if(offset == structure.length - 1) {
+			return container.getHandler(structure[offset], true);
 		}
 		else{
-			String next = structure.get(0);
-			structure.remove(0);
-			
-			return getHandler(getHandler(next, true), structure);
+			return getHandler(container.getHandler(structure[offset], true), structure, offset + 1);
 		}
 	}
 	

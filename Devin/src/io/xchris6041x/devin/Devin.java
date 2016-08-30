@@ -93,7 +93,6 @@ public class Devin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		CommandRegistrar cr = new CommandRegistrar(this, msgSender);
-		cr.registerCommand(new TestCommands());
 	}
 	
 	@Override

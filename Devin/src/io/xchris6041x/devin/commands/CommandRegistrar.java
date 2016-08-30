@@ -18,7 +18,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		this.plugin = plugin;
 	}
 	
-	public void registerCommand(Commandable commandable) {
+	public void registerCommands(Commandable commandable) {
 		System.out.println("[DEVIN] Registering " + commandable.getClass().getSimpleName() + ": ");
 		for(Method method : commandable.getClass().getMethods()) {
 			System.out.println("[DEVIN] \tAttempting to register " + method.getName() + ":");

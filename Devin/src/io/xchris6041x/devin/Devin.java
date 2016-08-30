@@ -3,10 +3,12 @@ package io.xchris6041x.devin;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.commands.Command;
@@ -23,7 +25,7 @@ import io.xchris6041x.devin.playerdata.PlayerDataManager;
  * Main plugin class for DEVIN.
  * @author Christopher Bishop
  */
-public class Devin extends JavaPlugin implements Commandable {
+public class Devin extends JavaPlugin {
 
 	private static Devin instance;
 	
@@ -43,14 +45,58 @@ public class Devin extends JavaPlugin implements Commandable {
 		
 		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
 		
+		//
 		// Setup ObjectParsing
+		//
+		
+		// Primitives
+		
+		// byte
+		ObjectParsing.registerParser(Byte.TYPE, (s) -> {
+			return Byte.parseByte(s);
+		});
+		// short
+		ObjectParsing.registerParser(Short.TYPE, (s) -> {
+			return Short.parseShort(s);
+		});
+		// int
+		ObjectParsing.registerParser(Integer.TYPE, (s) -> {
+			return Integer.parseInt(s);
+		});
+		// float
+		ObjectParsing.registerParser(Float.TYPE, (s) -> {
+			return Float.parseFloat(s);
+		});
+		// long
+		ObjectParsing.registerParser(Long.TYPE, (s) -> {
+			return Long.parseLong(s);
+		});
+		// double
+		ObjectParsing.registerParser(Double.TYPE, (s) -> {
+			return Double.parseDouble(s);
+		});
+		
+		// String
 		ObjectParsing.registerParser(String.class, (s) -> { return s; });
+		
+		// Other usefull objects.
+		
+		// Player
+		ObjectParsing.registerParser(Player.class, (s) -> {
+			Player p = Bukkit.getPlayer(s);
+			if(p == null) {
+				throw new IllegalArgumentException("There is no online player with the name \"" + s + "\"");
+			}
+			else{
+				return p;
+			}
+		});
 	}
 	
 	@Override
 	public void onEnable() {
 		CommandRegistrar cr = new CommandRegistrar(this, msgSender);
-		cr.registerCommand(this);
+		cr.registerCommand(new TestCommands());
 	}
 	
 	@Override
@@ -60,13 +106,6 @@ public class Devin extends JavaPlugin implements Commandable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	
-	@Command(struct = "devin")
-	public boolean test(ConsoleCommandSender console, String subject, String message) {
-		msgSender.info(console, subject + ": " + message);
-		return true;
 	}
 	
 	

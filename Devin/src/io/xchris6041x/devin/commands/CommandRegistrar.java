@@ -1,8 +1,6 @@
 package io.xchris6041x.devin.commands;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;

@@ -83,7 +83,7 @@ class CommandMethod {
 		
 		for(int i = 1; i < m.getParameters().length; i++) {
 			Class<?> paramType = m.getParameters()[i].getType();
-			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("Invalid command: Object parser for " + paramType.getCanonicalName() + ".");
+			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("Invalid command: No parser extists for " + paramType.getCanonicalName() + ".");
 		}
 		
 		// Build CommandMethod.

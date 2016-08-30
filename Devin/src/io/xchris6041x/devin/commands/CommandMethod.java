@@ -7,6 +7,7 @@ import java.lang.reflect.Modifier;
 import org.bukkit.command.CommandSender;
 
 import io.xchris6041x.devin.DevinException;
+import io.xchris6041x.devin.MessageSender;
 
 class CommandMethod {
 
@@ -38,14 +39,19 @@ class CommandMethod {
 	 * @return whatever the method returns.
 	 * @throws DevinException
 	 */
-	public boolean invoke(CommandSender sender, String[] rawArgs) throws DevinException {
-		if(rawArgs.length < size()) throw new IllegalArgumentException("Invalid args. Not enough string arguments.");
-		if(sender.getClass() != method.getParameterTypes()[0]) throw new IllegalArgumentException("Invalid CommandSender, must be a " + method.getParameterTypes()[0].getName());
+	public boolean invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
+		if(rawArgs.length < size() - 1) throw new IllegalArgumentException("Invalid args. Not enough string arguments.");
+		if(!method.getParameterTypes()[0].isInstance(sender)){
+			msgSender.error("You cannot use this command.");
+			return true;
+		}
 		
 		// Build argument array.
 		Object[] args = new Object[size()];
-		for(int i = 0; i < args.length; i++) {
-			args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], rawArgs[i]);
+		args[0] = sender;
+		
+		for(int i = 1; i < args.length; i++) {
+			args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], rawArgs[i - 1]);
 		}
 		
 		
@@ -63,22 +69,10 @@ class CommandMethod {
 	 * @return
 	 * @throws DevinException
 	 */
-	public static CommandMethod build(Commandable commandable, Method method) throws DevinException {
-		if(!isValidCommandMethod(method)) throw new IllegalArgumentException("Invalid command method.");
-		
-		CommandMethod cm = new CommandMethod();
-		cm.commandable = commandable;
-		cm.method = method;
-		
-		return cm;
-	}
-	
-	/**
-	 * @param m
-	 * @return Is a method a valid command method.
-	 */
-	public static boolean isValidCommandMethod(Method m) throws DevinException {
-		if(m.getModifiers() != Modifier.PUBLIC || m.getAnnotation(Command.class) == null) return false;
+	public static CommandMethod build(Commandable commandable, Method m) throws DevinException {
+		// Check if method is valid.
+		if(m.getModifiers() != Modifier.PUBLIC) throw new DevinException("Invalid command: Method must be public.");
+		if(m.getAnnotation(Command.class) == null) throw new DevinException("Invalid command: Must have @Command annotation on method.");
 		
 		if(m.getReturnType() != Boolean.TYPE) throw new DevinException("Invalid command: Must have a boolean return type.");
 		if(m.getParameterCount() == 0) throw new DevinException("Invalid command: Must have at least one parameter.");
@@ -89,7 +83,12 @@ class CommandMethod {
 			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("Invalid command: Object parser for " + paramType.getCanonicalName() + ".");
 		}
 		
-		return true;
+		// Build CommandMethod.
+		CommandMethod cm = new CommandMethod();
+		cm.commandable = commandable;
+		cm.method = m;
+		
+		return cm;
 	}
 	
 }

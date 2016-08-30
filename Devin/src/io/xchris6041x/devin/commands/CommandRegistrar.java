@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,20 +21,30 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	}
 	
 	public void registerCommand(Commandable commandable) {
+		System.out.println("[DEVIN] Registering " + commandable.getClass().getSimpleName() + ": ");
 		for(Method method : commandable.getClass().getMethods()) {
+			System.out.println("[DEVIN] \tAttempting to register " + method.getName() + "...");
+			if(method.getAnnotation(Command.class) == null) continue;
 			try {
 				CommandMethod commandMethod = CommandMethod.build(commandable, method);
+				
+				System.out.println("[DEVIN] \t\tSuccessfully created CommandMethod.");
 				Command command = commandMethod.getCommandAnnotation();
 				
+				System.out.print("[DEVIN] \t\tUsing structure \"" + command.struct() + "\" to find handler.");
 				String[] struct = command.struct().split(" ");
 				
 				// Register with bukkit, the first part of the structure (if not registered).
 				PluginCommand cmd = plugin.getCommand(struct[0]);
-				if(cmd != null && cmd.getExecutor() == null) {
+				if(cmd != null) {
+					System.out.println("[DEVIN] \t\tFound PluginCommand.");
 					cmd.setExecutor(getHandler(struct[0]));
 				}
+				else{
+					System.out.println(ChatColor.RED + "[DEVIN] \t\tMissing PluginCommand.");
+				}
 				
-				CommandHandler handler = getHandler(command.struct().split(" "));
+				CommandHandler handler = getHandler(struct);
 				handler.setMethod(commandMethod);
 			}
 			catch(DevinException e) {

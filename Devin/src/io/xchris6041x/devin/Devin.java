@@ -5,9 +5,14 @@ import java.io.IOException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.xchris6041x.devin.commands.Command;
+import io.xchris6041x.devin.commands.CommandRegistrar;
+import io.xchris6041x.devin.commands.Commandable;
 import io.xchris6041x.devin.commands.ObjectParsing;
 import io.xchris6041x.devin.mail.AttachableMail;
 import io.xchris6041x.devin.mail.Mail;
@@ -19,7 +24,7 @@ import io.xchris6041x.devin.playerdata.PlayerDataManager;
  * Main plugin class for DEVIN.
  * @author Christopher Bishop
  */
-public class Devin extends JavaPlugin {
+public class Devin extends JavaPlugin implements Commandable {
 
 	private static Devin instance;
 	
@@ -45,7 +50,8 @@ public class Devin extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		
+		CommandRegistrar cr = new CommandRegistrar(this, msgSender);
+		cr.registerCommand(this);
 	}
 	
 	@Override
@@ -55,6 +61,12 @@ public class Devin extends JavaPlugin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Command(struct = "devin")
+	public boolean test(Player p) {
+		msgSender.info(p, "This command works!");
+		return true;
 	}
 	
 	

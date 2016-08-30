@@ -14,6 +14,7 @@ import io.xchris6041x.devin.commands.CommandRegistrar;
 import io.xchris6041x.devin.commands.ObjectParsing;
 import io.xchris6041x.devin.mail.AttachableMail;
 import io.xchris6041x.devin.mail.Mail;
+import io.xchris6041x.devin.mail.MailCommands;
 import io.xchris6041x.devin.mail.MailService;
 import io.xchris6041x.devin.playerdata.PlayerData;
 import io.xchris6041x.devin.playerdata.PlayerDataManager;
@@ -93,6 +94,7 @@ public class Devin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		CommandRegistrar cr = new CommandRegistrar(this, msgSender);
+		cr.registerCommands(new MailCommands());
 	}
 	
 	@Override

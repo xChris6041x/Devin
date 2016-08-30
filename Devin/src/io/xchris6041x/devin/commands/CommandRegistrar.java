@@ -1,8 +1,8 @@
 package io.xchris6041x.devin.commands;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,34 +19,65 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	}
 	
 	public void registerCommands(Commandable commandable) {
-		System.out.println("[DEVIN] Registering " + commandable.getClass().getSimpleName() + ": ");
+		System.out.println("Registering " + commandable.getClass().getCanonicalName() + ": ");
+		System.out.println("---------------------------------------------------------------");
+		System.out.println("Looking for @Inject...");
+		for(Field field : commandable.getClass().getFields()) {
+			Inject inject = field.getAnnotation(Inject.class);
+			if(inject == null) continue;
+			
+			System.out.println("\tAttempting to auto-inject " + field.getName() + ":");
+			
+			if(field.getType().isAssignableFrom(getMessageSender().getClass())) {
+				try {
+					field.set(commandable, getMessageSender());
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+			else if(field.getType().isAssignableFrom(plugin.getClass())) {
+				try {
+					field.set(commandable, plugin);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+			else{
+				System.out.println("\t\tCannot auto-inject type " + field.getType().getCanonicalName());
+				continue;
+			}
+			
+			System.out.println("\t\tSuccess");
+		}
+		
+		System.out.println(" ");
+		System.out.println("Looking for @Command...");
 		for(Method method : commandable.getClass().getMethods()) {
-			System.out.println("[DEVIN] \tAttempting to register " + method.getName() + ":");
 			if(method.getAnnotation(Command.class) == null) continue;
+			
+			System.out.print("\tAttempting to register " + method.getName() + ":");
 			try {
 				CommandMethod commandMethod = CommandMethod.build(commandable, method);
 				
-				System.out.println("[DEVIN] \t\tSuccessfully created CommandMethod.");
+				System.out.println("\t\tSuccessfully created CommandMethod.");
 				Command command = commandMethod.getCommandAnnotation();
-				
-				System.out.print("[DEVIN] \t\tUsing structure \"" + command.struct() + "\" to find handler.");
 				String[] struct = command.struct().split(" ");
 				
 				// Register with bukkit, the first part of the structure (if not registered).
 				PluginCommand cmd = plugin.getCommand(struct[0]);
 				if(cmd != null) {
-					System.out.println("[DEVIN] \t\tFound PluginCommand.");
+					System.out.println("\t\tFound PluginCommand.");
 					cmd.setExecutor(getHandler(struct[0], true));
 				}
 				else{
-					System.out.println(ChatColor.RED + "[DEVIN] \t\tMissing PluginCommand.");
+					System.out.println("\t\tMissing PluginCommand.");
 					continue;
 				}
 				
 				CommandHandler handler = getHandler(struct);
 				handler.setMethod(commandMethod);
 				
-				System.out.println("[DEVIN] \t\tSuccessfully registered command.");
+				System.out.println("\t\tSuccessfully registered command.");
 			}
 			catch(DevinException e) {
 				e.printStackTrace();

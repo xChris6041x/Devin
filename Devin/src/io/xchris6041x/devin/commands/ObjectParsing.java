@@ -31,11 +31,11 @@ public final class ObjectParsing {
 	 * @param str
 	 * @return
 	 */
-	public static Object parseObject(Class<?> type, String str) throws DevinException {
+	public static Object parseObject(Class<?> type, ArgumentStream args) throws DevinException {
 		ObjectParser objParser = parsers.get(type);
 		if(objParser == null) throw new DevinException("There is no registered object parser for " + type.getCanonicalName() + ".");
 		
-		return objParser.parseObject(str);
+		return objParser.parseObject(args);
 	}
 	
 	/**

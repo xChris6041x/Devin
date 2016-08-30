@@ -53,12 +53,13 @@ class CommandMethod {
 		}
 		
 		// Build argument array.
+		ArgumentStream argStream = new ArgumentStream(rawArgs);
 		Object[] args = new Object[size()];
 		args[0] = sender;
 		
 		for(int i = 1; i < args.length; i++) {
 			try {
-				args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], rawArgs[i - 1]);
+				args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], argStream);
 			}
 			catch(DevinException | IllegalArgumentException e) {
 				if(e instanceof NumberFormatException) {
@@ -101,9 +102,15 @@ class CommandMethod {
 		String usage = "/" + cmd.struct();
 		int unknownParamCount = 0;
 		
+		boolean expectedEnd = false;
 		for(int i = 1; i < m.getParameters().length; i++) {
+			if(expectedEnd) throw new DevinException("Cannot have more parameters after an array or ArgumentStream.");
+			
 			Class<?> paramType = m.getParameters()[i].getType();
 			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("No parser extists for " + paramType.getCanonicalName() + ".");
+			if(paramType.isArray() || paramType == ArgumentStream.class) {
+				expectedEnd = true;
+			}
 			
 			String paramName;
 			if(i - 1 < cmd.params().length) {

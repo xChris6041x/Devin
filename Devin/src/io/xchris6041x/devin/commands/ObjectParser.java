@@ -9,6 +9,6 @@ import io.xchris6041x.devin.DevinException;
 @FunctionalInterface
 public interface ObjectParser {
 
-	public Object parseObject(String str) throws DevinException;
+	public Object parseObject(ArgumentStream args) throws DevinException;
 	
 }

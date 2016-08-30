@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.xchris6041x.devin.AnsiColor;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 
@@ -25,12 +26,12 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	public void registerCommands(Commandable commandable) {
 		System.out.println("Registering " + commandable.getClass().getCanonicalName() + ": ");
 		System.out.println("---------------------------------------------------------------");
-		System.out.println("Looking for @Inject...");
+		System.out.println("Looking for @DevinInject...");
 		for(Field field : commandable.getClass().getFields()) {
 			DevinInject inject = field.getAnnotation(DevinInject.class);
 			if(inject == null) continue;
 			
-			System.out.println("\tAttempting to auto-inject " + field.getName() + ":");
+			System.out.println("\tAttempting to auto-inject " + AnsiColor.CYAN + field.getName() + AnsiColor.RESET + ":");
 			
 			if(field.getType().isAssignableFrom(getMessageSender().getClass())) {
 				try {
@@ -47,11 +48,11 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				}
 			}
 			else{
-				System.out.println("\t\tCannot auto-inject type " + field.getType().getCanonicalName());
+				System.out.println(AnsiColor.RED + "\t\tFAILED: Cannot auto-inject type " + field.getType().getCanonicalName() + AnsiColor.RESET);
 				continue;
 			}
 			
-			System.out.println("\t\tSuccess");
+			System.out.println(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 		}
 		
 		System.out.println(" ");
@@ -59,34 +60,33 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		for(Method method : commandable.getClass().getMethods()) {
 			if(method.getAnnotation(Command.class) == null) continue;
 			
-			System.out.print("\tAttempting to register " + method.getName() + ":");
+			System.out.print("\tAttempting to register " + AnsiColor.CYAN + method.getName() + AnsiColor.RESET + ":");
 			try {
 				CommandMethod commandMethod = CommandMethod.build(commandable, method);
-				
-				System.out.println("\t\tSuccessfully created CommandMethod.");
 				Command command = commandMethod.getCommandAnnotation();
 				String[] struct = command.struct().split(" ");
 				
 				// Register with bukkit, the first part of the structure (if not registered).
 				PluginCommand cmd = plugin.getCommand(struct[0]);
 				if(cmd != null) {
-					System.out.println("\t\tFound PluginCommand.");
 					cmd.setExecutor(getHandler(struct[0], true));
 				}
 				else{
-					System.out.println("\t\tMissing PluginCommand.");
+					System.out.println(AnsiColor.RED + "\t\tFAILED: Missing PluginCommand" + AnsiColor.RESET);
 					continue;
 				}
 				
 				CommandHandler handler = getHandler(struct);
 				handler.setMethod(commandMethod);
 				
-				System.out.println("\t\tSuccessfully registered command.");
+				System.out.println(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 			}
 			catch(DevinException e) {
-				e.printStackTrace();
+				System.out.println(AnsiColor.RED + "\t\tFAILED: " + e.getMessage() + AnsiColor.RESET);
 			}
 		}
+		
+		System.out.println(" ");
 	}
 	
 	

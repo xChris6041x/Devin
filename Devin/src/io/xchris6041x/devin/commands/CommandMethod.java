@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 
 import org.bukkit.command.CommandSender;
 
+import io.xchris6041x.devin.AnsiColor;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 
@@ -60,7 +61,13 @@ class CommandMethod {
 				args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], rawArgs[i - 1]);
 			}
 			catch(DevinException | IllegalArgumentException e) {
-				msgSender.error(sender, e.getMessage());
+				if(e instanceof NumberFormatException) {
+					msgSender.error("Invalid number: " + e.getMessage());
+				}
+				else{
+					msgSender.error(sender, e.getMessage());
+				}
+				msgSender.error(sender, usage);
 				return true;
 			}
 		}
@@ -82,21 +89,21 @@ class CommandMethod {
 	 */
 	public static CommandMethod build(Commandable commandable, Method m) throws DevinException {
 		// Check if method is valid.
-		if(m.getModifiers() != Modifier.PUBLIC) throw new DevinException("Invalid command: Method must be public.");
+		if(m.getModifiers() != Modifier.PUBLIC) throw new DevinException("Method must be public.");
 		
 		Command cmd = m.getAnnotation(Command.class);
-		if(cmd == null) throw new DevinException("Invalid command: Must have @Command annotation on method.");
+		if(cmd == null) throw new DevinException("Must have @Command annotation on method.");
 		
-		if(m.getReturnType() != Boolean.TYPE) throw new DevinException("Invalid command: Must have a boolean return type.");
-		if(m.getParameterCount() == 0) throw new DevinException("Invalid command: Must have at least one parameter.");
-		if(!CommandSender.class.isAssignableFrom(m.getParameterTypes()[0])) throw new DevinException("Invalid command: First parameter must be a subclass CommandSender.");
+		if(m.getReturnType() != Boolean.TYPE) throw new DevinException("Must have a boolean return type.");
+		if(m.getParameterCount() == 0) throw new DevinException("Must have at least one parameter.");
+		if(!CommandSender.class.isAssignableFrom(m.getParameterTypes()[0])) throw new DevinException("First parameter must be a subclass CommandSender.");
 		
 		String usage = "/" + cmd.struct();
 		int unknownParamCount = 0;
 		
 		for(int i = 1; i < m.getParameters().length; i++) {
 			Class<?> paramType = m.getParameters()[i].getType();
-			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("Invalid command: No parser extists for " + paramType.getCanonicalName() + ".");
+			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("No parser extists for " + paramType.getCanonicalName() + ".");
 			
 			String paramName;
 			if(i - 1 < cmd.params().length) {
@@ -111,7 +118,7 @@ class CommandMethod {
 		}
 		
 		if(unknownParamCount > 0) {
-			System.out.println("\t\tWARNING: " + unknownParamCount + " UNKNOWN PARAMETER" + (unknownParamCount > 1 ? "S" : ""));
+			System.out.println("\t\t" + AnsiColor.YELLOW + "WARNING: " + unknownParamCount + " UNKNOWN PARAMETER" + (unknownParamCount > 1 ? "S" : "") + AnsiColor.RESET);
 		}
 		
 		// Build CommandMethod.

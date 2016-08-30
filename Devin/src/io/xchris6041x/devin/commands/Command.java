@@ -5,10 +5,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * A method annotation for telling the CommandRegistrar that this method is a command.
+ * @author Christopher Bishop
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
 	
+	/**
+	 * @return The structure of the command with sub commands sepereated by spaces.
+	 */
 	public String struct();
 	
 }

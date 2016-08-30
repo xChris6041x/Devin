@@ -3,6 +3,10 @@ package io.xchris6041x.devin.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class with all static methods to simplify complex tasks that many commands have such as pagination.
+ * @author Christopher Bishop
+ */
 public final class CommandUtils {
 	
 	

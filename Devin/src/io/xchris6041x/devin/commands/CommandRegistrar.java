@@ -9,6 +9,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 
+/**
+ * The main class responsible for registering command methods and auto-injecting fields.
+ * @author Christopher Bishop
+ */
 public class CommandRegistrar extends CommandHandlerContainer {
 	
 	private JavaPlugin plugin;

@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Marks fields so that the CommandRegistrar can inject objects.
  * 
- * Supported Data Types:
+ * Supported Data Types (this includes all sub-classes of these types):
+ *  - JavaPlugin
  *  - MessageSender
  * 
  * @author Christopher Bishop

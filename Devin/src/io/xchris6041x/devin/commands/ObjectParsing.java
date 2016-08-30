@@ -5,6 +5,10 @@ import java.util.Map;
 
 import io.xchris6041x.devin.DevinException;
 
+/**
+ * A class with all static methods for converting strings into objects.
+ * @author Christopher Bishop
+ */
 public final class ObjectParsing {
 
 	private static Map<Class<?>, ObjectParser> parsers = new HashMap<Class<?>, ObjectParser>();

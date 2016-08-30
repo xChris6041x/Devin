@@ -38,13 +38,19 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 		}
 		
 		// Execute command.
-		try {
-			return method.invoke(sender, args, getMessageSender());
-		} catch (DevinException e) {
-			if(e.getCause() != null) e.printStackTrace();
-			else getMessageSender().error(sender, e.getMessage());
-			
-			return false;
+		if(method == null) {
+			getMessageSender().error("Invalid command " + label);
+			return true;
+		}
+		else {
+			try {
+				return method.invoke(sender, args, getMessageSender());
+			} catch (DevinException e) {
+				if(e.getCause() != null) e.printStackTrace();
+				else getMessageSender().error(sender, e.getMessage());
+				
+				return false;
+			}
 		}
 	}
 	

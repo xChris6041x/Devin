@@ -3,7 +3,9 @@ package io.xchris6041x.devin.commands;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.AnsiColor;
@@ -23,7 +25,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		this.plugin = plugin;
 	}
 	
-	public void registerCommands(Commandable commandable) {
+	public void registerCommands(Commandable commandable, boolean registerPermissions) {
 		System.out.println("Registering " + commandable.getClass().getCanonicalName() + ": ");
 		System.out.println("---------------------------------------------------------------");
 		System.out.println("Looking for @DevinInject...");
@@ -58,18 +60,27 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		System.out.println(" ");
 		System.out.println("Looking for @Command...");
 		for(Method method : commandable.getClass().getMethods()) {
-			if(method.getAnnotation(Command.class) == null) continue;
-			
+			Command cmd = method.getAnnotation(Command.class);
+			if(cmd == null) continue;
 			System.out.print("\tAttempting to register " + AnsiColor.CYAN + method.getName() + AnsiColor.RESET + ":");
+			
+			// Register permissions
+			if(registerPermissions) {
+				for(String perm : cmd.perms()) {
+					Bukkit.getPluginManager().addPermission(new Permission(perm));
+					System.out.println("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.WHITE);
+				}
+			}
+			
 			try {
 				CommandMethod commandMethod = CommandMethod.build(commandable, method);
 				Command command = commandMethod.getCommandAnnotation();
 				String[] struct = command.struct().split(" ");
 				
 				// Register with bukkit, the first part of the structure (if not registered).
-				PluginCommand cmd = plugin.getCommand(struct[0]);
-				if(cmd != null) {
-					cmd.setExecutor(getHandler(struct[0], true));
+				PluginCommand pcmd = plugin.getCommand(struct[0]);
+				if(pcmd != null) {
+					pcmd.setExecutor(getHandler(struct[0], true));
 				}
 				else{
 					System.out.println(AnsiColor.RED + "\t\tFAILED: Missing PluginCommand" + AnsiColor.RESET);
@@ -89,6 +100,9 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		System.out.println(" ");
 	}
 	
+	public void registerCommand(Commandable commandable) {
+		registerCommands(commandable, false);
+	}
 	
 	private CommandHandler getHandler(String[] structure) {
 		return getHandler(this, structure, 0);

@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,7 @@ class CommandMethod {
 	private Commandable commandable;
 	private Method method;
 	
+	private String[] permissions;
 	private String usage;
 	
 	private int optionalOffset = -1;
@@ -55,9 +57,18 @@ class CommandMethod {
 	public boolean invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
 		// Check whether this is being validly invoked.
 		if(!method.getParameterTypes()[0].isInstance(sender)){
-			msgSender.error(sender, "You cannot use this command.");
+			msgSender.error(sender, "Only " + method.getParameterTypes()[0].getSimpleName() + " can use this command.");
 			return true;
 		}
+		
+		// Check permissions
+		for(String perm : permissions) {
+			if(!sender.hasPermission(perm)) {
+				msgSender.error(sender, "You do not permission to use this command.");
+				return true;
+			}
+		}
+		
 		if(rawArgs.length < minSize()){
 			msgSender.error(sender, usage);
 			return true;
@@ -70,7 +81,7 @@ class CommandMethod {
 		
 		for(int i = 1; i < args.length; i++) {
 			if(argStream.hasNext()) {
-				// If there is arguments, then continue parsing them into objects.
+				// If there are arguments, then continue parsing them into objects.
 				try {
 					args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], argStream);
 				}
@@ -86,7 +97,7 @@ class CommandMethod {
 				}
 			}
 			else {
-				// Use optionals defaults.
+				// Use optional's default.
 				args[i] = defaults[i - optionalOffset - 1];
 			}
 		}
@@ -181,6 +192,7 @@ class CommandMethod {
 		CommandMethod cm = new CommandMethod();
 		cm.commandable = commandable;
 		cm.method = m;
+		cm.permissions = Arrays.copyOf(cmd.perms(), cmd.perms().length);
 		cm.usage = usage;
 		cm.endless = expectedEnd;
 		

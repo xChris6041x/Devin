@@ -19,6 +19,11 @@ public @interface Command {
 	public String struct();
 	
 	/**
+	 * @return All the permissions needed to run this command.
+	 */
+	public String[] perms() default { };
+	
+	/**
 	 * @return The names of the parameters. This is used when generating the usage message.
 	 */
 	public String[] params() default { };

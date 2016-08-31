@@ -11,15 +11,15 @@ import io.xchris6041x.devin.commands.ArgumentStream;
 import io.xchris6041x.devin.commands.Command;
 import io.xchris6041x.devin.commands.CommandUtils;
 import io.xchris6041x.devin.commands.Commandable;
-import io.xchris6041x.devin.commands.DevinInject;
+import io.xchris6041x.devin.commands.OptionalArg;
+import net.md_5.bungee.api.ChatColor;
 
 public class MailCommands implements Commandable {
 	
-	@DevinInject
-	public MessageSender msgSender;
+	private MessageSender msgSender = new MessageSender(ChatColor.YELLOW + "", ChatColor.RED + "[Mail Error] ");
 	
-	@Command(struct = "mail", params = { "page" })
-	public boolean listMail(Player p, int pageNumber) {
+	@Command(struct = "mail", params = "page")
+	public boolean listMail(Player p, @OptionalArg("1") int pageNumber) {
 		Mail[] mailbox = Devin.getMailService().getAllMail(p);
 		
 		msgSender.info(p, p.getName() + "'s Mailbox (" + mailbox.length + ")");
@@ -33,6 +33,18 @@ public class MailCommands implements Commandable {
 		String[] page = CommandUtils.pagination(mailboxString, 5, pageNumber - 1);
 		msgSender.info(p, page);
 		
+		return true;
+	}
+	
+	@Command(struct = "mail open", params = "index")
+	public boolean openMail(Player p, int index) {
+		try {
+			Mail mail = Devin.getMailService().getAllMail(p)[index];
+			msgSender.send(p, ChatColor.YELLOW + mail.toString(), "-----------------------------", mail.getMessage());
+		}
+		catch(IndexOutOfBoundsException e) {
+			msgSender.error(p, "Invalid index.");
+		}
 		return true;
 	}
 	

@@ -3,6 +3,9 @@ package io.xchris6041x.devin.commands;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
@@ -16,6 +19,10 @@ class CommandMethod {
 	private Method method;
 	
 	private String usage;
+	
+	private int optionalOffset = -1;
+	private Object[] defaults = { };
+	private boolean endless = false;
 	
 	private CommandMethod() {
 	}
@@ -31,8 +38,11 @@ class CommandMethod {
 		return method.getAnnotation(Command.class);
 	}
 	
-	public int size() {
-		return method.getParameterCount();
+	public int minSize() {
+		return optionalOffset;
+	}
+	public int maxSize() {
+		return (endless) ? Integer.MAX_VALUE : method.getParameterCount();
 	}
 	
 	/**
@@ -43,33 +53,41 @@ class CommandMethod {
 	 * @throws DevinException
 	 */
 	public boolean invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
+		// Check whether this is being validly invoked.
 		if(!method.getParameterTypes()[0].isInstance(sender)){
 			msgSender.error(sender, "You cannot use this command.");
 			return true;
 		}
-		if(rawArgs.length < size() - 1){
+		if(rawArgs.length < minSize()){
 			msgSender.error(sender, usage);
 			return true;
 		}
 		
 		// Build argument array.
 		ArgumentStream argStream = new ArgumentStream(rawArgs);
-		Object[] args = new Object[size()];
+		Object[] args = new Object[method.getParameterCount()];
 		args[0] = sender;
 		
 		for(int i = 1; i < args.length; i++) {
-			try {
-				args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], argStream);
+			if(argStream.hasNext()) {
+				// If there is arguments, then continue parsing them into objects.
+				try {
+					args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], argStream);
+				}
+				catch(DevinException | IllegalArgumentException e) {
+					if(e instanceof NumberFormatException) {
+						msgSender.error("Invalid number: " + e.getMessage());
+					}
+					else{
+						msgSender.error(sender, e.getMessage());
+					}
+					msgSender.error(sender, usage);
+					return true;
+				}
 			}
-			catch(DevinException | IllegalArgumentException e) {
-				if(e instanceof NumberFormatException) {
-					msgSender.error("Invalid number: " + e.getMessage());
-				}
-				else{
-					msgSender.error(sender, e.getMessage());
-				}
-				msgSender.error(sender, usage);
-				return true;
+			else {
+				// Use optionals defaults.
+				args[i] = defaults[i - optionalOffset - 1];
 			}
 		}
 		
@@ -89,29 +107,61 @@ class CommandMethod {
 	 * @throws DevinException
 	 */
 	public static CommandMethod build(Commandable commandable, Method m) throws DevinException {
-		// Check if method is valid.
+		// Check if method is public.
 		if(m.getModifiers() != Modifier.PUBLIC) throw new DevinException("Method must be public.");
 		
+		// Get @Command
 		Command cmd = m.getAnnotation(Command.class);
 		if(cmd == null) throw new DevinException("Must have @Command annotation on method.");
 		
+		// Check if method is valid.
 		if(m.getReturnType() != Boolean.TYPE) throw new DevinException("Must have a boolean return type.");
 		if(m.getParameterCount() == 0) throw new DevinException("Must have at least one parameter.");
 		if(!CommandSender.class.isAssignableFrom(m.getParameterTypes()[0])) throw new DevinException("First parameter must be a subclass CommandSender.");
 		
+		// Start building USAGE message.
 		String usage = "/" + cmd.struct();
 		int unknownParamCount = 0;
 		
 		boolean expectedEnd = false;
+		int optionalOffset = -1;
+		List<Object> defaults = new ArrayList<Object>();
+		
+		// Loop through all parameters to create optionals and check for validity.
 		for(int i = 1; i < m.getParameters().length; i++) {
 			if(expectedEnd) throw new DevinException("Cannot have more parameters after an array or ArgumentStream.");
 			
-			Class<?> paramType = m.getParameters()[i].getType();
+			Parameter param = m.getParameters()[i];
+			
+			// Check if parameter type can be parsed.
+			Class<?> paramType = param.getType();
 			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("No parser extists for " + paramType.getCanonicalName() + ".");
 			if(paramType.isArray() || paramType == ArgumentStream.class) {
 				expectedEnd = true;
 			}
 			
+			// Build optional.
+			OptionalArg optionalArg = param.getAnnotation(OptionalArg.class);
+			String paramUsage = "<name>";
+			if(optionalArg == null) {
+				if(optionalOffset > -1) throw new DevinException("Cannot have a required parameter after and optional parameter.");
+			}
+			else {
+				if(optionalOffset == -1) {
+					optionalOffset = i - 1;
+				}
+				
+				if(optionalArg.value().length == 0) {
+					defaults.add(null);
+				}
+				else {
+					defaults.add(ObjectParsing.parseObject(paramType, new ArgumentStream(optionalArg.value())));
+				}
+				
+				paramUsage = "[name]";
+			}
+			
+			// Add parameter name to usage statement.
 			String paramName;
 			if(i - 1 < cmd.params().length) {
 				paramName = cmd.params()[i - 1];
@@ -120,8 +170,7 @@ class CommandMethod {
 				paramName = "arg" + unknownParamCount;
 				unknownParamCount++;
 			}
-			
-			usage += " <" + paramName + ">";
+			usage += " " + paramUsage.replace("name", paramName);
 		}
 		
 		if(unknownParamCount > 0) {
@@ -133,6 +182,12 @@ class CommandMethod {
 		cm.commandable = commandable;
 		cm.method = m;
 		cm.usage = usage;
+		cm.endless = expectedEnd;
+		
+		if(optionalOffset > -1) {
+			cm.optionalOffset = optionalOffset;
+			cm.defaults = defaults.toArray(new Object[0]);
+		}
 		
 		return cm;
 	}

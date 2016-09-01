@@ -133,7 +133,7 @@ class CommandMethod {
 				msgSender.error(sender, usage);
 			}
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new DevinException("Problem invoking method.", e);
+			throw new DevinException("Problem invoking method: " + e.getMessage(), e);
 		}
 	}
 	

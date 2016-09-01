@@ -1,7 +1,7 @@
 package io.xchris6041x.devin.commands;
 
 /**
- * Takes a an array of strings and treats it as a stream.
+ * Takes an array of strings and treats it as a stream.
  * @author Christopher Bishop
  */
 public class ArgumentStream {

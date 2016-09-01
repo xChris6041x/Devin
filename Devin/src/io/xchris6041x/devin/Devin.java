@@ -111,7 +111,7 @@ public class Devin extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		CommandRegistrar cr = new CommandRegistrar(this, msgSender);
+		CommandRegistrar cr = new CommandRegistrar(this, new MessageSender(ChatColor.YELLOW + "", ChatColor.RED + "[Mail Error] "));
 		cr.registerCommands(new MailCommands());
 	}
 	

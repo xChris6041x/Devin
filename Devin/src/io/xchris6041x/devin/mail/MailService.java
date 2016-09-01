@@ -1,31 +1,26 @@
 package io.xchris6041x.devin.mail;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-public class MailService implements ConfigurationSerializable {
+public class MailService {
 
+	private File file;
 	private List<Mailbox> mailboxes;
 	
-	public MailService() {
+	public MailService(File file) {
+		this.file = file;
 		mailboxes = new ArrayList<Mailbox>();
 	}
-	@SuppressWarnings("unchecked")
-	public MailService(Map<String, Object> map) {
-		this();
-		for(Entry<String, Object> entry : map.entrySet()) {
-			mailboxes.add(new Mailbox(UUID.fromString(entry.getKey()), (List<Mail>) entry.getValue()));
-		}
-	}
-
 	
 	private Mailbox findMailbox(UUID owner) {
 		for(Mailbox mailbox : mailboxes) {
@@ -50,6 +45,12 @@ public class MailService implements ConfigurationSerializable {
 		
 		Mail mail = new Mail(sender, receiver, subject, message);
 		mailbox.getMail().add(mail); 
+		
+		try {
+			save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -64,7 +65,13 @@ public class MailService implements ConfigurationSerializable {
 		Mailbox mailbox = findMailbox(receiver.getUniqueId());
 		
 		Mail mail = new AttachableMail(sender, receiver, subject, message, attachment);
-		mailbox.getMail().add(mail); 
+		mailbox.getMail().add(mail);
+		
+		try {
+			save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -77,6 +84,11 @@ public class MailService implements ConfigurationSerializable {
 		Mail mail = getAllMail(player)[index];
 		mail.setRead(true);
 		
+		try {
+			save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return mail;
 	}
 	
@@ -87,6 +99,12 @@ public class MailService implements ConfigurationSerializable {
 	 */
 	public void removeMail(Player player, int index) {
 		findMailbox(player.getUniqueId()).getMail().remove(index);
+		
+		try {
+			save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -98,14 +116,35 @@ public class MailService implements ConfigurationSerializable {
 		return mailbox.getMail().toArray(new Mail[0]);
 	}
 	
-	@Override
-	public Map<String, Object> serialize() {
-		Map<String, Object> map = new HashMap<String, Object>();
+	/**
+	 * Saves the MailService to the file.
+	 * @throws IOException
+	 */
+	public void save() throws IOException {
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		for(Mailbox mailbox : mailboxes) {
-			map.put(mailbox.getOwnerId().toString(), mailbox.getMail());
+			config.set(mailbox.getOwnerId().toString(), mailbox.getMail());
 		}
 		
-		return map;
+		config.save(file);
+	}
+	
+	/**
+	 * Load the MailService from a file.
+	 * @param file
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static MailService load(File file) {
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		MailService service = new MailService(file);
+		
+		Set<String> uuids = config.getKeys(false);
+		for(String uuid : uuids) {
+			service.mailboxes.add(new Mailbox(UUID.fromString(uuid), (List<Mail>) config.get(uuid)));
+		}
+		
+		return service;
 	}
 	
 }

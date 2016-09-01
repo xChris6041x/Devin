@@ -30,8 +30,9 @@ public class Devin extends JavaPlugin {
 
 	private static Devin instance;
 	
-	private final MailService mailService = new MailService();
 	private final MessageSender msgSender = new MessageSender(ChatColor.GREEN + "", ChatColor.RED + "[DEVIN ERROR] ");
+	
+	private MailService mailService;
 	private PlayerDataManager dataManager;
 	
 	@Override
@@ -43,8 +44,6 @@ public class Devin extends JavaPlugin {
 		ConfigurationSerialization.registerClass(PlayerData.class);
 		ConfigurationSerialization.registerClass(Mail.class);
 		ConfigurationSerialization.registerClass(AttachableMail.class);
-		
-		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
 		
 		//
 		// Setup ObjectParsing
@@ -111,6 +110,9 @@ public class Devin extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
+		mailService = MailService.load(new File(getDataFolder(), "mail.yml"));
+		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
+		
 		CommandRegistrar cr = new CommandRegistrar(this, new MessageSender(ChatColor.YELLOW + "", ChatColor.RED + "[Mail Error] "));
 		cr.registerCommands(new MailCommands());
 	}

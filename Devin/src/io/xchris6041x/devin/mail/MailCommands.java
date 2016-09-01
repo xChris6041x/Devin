@@ -25,16 +25,17 @@ public class MailCommands implements Commandable {
 	public CommandResult listMail(Player p, @OptionalArg("1") int pageNumber) {
 		Mail[] mailbox = Devin.getMailService().getAllMail(p);
 		
-		msgSender.info(p, p.getName() + "'s Mailbox (" + mailbox.length + ")");
-		msgSender.info(p, "-----------------------------");
-		
 		List<String> mailboxString = new ArrayList<String>();
+		int unread = 0;
+		
 		for(int i = 0; i < mailbox.length; i++) {
-			mailboxString.add(i + " | " + mailbox[i].toString());
+			mailboxString.add((mailbox[i].wasRead() ? ChatColor.WHITE : ChatColor.GOLD) + "" + i + " | " + mailbox[i].toString());
+			if(!mailbox[i].wasRead()) unread++;
 		}
 		
-		String[] page = CommandUtils.pagination(mailboxString, 5, pageNumber - 1);
-		msgSender.info(p, page);
+		
+		msgSender.info(p, p.getName() + "'s Mailbox (" + unread + " unread)", "--------------------------------");
+		msgSender.send(p, CommandUtils.pagination(mailboxString, 5, pageNumber - 1));
 		
 		return CommandResult.success();
 	}
@@ -42,7 +43,7 @@ public class MailCommands implements Commandable {
 	@Command(struct = "mail open", params = "index")
 	public CommandResult openMail(Player p, int index) {
 		try {
-			Mail mail = Devin.getMailService().getAllMail(p)[index];
+			Mail mail = Devin.getMailService().openMail(p, index);
 			msgSender.send(p, ChatColor.YELLOW + mail.toString(), "-----------------------------", mail.getMessage());
 			
 			return CommandResult.success();

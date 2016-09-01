@@ -68,6 +68,19 @@ public class MailService implements ConfigurationSerializable {
 	}
 	
 	/**
+	 * Open mail.
+	 * @param player - The owner of the mail.
+	 * @param index - The index of the mail in the mailbox.
+	 * @return - The mail that was opened.
+	 */
+	public Mail openMail(Player player, int index) {
+		Mail mail = getAllMail(player)[index];
+		mail.setRead(true);
+		
+		return mail;
+	}
+	
+	/**
 	 * @param player
 	 * @return all the mail in a player's mailbox.
 	 */

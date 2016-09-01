@@ -9,12 +9,16 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class Mail implements ConfigurationSerializable {
 
 	private UUID sender;
 	private UUID receiver;
 	private String subject;
 	private String message;
+	
+	private boolean read = false;
 	
 	public Mail(Player sender, OfflinePlayer receiver, String subject, String message) {
 		this.sender = sender.getUniqueId();
@@ -27,6 +31,7 @@ public class Mail implements ConfigurationSerializable {
 		receiver = UUID.fromString((String) map.get("receiver"));
 		subject = (String) map.get("subject");
 		message = (String) map.get("message");
+		read = (boolean) map.get("read");
 	}
 	
 	/**
@@ -69,10 +74,19 @@ public class Mail implements ConfigurationSerializable {
 		return message;
 	}
 	
+	/**
+	 * @return whether this mail was read or not.
+	 */
+	public boolean wasRead() {
+		return read;
+	}
+	public void setRead(boolean read) {
+		this.read = read;
+	}
 	
 	@Override
 	public String toString() {
-		return subject + " - " + getSender().getName();
+		return  subject + " - " + getSender().getName();
 	}
 	
 	@Override
@@ -82,6 +96,7 @@ public class Mail implements ConfigurationSerializable {
 		map.put("receiver", receiver.toString());
 		map.put("subject", subject);
 		map.put("message", message);
+		map.put("read", read);
 		
 		return map;
 	}

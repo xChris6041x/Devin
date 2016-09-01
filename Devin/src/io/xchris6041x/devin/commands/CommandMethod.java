@@ -42,10 +42,10 @@ class CommandMethod {
 	}
 	
 	public int minSize() {
-		return optionalOffset;
+		return (optionalOffset < 0) ? method.getParameterCount() - 1: optionalOffset;
 	}
 	public int maxSize() {
-		return (endless) ? Integer.MAX_VALUE : method.getParameterCount();
+		return (endless) ? Integer.MAX_VALUE : method.getParameterCount() - 1;
 	}
 	
 	/**
@@ -59,17 +59,20 @@ class CommandMethod {
 		// Check whether this is being validly invoked.
 		if(!method.getParameterTypes()[0].isInstance(sender)){
 			msgSender.error(sender, "Only " + method.getParameterTypes()[0].getSimpleName() + " can use this command.");
+			return;
 		}
 		
 		// Check permissions
 		for(String perm : permissions) {
 			if(!sender.hasPermission(perm)) {
 				msgSender.error(sender, "You do not permission to use this command.");
+				return;
 			}
 		}
 		
 		if(rawArgs.length < minSize()){
 			msgSender.error(sender, usage);
+			return;
 		}
 		
 		// Build argument array.
@@ -91,6 +94,7 @@ class CommandMethod {
 						msgSender.error(sender, e.getMessage());
 					}
 					msgSender.error(sender, usage);
+					return;
 				}
 			}
 			else {

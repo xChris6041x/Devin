@@ -26,9 +26,6 @@ public class CommandResult {
 	public CommandResult(Status status) {
 		this(status, null);
 	}
-	public CommandResult() {
-		this(Status.SUCCESS);
-	}
 	
 	public Status getStatus() {
 		return status;

@@ -40,7 +40,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 			DevinInject inject = field.getAnnotation(DevinInject.class);
 			if(inject == null) continue;
 			
-			System.out.println("\tAttempting to auto-inject " + AnsiColor.CYAN + field.getName() + AnsiColor.RESET + ":");
+			System.out.println("\tAttempting to auto-inject " + AnsiColor.DARK_CYAN + field.getName() + AnsiColor.RESET + ":");
 			
 			if(field.getType().isAssignableFrom(getMessageSender().getClass())) {
 				try {
@@ -69,18 +69,18 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		for(Method method : commandable.getClass().getMethods()) {
 			Command cmd = method.getAnnotation(Command.class);
 			if(cmd == null) continue;
-			System.out.print("\tAttempting to register " + AnsiColor.CYAN + method.getName() + AnsiColor.RESET + ":");
+			System.out.print("\tAttempting to register " + AnsiColor.DARK_CYAN + method.getName() + AnsiColor.RESET + ":");
 			
 			// Register permissions
 			if(registerPermissions) {
 				for(String perm : cmd.perms()) {
 					Bukkit.getPluginManager().addPermission(new Permission(perm));
-					System.out.println("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.WHITE);
+					System.out.println("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.RESET);
 				}
 			}
 			
 			try {
-				CommandMethod commandMethod = CommandMethod.build(commandable, method, getMessageSender());
+				CommandMethod commandMethod = CommandMethod.build(commandable, method);
 				Command command = commandMethod.getCommandAnnotation();
 				String[] struct = command.struct().split(" ");
 				

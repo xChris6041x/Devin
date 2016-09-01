@@ -18,7 +18,6 @@ import io.xchris6041x.devin.commands.CommandResult.Status;
 class CommandMethod {
 
 	private Commandable commandable;
-	private MessageSender msgSender;
 	private Method method;
 	
 	private String[] permissions;
@@ -141,7 +140,7 @@ class CommandMethod {
 	 * @return
 	 * @throws DevinException
 	 */
-	public static CommandMethod build(Commandable commandable, Method m, MessageSender msgSender) throws DevinException {
+	public static CommandMethod build(Commandable commandable, Method m) throws DevinException {
 		// Check if method is public.
 		if(m.getModifiers() != Modifier.PUBLIC) throw new DevinException("Method must be public.");
 		
@@ -216,7 +215,6 @@ class CommandMethod {
 		CommandMethod cm = new CommandMethod();
 		cm.commandable = commandable;
 		cm.method = m;
-		cm.msgSender = msgSender;
 		
 		cm.permissions = Arrays.copyOf(cmd.perms(), cmd.perms().length);
 		cm.usage = usage;

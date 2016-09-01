@@ -53,6 +53,17 @@ public class MailCommands implements Commandable {
 		}
 	}
 	
+	@Command(struct = "mail remove", params = "index")
+	public CommandResult removeMail(Player p, int index) {
+		try {
+			Devin.getMailService().removeMail(p, index);
+			return CommandResult.success("Successfully removed mail.");
+		}
+		catch(IndexOutOfBoundsException e) {
+			return CommandResult.failed("Invalid index.");
+		}
+	}
+	
 	@Command(struct = "mail send", params = { "receiver", "subject", "message" })
 	public CommandResult sendMail(Player p, Player receiver, String subject, ArgumentStream args) {
 		Devin.getMailService().sendMessage(p, receiver, subject, args.implode());

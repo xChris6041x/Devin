@@ -81,6 +81,15 @@ public class MailService implements ConfigurationSerializable {
 	}
 	
 	/**
+	 * Remove mail at a specific index from a players mailbox.
+	 * @param player
+	 * @param index
+	 */
+	public void removeMail(Player player, int index) {
+		findMailbox(player.getUniqueId()).getMail().remove(index);
+	}
+	
+	/**
 	 * @param player
 	 * @return all the mail in a player's mailbox.
 	 */

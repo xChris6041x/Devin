@@ -25,6 +25,13 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		this.plugin = plugin;
 	}
 	
+	/**
+	 * Register all command methods so they can be ran when the command is used.
+	 * Note: The commands must be in the plugin.yml.
+	 * 
+	 * @param commandable - The class to get all the command methods from.
+	 * @param registerPermissions - Whether to register permissions on the commands. 
+	 */
 	public void registerCommands(Commandable commandable, boolean registerPermissions) {
 		System.out.println("Registering " + commandable.getClass().getCanonicalName() + ": ");
 		System.out.println("---------------------------------------------------------------");
@@ -100,6 +107,11 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		System.out.println(" ");
 	}
 	
+	/**
+	 * Register all command methods so they can be ran when the command is used. This does not register permissions.
+	 * Note: The commands must be in the plugin.yml.
+	 * @param commandable
+	 */
 	public void registerCommand(Commandable commandable) {
 		registerCommands(commandable, false);
 	}

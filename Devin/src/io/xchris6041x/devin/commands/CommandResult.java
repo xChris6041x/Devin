@@ -20,12 +20,6 @@ public class CommandResult {
 		this.message = message;
 		this.usePrefix = usePrefix;
 	}
-	public CommandResult(Status status, String message) {
-		this(status, message, true);
-	}
-	public CommandResult(Status status) {
-		this(status, null);
-	}
 	
 	public Status getStatus() {
 		return status;

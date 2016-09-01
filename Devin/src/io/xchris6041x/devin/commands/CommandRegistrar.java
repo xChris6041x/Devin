@@ -112,7 +112,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	 * Note: The commands must be in the plugin.yml.
 	 * @param commandable
 	 */
-	public void registerCommand(Commandable commandable) {
+	public void registerCommands(Commandable commandable) {
 		registerCommands(commandable, false);
 	}
 	

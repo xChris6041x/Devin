@@ -9,8 +9,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
-import net.md_5.bungee.api.ChatColor;
-
 public class Mail implements ConfigurationSerializable {
 
 	private UUID sender;

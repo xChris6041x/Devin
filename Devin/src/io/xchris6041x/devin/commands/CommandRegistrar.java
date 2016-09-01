@@ -80,7 +80,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 			}
 			
 			try {
-				CommandMethod commandMethod = CommandMethod.build(commandable, method);
+				CommandMethod commandMethod = CommandMethod.build(commandable, method, getMessageSender());
 				Command command = commandMethod.getCommandAnnotation();
 				String[] struct = command.struct().split(" ");
 				

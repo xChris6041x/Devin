@@ -13,10 +13,12 @@ import org.bukkit.command.CommandSender;
 import io.xchris6041x.devin.AnsiColor;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
+import io.xchris6041x.devin.commands.CommandResult.Status;
 
 class CommandMethod {
 
 	private Commandable commandable;
+	private MessageSender msgSender;
 	private Method method;
 	
 	private String[] permissions;
@@ -54,24 +56,21 @@ class CommandMethod {
 	 * @return whatever the method returns.
 	 * @throws DevinException
 	 */
-	public boolean invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
+	public void invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
 		// Check whether this is being validly invoked.
 		if(!method.getParameterTypes()[0].isInstance(sender)){
 			msgSender.error(sender, "Only " + method.getParameterTypes()[0].getSimpleName() + " can use this command.");
-			return true;
 		}
 		
 		// Check permissions
 		for(String perm : permissions) {
 			if(!sender.hasPermission(perm)) {
 				msgSender.error(sender, "You do not permission to use this command.");
-				return true;
 			}
 		}
 		
 		if(rawArgs.length < minSize()){
 			msgSender.error(sender, usage);
-			return true;
 		}
 		
 		// Build argument array.
@@ -93,7 +92,6 @@ class CommandMethod {
 						msgSender.error(sender, e.getMessage());
 					}
 					msgSender.error(sender, usage);
-					return true;
 				}
 			}
 			else {
@@ -104,7 +102,33 @@ class CommandMethod {
 		
 		
 		try {
-			return (boolean) method.invoke(commandable, args);
+			// Execute command.
+			CommandResult result = (CommandResult) method.invoke(commandable, args);
+			
+			// Process result.
+			if(result.getMessage() != null) {
+				if(result.usePrefix()) {
+					switch (result.getStatus()) {
+					case SUCCESS:
+						msgSender.info(sender, result.getMessage());
+						break;
+						
+					case FAILED:
+					case USAGE:
+						msgSender.error(sender, result.getMessage());
+						break;
+						
+					default:
+						msgSender.send(sender, result.getMessage());
+					}
+				}
+				else {
+					msgSender.send(sender, result.getMessage());
+				}
+			}
+			if(result.getStatus() == Status.USAGE) {
+				msgSender.error(sender, usage);
+			}
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new DevinException("Problem invoking method.", e);
 		}
@@ -117,18 +141,18 @@ class CommandMethod {
 	 * @return
 	 * @throws DevinException
 	 */
-	public static CommandMethod build(Commandable commandable, Method m) throws DevinException {
+	public static CommandMethod build(Commandable commandable, Method m, MessageSender msgSender) throws DevinException {
 		// Check if method is public.
 		if(m.getModifiers() != Modifier.PUBLIC) throw new DevinException("Method must be public.");
 		
 		// Get @Command
 		Command cmd = m.getAnnotation(Command.class);
-		if(cmd == null) throw new DevinException("Must have @Command annotation on method.");
+		if(cmd == null) throw new DevinException("Missing @Command annotation.");
 		
 		// Check if method is valid.
-		if(m.getReturnType() != Boolean.TYPE) throw new DevinException("Must have a boolean return type.");
-		if(m.getParameterCount() == 0) throw new DevinException("Must have at least one parameter.");
-		if(!CommandSender.class.isAssignableFrom(m.getParameterTypes()[0])) throw new DevinException("First parameter must be a subclass CommandSender.");
+		if(m.getReturnType() != CommandResult.class) throw new DevinException("Must have CommandResult as the return type.");
+		if(m.getParameterCount() == 0) throw new DevinException("Must have one parameter.");
+		if(!CommandSender.class.isAssignableFrom(m.getParameterTypes()[0])) throw new DevinException("First parameter must be a CommandSender or a subclass of it.");
 		
 		// Start building USAGE message.
 		String usage = "/" + cmd.struct();
@@ -192,6 +216,8 @@ class CommandMethod {
 		CommandMethod cm = new CommandMethod();
 		cm.commandable = commandable;
 		cm.method = m;
+		cm.msgSender = msgSender;
+		
 		cm.permissions = Arrays.copyOf(cmd.perms(), cmd.perms().length);
 		cm.usage = usage;
 		cm.endless = expectedEnd;

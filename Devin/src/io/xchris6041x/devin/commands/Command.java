@@ -19,6 +19,11 @@ public @interface Command {
 	public String struct();
 	
 	/**
+	 * @return The alises for the command (for the last part of the structure).
+	 */
+	public String[] aliases() default { };
+	
+	/**
 	 * @return All the permissions needed to run this command.
 	 */
 	public String[] perms() default { };

@@ -10,8 +10,8 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 	
 	private CommandMethod method;
 	
-	public CommandHandler(MessageSender msgSender){
-		super(msgSender);
+	public CommandHandler(String name, MessageSender msgSender){
+		super(name, msgSender);
 	}
 	
 	public void setMethod(CommandMethod method) {

@@ -1,10 +1,7 @@
 package io.xchris6041x.devin.commands;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import io.xchris6041x.devin.MessageSender;
 
@@ -13,18 +10,52 @@ import io.xchris6041x.devin.MessageSender;
  * @author Christopher Bishop
  */
 class CommandHandlerContainer {
-
-	private MessageSender msgSender;
-	private Map<List<String>, CommandHandler> handlers;
 	
-	public CommandHandlerContainer(MessageSender msgSender) {
+	private String name;
+	private String[] aliases = new String[0];
+	
+	private MessageSender msgSender;
+	
+	private CommandHandlerContainer parent = null;
+	private List<CommandHandlerContainer> children = new ArrayList<CommandHandlerContainer>();
+	
+	public CommandHandlerContainer(String name, MessageSender msgSender) {
+		this.name = name;
 		this.msgSender = msgSender;
-		handlers = new HashMap<List<String>, CommandHandler>();
 	}
 	
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String[] getAliases() {
+		return aliases;
+	}
+	public void setAliases(String[] aliases) {
+		this.aliases = aliases;
+	}
+	
 	public MessageSender getMessageSender() {
 		return msgSender;
+	}
+	
+	
+	public CommandHandlerContainer getParent() {
+		return parent;
+	}
+	public void setParent(CommandHandlerContainer parent) {
+		if(this.parent != null) {
+			this.parent.children.remove(this);
+		}
+		if(parent != null) {
+			parent.children.add(this);
+		}
+		
+		this.parent = parent;
 	}
 	
 	
@@ -33,42 +64,15 @@ class CommandHandlerContainer {
 	 * @param name - The name of the handler.
 	 * @param handler - The handler.
 	 */
-	public void addHandler(String name, CommandHandler handler) {
-		handlers.put(Arrays.asList(name), handler);
+	public void addHandler(CommandHandler handler) {
+		handler.setParent(this);
 	}
 	
 	/**
-	 * Add a handler to the container with aliases.
-	 * @param name - The name of the handler.
-	 * @param handler - The handler.
-	 */
-	public void addHandler(String name, String[] aliases, CommandHandler handler) {
-		List<String> ids = Arrays.asList(aliases);
-		ids.add(name);
-		
-		handlers.put(ids, handler);
-	}
-	
-	/**
-	 * Add alises to a CommandHandler.
+	 * Get child with the name or aliase of {@code name}
 	 * @param name
-	 * @param aliases
+	 * @return
 	 */
-	public void addAliases(String name, String[] aliases) {
-		for(Entry<List<String>, CommandHandler> handler : handlers.entrySet()) {
-			for(String str : handler.getKey()) {
-				if(name.equalsIgnoreCase(str)) {
-					handler.getKey().addAll(Arrays.asList(aliases));
-					return;
-				}
-			}
-		}
-		
-		CommandHandler handler = new CommandHandler(msgSender);
-		addHandler(name, aliases, handler);
-	}
-	
-	
 	public CommandHandler getHandler(String name) {
 		return getHandler(name, false);
 	}
@@ -78,17 +82,22 @@ class CommandHandlerContainer {
 	 * @return a CommandHandler with the same name or alias as {@code name}
 	 */
 	public CommandHandler getHandler(String name, boolean create) {
-		for(Entry<List<String>, CommandHandler> handler : handlers.entrySet()) {
-			for(String str : handler.getKey()) {
-				if(name.equalsIgnoreCase(str)) {
-					return handler.getValue();
+		for(CommandHandlerContainer handler : children) {
+			if(!(handler instanceof CommandHandler)) continue;
+			if(name.equals(handler.getName())) {
+				return (CommandHandler) handler;
+			}
+			
+			for(String str : handler.getAliases()) {
+				if(name.equals(str)) {
+					return (CommandHandler) handler;
 				}
 			}
 		}
 		
 		if(create) {
-			CommandHandler handler = new CommandHandler(msgSender);
-			addHandler(name, handler);
+			CommandHandler handler = new CommandHandler(name, msgSender);
+			addHandler(handler);
 			
 			return handler;
 		}

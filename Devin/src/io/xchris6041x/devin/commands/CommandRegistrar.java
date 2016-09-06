@@ -2,6 +2,7 @@ package io.xchris6041x.devin.commands;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -21,7 +22,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	private JavaPlugin plugin;
 	
 	public CommandRegistrar(JavaPlugin plugin, MessageSender msgSender){
-		super(msgSender);
+		super(null, msgSender);
 		this.plugin = plugin;
 	}
 	
@@ -95,6 +96,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				}
 				
 				CommandHandler handler = getHandler(struct);
+				handler.setAliases(Arrays.copyOf(command.aliases(), command.aliases().length));
 				handler.setMethod(commandMethod);
 				
 				System.out.println(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);

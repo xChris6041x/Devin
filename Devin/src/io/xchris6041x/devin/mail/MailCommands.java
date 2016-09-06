@@ -53,7 +53,7 @@ public class MailCommands implements Commandable {
 		}
 	}
 	
-	@Command(struct = "mail remove", params = "index")
+	@Command(struct = "mail remove", params = "index", aliases = { "rem" })
 	public CommandResult removeMail(Player p, int index) {
 		try {
 			Devin.getMailService().removeMail(p, index);

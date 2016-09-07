@@ -1,6 +1,5 @@
 package io.xchris6041x.devin;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.commands.ArgumentStream;
-import io.xchris6041x.devin.commands.CommandRegistrar;
 import io.xchris6041x.devin.commands.ObjectParsing;
-import io.xchris6041x.devin.mail.AttachableMail;
-import io.xchris6041x.devin.mail.Mail;
-import io.xchris6041x.devin.mail.MailCommands;
-import io.xchris6041x.devin.mail.MailService;
 import io.xchris6041x.devin.playerdata.PlayerData;
 import io.xchris6041x.devin.playerdata.PlayerDataManager;
 
@@ -32,7 +26,6 @@ public class Devin extends JavaPlugin {
 	
 	private final MessageSender msgSender = new MessageSender(ChatColor.GREEN + "", ChatColor.RED + "[DEVIN ERROR] ");
 	
-	private MailService mailService;
 	private PlayerDataManager dataManager;
 	
 	@Override
@@ -42,8 +35,6 @@ public class Devin extends JavaPlugin {
 		
 		// Setup YAML and PlayerData.
 		ConfigurationSerialization.registerClass(PlayerData.class);
-		ConfigurationSerialization.registerClass(Mail.class);
-		ConfigurationSerialization.registerClass(AttachableMail.class);
 		
 		//
 		// Setup ObjectParsing
@@ -109,15 +100,6 @@ public class Devin extends JavaPlugin {
 	}
 	
 	@Override
-	public void onEnable() {
-		mailService = MailService.load(new File(getDataFolder(), "mail.yml"));
-		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
-		
-		CommandRegistrar cr = new CommandRegistrar(this, new MessageSender(ChatColor.YELLOW + "", ChatColor.RED + "[Mail Error] "));
-		cr.registerCommands(new MailCommands());
-	}
-	
-	@Override
 	public void onDisable() {
 		try {
 			dataManager.save();
@@ -129,13 +111,6 @@ public class Devin extends JavaPlugin {
 	
 	public static Devin getPlugin() {
 		return instance;
-	}
-	
-	/**
-	 * @return the default mail service in Devin.
-	 */
-	public static MailService getMailService() {
-		return instance.mailService;
 	}
 	
 	/**

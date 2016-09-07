@@ -35,32 +35,14 @@ public class MessageSender {
 	
 	
 	/**
-	 * Send message to the command sender.
-	 * @param sender - The recipient of the message.
-	 * @param message - The message to send.
-	 */
-	public void send(CommandSender sender, String message) {
-		sender.sendMessage(message);
-	}
-	
-	/**
 	 * Send messages to the command sender.
 	 * @param sender - The recipient of the message.
 	 * @param messages - The messages to send.
 	 */
 	public void send(CommandSender sender, String... messages) {
 		for(String message : messages) {
-			send(sender, message);
+			sender.sendMessage(message);
 		}
-	}
-	
-	/**
-	 * Send info message to command sender.
-	 * @param sender - The recipient of the message.
-	 * @param message - The message to send.
-	 */
-	public void info(CommandSender sender, String message) {
-		send(sender, infoPrefix + message);
 	}
 	
 	/**
@@ -70,17 +52,8 @@ public class MessageSender {
 	 */
 	public void info(CommandSender sender, String... messages) {
 		for(String message : messages) {
-			info(sender, message);
+			send(sender, infoPrefix + message);
 		}
-	}
-	
-	/**
-	 * Send error message to commands sender.
-	 * @param sender - The recipient of the message.
-	 * @param message - The message to send.
-	 */
-	public void error(CommandSender sender, String message) {
-		send(sender, errorPrefix + message);
 	}
 	
 	/**
@@ -90,12 +63,12 @@ public class MessageSender {
 	 */
 	public void error(CommandSender sender, String... messages) {
 		for(String message : messages) {
-			error(sender, message);
+			send(sender, errorPrefix + message);
 		}
 	}
 	
 	/**
-	 * Broadcast a message.
+	 * Broadcast messages to CommandSenders with the permission.
 	 * @param message
 	 * @param permission
 	 */

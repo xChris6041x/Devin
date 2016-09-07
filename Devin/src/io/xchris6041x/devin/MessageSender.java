@@ -9,24 +9,49 @@ import org.bukkit.command.CommandSender;
  */
 public class MessageSender {
 
-	private String headerInfo;
-	private String headerError;
+	private String infoPrefix;
+	private String errorPrefix;
 	
 	public MessageSender() {
 		this("", "");
 	}
-	public MessageSender(String headerInfo, String headerError) {
-		this.headerInfo = headerInfo;
-		this.headerError = headerError;
+	public MessageSender(String infoPrefix, String errorPrefix) {
+		this.infoPrefix = (infoPrefix == null) ? "" : infoPrefix;
+		this.errorPrefix = (errorPrefix == null) ? this.infoPrefix : errorPrefix;
 	}
 	
 	/**
-	 * Send message to the command sender.
-	 * @param sender
-	 * @param message
+	 * @return the info prefix for this MessageSender.
 	 */
-	public void verbose(CommandSender sender, String message) {
+	public String getInfoPrefix() {
+		return infoPrefix;
+	}
+	/**
+	 * @return the error prefix for this MessageSender.
+	 */
+	public String getErrorPrefix() {
+		return errorPrefix;
+	}
+	
+	
+	/**
+	 * Send message to the command sender.
+	 * @param sender - The recipient of the message.
+	 * @param message - The message to send.
+	 */
+	public void send(CommandSender sender, String message) {
 		sender.sendMessage(message);
+	}
+	
+	/**
+	 * Send messages to the command sender.
+	 * @param sender - The recipient of the message.
+	 * @param messages - The messages to send.
+	 */
+	public void send(CommandSender sender, String... messages) {
+		for(String message : messages) {
+			send(sender, message);
+		}
 	}
 	
 	/**
@@ -35,7 +60,18 @@ public class MessageSender {
 	 * @param message - The message to send.
 	 */
 	public void info(CommandSender sender, String message) {
-		sender.sendMessage(headerInfo + message);
+		send(sender, infoPrefix + message);
+	}
+	
+	/**
+	 * Send info messages to commands sender.
+	 * @param sender - The recipient of the message.
+	 * @param messages - The messages to send.
+	 */
+	public void info(CommandSender sender, String... messages) {
+		for(String message : messages) {
+			info(sender, message);
+		}
 	}
 	
 	/**
@@ -44,30 +80,66 @@ public class MessageSender {
 	 * @param message - The message to send.
 	 */
 	public void error(CommandSender sender, String message) {
-		sender.sendMessage(headerError + message);
+		send(sender, errorPrefix + message);
 	}
 	
 	/**
-	 * Send message to the console.
+	 * Send error messages to commands sender.
+	 * @param sender - The recipient of the message.
+	 * @param messages - The messages to send.
+	 */
+	public void error(CommandSender sender, String... messages) {
+		for(String message : messages) {
+			error(sender, message);
+		}
+	}
+	
+	/**
+	 * Broadcast a message.
+	 * @param message
+	 * @param permission
+	 */
+	public void broadcast(String message, String permission) {
+		Bukkit.broadcast(message, permission);
+	}
+	/**
+	 * Broadcast a message.
 	 * @param message
 	 */
-	public void verbose(String message) {
-		verbose(Bukkit.getConsoleSender(), message);
+	public void broadcast(String message) {
+		Bukkit.broadcastMessage(message);
 	}
 	
 	/**
-	 * Send info message to the console.
-	 * @param message - The message to send.
+	 * Broadcast a info message.
+	 * @param message
+	 * @param permission
 	 */
-	public void info(String message) {
-		info(Bukkit.getConsoleSender(), message);
+	public void info(String message, String permission) {
+		broadcast(infoPrefix + message, permission);
 	}
 	/**
-	 * Send error to the console.
-	 * @param message - The message to send.
+	 * Broadcast a info message.
+	 * @param message
+	 */
+	public void info(String message) {
+		broadcast(infoPrefix + message);
+	}
+	
+	/**
+	 * Broadcast an error message.
+	 * @param message
+	 * @param permission
+	 */
+	public void error(String message, String permission) {
+		broadcast(errorPrefix + message, permission);
+	}
+	/**
+	 * Broadcast error message.
+	 * @param message
 	 */
 	public void error(String message) {
-		error(Bukkit.getConsoleSender(), message);
+		broadcast(errorPrefix + message);
 	}
 	
 }

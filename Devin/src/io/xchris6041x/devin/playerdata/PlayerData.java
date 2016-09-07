@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Custom data that is linked to a player.
@@ -40,7 +40,7 @@ public class PlayerData implements ConfigurationSerializable {
 	 * @param key
 	 * @return the element with the same type as T and the same key.
 	 */
-	public <T> T get(JavaPlugin plugin, String key) {
+	public <T> T get(Plugin plugin, String key) {
 		try {
 			String fullKey = toFullKey(plugin, key);
 			T value = getFromMap(fullKey, temperary);
@@ -69,7 +69,7 @@ public class PlayerData implements ConfigurationSerializable {
 	 * @param key
 	 * @param value
 	 */
-	public void set(JavaPlugin plugin, String key, Object value) {
+	public void set(Plugin plugin, String key, Object value) {
 		String fullKey = toFullKey(plugin, key);
 		removeFromMap(fullKey, persistant);
 		for(Entry<String, Object> entry : temperary.entrySet()) {
@@ -87,7 +87,7 @@ public class PlayerData implements ConfigurationSerializable {
 	 * @param key
 	 * @param value
 	 */
-	public void persist(JavaPlugin plugin, String key, Object value) {
+	public void persist(Plugin plugin, String key, Object value) {
 		String fullKey = toFullKey(plugin, key);
 		removeFromMap(fullKey, temperary);
 		persistant.put(fullKey, value);
@@ -97,7 +97,7 @@ public class PlayerData implements ConfigurationSerializable {
 	 * Remove an element with the same key from either temperary or persistant.
 	 * @param key
 	 */
-	public void remove(JavaPlugin plugin, String key) {
+	public void remove(Plugin plugin, String key) {
 		String fullKey = toFullKey(plugin, key);
 		removeFromMap(fullKey, temperary);
 		removeFromMap(fullKey, persistant);
@@ -111,7 +111,7 @@ public class PlayerData implements ConfigurationSerializable {
 		}
 	}
 	
-	private String toFullKey(JavaPlugin plugin, String key) {
+	private String toFullKey(Plugin plugin, String key) {
 		return (plugin.getClass().getPackage().getName() + key).toLowerCase();
 	}
 	

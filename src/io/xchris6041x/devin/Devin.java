@@ -43,6 +43,10 @@ public class Devin extends JavaPlugin {
 		
 		// Primitives
 		
+		// boolean
+		ObjectParsing.registerParser(Boolean.TYPE, (args) -> {
+			return Boolean.parseBoolean(args.next());
+		});
 		// byte
 		ObjectParsing.registerParser(Byte.TYPE, (args) -> {
 			return Byte.parseByte(args.next());

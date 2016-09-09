@@ -30,6 +30,10 @@ class CommandMethod {
 	private CommandMethod() {
 	}
 	
+	public String getUsage() {
+		return usage;
+	}
+	
 	public Commandable getCommandable() {
 		return commandable;
 	}

@@ -14,6 +14,9 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 		super(name, msgSender);
 	}
 	
+	public CommandMethod getMethod() {
+		return method;
+	}
 	public void setMethod(CommandMethod method) {
 		this.method = method;
 	}

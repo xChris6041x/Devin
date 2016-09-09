@@ -74,16 +74,6 @@ public class Devin extends JavaPlugin {
 		
 		// String
 		ObjectParsing.registerParser(String.class, (args) -> { return args.next(); });
-		// String[]
-		ObjectParsing.registerParser(String[].class, (args) -> {
-			List<String> strs = new ArrayList<String>();
-			while(args.hasNext()) {
-				strs.add(args.next());
-			}
-			
-			return strs;
-		});
-		
 		// ArgumentStream
 		ObjectParsing.registerParser(ArgumentStream.class, (args) -> {
 			return args;

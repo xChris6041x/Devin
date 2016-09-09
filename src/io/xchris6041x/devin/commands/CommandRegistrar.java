@@ -81,16 +81,6 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				Command command = commandMethod.getCommandAnnotation();
 				String[] struct = command.struct().split(" ");
 				
-				// Register with bukkit, the first part of the structure (if not registered).
-				PluginCommand pcmd = plugin.getCommand(struct[0]);
-				if(pcmd != null) {
-					pcmd.setExecutor(getHandler(struct[0], true));
-				}
-				else{
-					System.out.println(AnsiColor.RED + "\t\tFAILED: Missing PluginCommand" + AnsiColor.RESET);
-					continue;
-				}
-				
 				CommandHandler handler = getHandler(struct);
 				handler.setAliases(Arrays.copyOf(command.aliases(), command.aliases().length));
 				handler.setMethod(commandMethod);
@@ -100,9 +90,8 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				// Register permissions
 				for(String perm : cmd.perms()) {
 					Bukkit.getPluginManager().addPermission(new Permission(perm));
-					System.out.println("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.RESET);
+					System.out.println("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.RESET + " /w Spigot");
 				}
-				
 				// Register Command
 				if(handler.getParent() == this) {
 					registerCommand(handler);

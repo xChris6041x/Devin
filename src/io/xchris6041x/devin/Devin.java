@@ -1,5 +1,6 @@
 package io.xchris6041x.devin;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +98,11 @@ public class Devin extends JavaPlugin {
 				return p;
 			}
 		});
+	}
+	
+	@Override
+	public void onEnable() {
+		dataManager = PlayerDataManager.load(new File(getDataFolder(), "playerdata.yml"));
 	}
 	
 	@Override

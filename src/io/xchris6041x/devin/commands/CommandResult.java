@@ -73,13 +73,6 @@ public class CommandResult {
 	public static CommandResult failed(String message) {
 		return failed(message, true);
 	}
-	/**
-	 * BUild a FAILED CommandResult with no message.
-	 * @return the built CommandResult.
-	 */
-	public static CommandResult failed() {
-		return failed(null);
-	}
 	
 	/**
 	 * Build a USAGE CommandResult.

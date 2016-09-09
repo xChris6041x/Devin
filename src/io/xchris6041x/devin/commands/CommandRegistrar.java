@@ -74,7 +74,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		for(Method method : commandable.getClass().getMethods()) {
 			Command cmd = method.getAnnotation(Command.class);
 			if(cmd == null) continue;
-			System.out.print("\tAttempting to register " + AnsiColor.DARK_CYAN + method.getName() + AnsiColor.RESET + ":");
+			System.out.print("\tAttempting to register " + AnsiColor.CYAN + method.getName() + AnsiColor.RESET + ":");
 			
 			try {
 				CommandMethod commandMethod = CommandMethod.build(commandable, method);
@@ -84,8 +84,6 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				CommandHandler handler = getHandler(struct);
 				handler.setAliases(Arrays.copyOf(command.aliases(), command.aliases().length));
 				handler.setMethod(commandMethod);
-				
-				System.out.println(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 				
 				// Register permissions
 				for(String perm : cmd.perms()) {
@@ -97,6 +95,8 @@ public class CommandRegistrar extends CommandHandlerContainer {
 					registerCommand(handler);
 					System.out.println("\t\tRegistered command " + AnsiColor.CYAN + handler.getName() + AnsiColor.RESET + " /w Spigot");
 				}
+				
+				System.out.println(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 			}
 			catch(DevinException e) {
 				System.out.println(AnsiColor.RED + "\t\tFAILED: " + e.getMessage() + AnsiColor.RESET);

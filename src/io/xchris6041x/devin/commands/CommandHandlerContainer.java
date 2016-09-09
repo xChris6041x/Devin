@@ -58,16 +58,6 @@ class CommandHandlerContainer {
 		this.parent = parent;
 	}
 	
-	
-	/**
-	 * Add a handler to the container.
-	 * @param name - The name of the handler.
-	 * @param handler - The handler.
-	 */
-	public void addHandler(CommandHandler handler) {
-		handler.setParent(this);
-	}
-	
 	/**
 	 * Get child with the name or aliase of {@code name}
 	 * @param name
@@ -97,7 +87,7 @@ class CommandHandlerContainer {
 		
 		if(create) {
 			CommandHandler handler = new CommandHandler(name, msgSender);
-			addHandler(handler);
+			handler.setParent(this);
 			
 			return handler;
 		}

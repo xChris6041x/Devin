@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.permissions.Permission;

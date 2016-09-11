@@ -10,6 +10,20 @@ DEVIN is a framework for Spigot 1.10+ that gives developers the tools to build b
 | Data API for temporary and persistent data that can have owners such as players and worlds. _This is getting an overhaul from the PlayerData API._ | 20% |
 | Mailing API (which can be turned off) for sending mail with a powerful attachment API. | 90% |
 
+## Requirements
+- Server is running Java 8.
+- Server is running SpigotMC 1.10+
+
+## Start Developing
+If you want to start developing today, before I release the DEVIN.jar, you can download the source code and compile it.
+_WARNING: Things may be removed or renamed without deprecation. This will change once I upload the first jar file._
+
+If you are just learning DEVIN for the first time, read through the README and then head over to the [wiki](https://github.com/xChris6041x/Devin/wiki). The wiki will give you much more detailed information.
+
+### Setting Up
+1. Reference the JAR file in your project.
+2. You're all set!
+
 ## Command Framework
 Here is a quick overview of what the command framework can do with comments teaching you most the parts of the framework.
 ```JAVA

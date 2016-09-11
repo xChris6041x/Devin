@@ -17,16 +17,16 @@ public class PlayerData implements ConfigurationSerializable {
 	private UUID owner;
 	
 	private Map<String, Object> temperary = new HashMap<String, Object>();
-	private Map<String, Object> persistant;
+	private Map<String, Object> persistent;
 	
 	protected PlayerData(UUID owner) {
 		this.owner = owner;
-		persistant = new HashMap<String, Object>();
+		persistent = new HashMap<String, Object>();
 	}
 	@SuppressWarnings("unchecked")
 	public PlayerData(Map<String, Object> map) {
 		owner = UUID.fromString((String) map.get("owner"));
-		persistant = (Map<String, Object>) map.get("persist");
+		persistent = (Map<String, Object>) map.get("persist");
 	}
 	
 	/**
@@ -38,59 +38,48 @@ public class PlayerData implements ConfigurationSerializable {
 	
 	/**
 	 * @param key
+	 * @param def
+	 * @param persistent - Whether the data that is being retreived is persistent.
 	 * @return the element with the same type as T and the same key.
 	 */
-	public <T> T get(Plugin plugin, String key) {
+	public <T> T get(Plugin plugin, String key, T def, boolean persistent) {
 		try {
 			String fullKey = toFullKey(plugin, key);
-			T value = getFromMap(fullKey, temperary);
-			if(value != null) return value;
-			
-			value = getFromMap(fullKey, persistant);
-			return value;
+			return getFromMap(fullKey, (persistent) ? this.persistent : temperary, def);
 		}
 		catch(ClassCastException e) {
-			return null;
+			return def;
 		}
 	}
 	@SuppressWarnings("unchecked")
-	private <T> T getFromMap(String key, Map<String, Object> map) throws ClassCastException {
+	private <T> T getFromMap(String key, Map<String, Object> map, T def) throws ClassCastException {
 		for(Entry<String, Object> entry : map.entrySet()) {
 			if(entry.getKey().equalsIgnoreCase(key) && entry.getValue() != null) {
 				return (T) entry.getValue();
 			}
 		}
 		
-		return null;
+		return def;
 	}
 	
 	/**
-	 * Set a temperary value inside the PlayerData. This removes any persistant value with the same key.
+	 * Set a value inside the PlayerData.
 	 * @param key
 	 * @param value
+	 * @param persist - Whether the value should be saved to the playerdata.yml
 	 */
-	public void set(Plugin plugin, String key, Object value) {
+	public <T> void set(Plugin plugin, String key, T value, boolean persist) {
 		String fullKey = toFullKey(plugin, key);
-		removeFromMap(fullKey, persistant);
-		for(Entry<String, Object> entry : temperary.entrySet()) {
+		Map<String, Object> map = (persist) ? persistent : temperary;
+		
+		for(Entry<String, Object> entry : map.entrySet()) {
 			if(entry.getKey().equalsIgnoreCase(fullKey)) {
-				temperary.put(entry.getKey(), value);
+				map.put(entry.getKey(), value);
 				return;
 			}
 		}
 		
-		temperary.put(fullKey, value);
-	}
-	
-	/**
-	 * Set a persistant value inside the PlayerData. This removes any temperary value with the same key.
-	 * @param key
-	 * @param value
-	 */
-	public void persist(Plugin plugin, String key, Object value) {
-		String fullKey = toFullKey(plugin, key);
-		removeFromMap(fullKey, temperary);
-		persistant.put(fullKey, value);
+		map.put(fullKey, value);
 	}
 	
 	/**
@@ -100,7 +89,7 @@ public class PlayerData implements ConfigurationSerializable {
 	public void remove(Plugin plugin, String key) {
 		String fullKey = toFullKey(plugin, key);
 		removeFromMap(fullKey, temperary);
-		removeFromMap(fullKey, persistant);
+		removeFromMap(fullKey, persistent);
 	}
 	private void removeFromMap(String key, Map<String, Object> map) {
 		for(Entry<String, Object> entry : map.entrySet()) {
@@ -119,7 +108,7 @@ public class PlayerData implements ConfigurationSerializable {
 	public Map<String, Object> serialize() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("owner", owner.toString());
-		map.put("persist", persistant);
+		map.put("persist", persistent);
 		
 		return map;
 	}

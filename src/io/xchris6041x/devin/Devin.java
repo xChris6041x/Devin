@@ -81,10 +81,6 @@ public class Devin extends JavaPlugin {
 		});
 	}
 	
-	@Override
-	public void onEnable() {
-	}
-	
 	
 	public static Devin getPlugin() {
 		return instance;

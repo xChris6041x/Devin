@@ -15,7 +15,7 @@ DEVIN is a framework for Spigot 1.10+ that gives developers the tools to build b
 - Server is running SpigotMC 1.10+
 
 ## Start Developing
-If you are just learning DEVIN for the first time, head over to the [wiki](https://github.com/xChris6041x/Devin/wiki). The wiki will give you much more detailed information.
+If you are just learning how to develop with DEVIN then you should read over the [wiki](https://github.com/xChris6041x/Devin/wiki).
 
 ### Setting Up
 1. Download the latest Devin.jar from the [spigot resource](https://www.spigotmc.org/resources/devin.29241/) and install on the server.

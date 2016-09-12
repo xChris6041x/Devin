@@ -15,13 +15,12 @@ DEVIN is a framework for Spigot 1.10+ that gives developers the tools to build b
 - Server is running SpigotMC 1.10+
 
 ## Start Developing
-You can find the Devin.jar on its [Spigot Resource](https://www.spigotmc.org/resources/devin.29241/) page.
-
-If you are just learning DEVIN for the first time, read through the README and then head over to the [wiki](https://github.com/xChris6041x/Devin/wiki). The wiki will give you much more detailed information.
+If you are just learning DEVIN for the first time, head over to the [wiki](https://github.com/xChris6041x/Devin/wiki). The wiki will give you much more detailed information.
 
 ### Setting Up
-1. Reference the JAR file in your project.
-2. You're all set!
+1. Download the latest Devin.jar from the [spigot resource](https://www.spigotmc.org/resources/devin.29241/) and install on the server.
+2. Create a new Spigot project.
+3. Add the Devin.jar as an external reference.
 
 ## Command Framework
 Here is a quick overview of what the command framework can do with comments teaching you most the parts of the framework.

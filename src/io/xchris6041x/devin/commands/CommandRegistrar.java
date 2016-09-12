@@ -91,10 +91,8 @@ public class CommandRegistrar extends CommandHandlerContainer {
 					System.out.println("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.RESET + " /w Spigot");
 				}
 				// Register Command
-				if(handler.getParent() == this) {
-					registerCommand(handler);
-					System.out.println("\t\tRegistered command " + AnsiColor.CYAN + handler.getName() + AnsiColor.RESET + " /w Spigot");
-				}
+				CommandHandler root = registerCommand(handler);
+				System.out.println("\t\tRegistered command " + AnsiColor.CYAN + root.getName() + AnsiColor.RESET + " /w Spigot");
 				
 				System.out.println(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 			}
@@ -106,34 +104,53 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		System.out.println(" ");
 	}
 	
-	private void registerCommand(CommandHandler handler) throws DevinException {
-		try {
-			// Construct plugin command.
-			Constructor<PluginCommand> con = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
-			con.setAccessible(true);
-			
-			PluginCommand command = con.newInstance(handler.getName(), plugin);
-			command.setAliases(Arrays.asList(handler.getAliases()));
-			
-			// TODO: command.setDescription(handler.getDescription());
-			
-			command.setUsage(handler.getMethod().getUsage());
-			command.setExecutor(handler);
-			
-			// Register Command
-			Field commandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-			commandMap.setAccessible(true);
-			
-			if (!((CommandMap) commandMap.get(Bukkit.getServer())).register(handler.getName(), command)) {
-				throw new DevinException("Command \"" + handler.getName() + "\" already exists.");
-			}
-			
-			// Cleanup
-			con.setAccessible(false);
-			commandMap.setAccessible(false);
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
-			throw new DevinException(e.getClass().getSimpleName() + " - " + e.getMessage(), e);
+	private CommandHandler registerCommand(CommandHandler handler) throws DevinException {
+		// Find the root handler.
+		CommandHandler root = handler;
+		boolean isRoot = true;
+		boolean wasRegistered = false;
+		
+		while(root.getParent() != this) {
+			root = (CommandHandler) root.getParent();
+			if(isRoot) isRoot = false;
 		}
+		
+		// Double check for registered command.
+		PluginCommand cmd = plugin.getCommand(root.getName());
+		if(cmd == null) {
+			try {
+				// Construct plugin command.
+				Constructor<PluginCommand> con = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
+				con.setAccessible(true);
+				
+				cmd = con.newInstance(root.getName(), plugin);
+				
+				// Register Command
+				Field commandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+				commandMap.setAccessible(true);
+				
+				((CommandMap) commandMap.get(Bukkit.getServer())).register(handler.getName(), cmd);
+				
+				// Cleanup
+				con.setAccessible(false);
+				commandMap.setAccessible(false);
+				
+				wasRegistered = true;
+			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
+				throw new DevinException(e.getClass().getSimpleName() + " - " + e.getMessage(), e);
+			}
+		}
+		else{
+			if(cmd.getPlugin() != plugin) throw new DevinException("Your plugin does not own \"" + root.getName() + "\"");
+		}
+		
+		cmd.setExecutor(root);
+		if(isRoot) {
+			cmd.setAliases(Arrays.asList(root.getAliases()));
+			cmd.setUsage(handler.getMethod().getUsage());
+			cmd.setExecutor(root);
+		}
+		return (wasRegistered) ? root : null;
 	}
 	private CommandHandler getHandler(String[] structure) {
 		return getHandler(this, structure, 0);

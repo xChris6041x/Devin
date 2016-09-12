@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.AnsiColor;
+import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 
@@ -38,14 +39,14 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	 * @param registerPermissions - Whether to register permissions on the commands. 
 	 */
 	public void registerCommands(Commandable commandable) {
-		System.out.println("Registering " + commandable.getClass().getCanonicalName() + ": ");
-		System.out.println("---------------------------------------------------------------");
-		System.out.println("Looking for @DevinInject...");
+		Devin.debug("Registering " + commandable.getClass().getCanonicalName() + ": ");
+		Devin.debug("---------------------------------------------------------------");
+		Devin.debug("Looking for @DevinInject...");
 		for(Field field : commandable.getClass().getFields()) {
 			DevinInject inject = field.getAnnotation(DevinInject.class);
 			if(inject == null) continue;
 			
-			System.out.println("\tAttempting to auto-inject " + AnsiColor.DARK_CYAN + field.getName() + AnsiColor.RESET + ":");
+			Devin.debug("\tAttempting to auto-inject " + AnsiColor.DARK_CYAN + field.getName() + AnsiColor.RESET + ":");
 			
 			if(field.getType().isAssignableFrom(getMessageSender().getClass())) {
 				try {
@@ -62,19 +63,19 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				}
 			}
 			else{
-				System.out.println(AnsiColor.RED + "\t\tFAILED: Cannot auto-inject type " + field.getType().getCanonicalName() + AnsiColor.RESET);
+				Devin.debug(AnsiColor.RED + "\t\tFAILED: Cannot auto-inject type " + field.getType().getCanonicalName() + AnsiColor.RESET);
 				continue;
 			}
 			
-			System.out.println(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
+			Devin.debug(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 		}
 		
-		System.out.println(" ");
-		System.out.println("Looking for @Command...");
+		Devin.debug(" ");
+		Devin.debug("Looking for @Command...");
 		for(Method method : commandable.getClass().getMethods()) {
 			Command cmd = method.getAnnotation(Command.class);
 			if(cmd == null) continue;
-			System.out.print("\tAttempting to register " + AnsiColor.CYAN + method.getName() + AnsiColor.RESET + ":");
+			Devin.debug("\tAttempting to register " + AnsiColor.CYAN + method.getName() + AnsiColor.RESET + ":");
 			
 			try {
 				CommandMethod commandMethod = CommandMethod.build(commandable, method);
@@ -88,20 +89,20 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				// Register permissions
 				for(String perm : cmd.perms()) {
 					Bukkit.getPluginManager().addPermission(new Permission(perm));
-					System.out.println("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.RESET + " /w Spigot");
+					Devin.debug("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.RESET + " /w Spigot");
 				}
 				// Register Command
 				CommandHandler root = registerCommand(handler);
-				System.out.println("\t\tRegistered command " + AnsiColor.CYAN + root.getName() + AnsiColor.RESET + " /w Spigot");
+				Devin.debug("\t\tRegistered command " + AnsiColor.CYAN + root.getName() + AnsiColor.RESET + " /w Spigot");
 				
-				System.out.println(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
+				Devin.debug(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 			}
 			catch(DevinException e) {
-				System.out.println(AnsiColor.RED + "\t\tFAILED: " + e.getMessage() + AnsiColor.RESET);
+				Devin.debug(AnsiColor.RED + "\t\tFAILED: " + e.getMessage() + AnsiColor.RESET);
 			}
 		}
 		
-		System.out.println(" ");
+		Devin.debug(" ");
 	}
 	
 	private CommandHandler registerCommand(CommandHandler handler) throws DevinException {

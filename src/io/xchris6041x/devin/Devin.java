@@ -4,12 +4,14 @@ import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.commands.ArgumentStream;
 import io.xchris6041x.devin.commands.Commandable;
 import io.xchris6041x.devin.commands.ObjectParsing;
+import io.xchris6041x.devin.data.UUIDProperty;
 
 /**
  * Main plugin class for DEVIN.
@@ -33,6 +35,11 @@ public class Devin extends JavaPlugin implements Commandable {
 		debugMode = getConfig().getBoolean("debug-mode", true);
 		
 		Devin.instance = this;
+		
+		//
+		// Setup Configuration Serializations
+		//
+		ConfigurationSerialization.registerClass(UUIDProperty.class);
 		
 		//
 		// Setup ObjectParsing

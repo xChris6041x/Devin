@@ -1,13 +1,19 @@
 package io.xchris6041x.devin.data;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 
 /**
  * Stores a UUID (the owner), Key, and Value to attach data to objects
  * which the equality of that object is defined by the UUID.
  * @author Christopher Bishop
  */
-public class UUIDProperty {
+@SerializableAs("UUIDProperty")
+public class UUIDProperty implements ConfigurationSerializable {
 
 	private UUID owner;
 	private String key;
@@ -17,6 +23,11 @@ public class UUIDProperty {
 		this.owner = owner;
 		this.key = key;
 		this.value = value;
+	}
+	public UUIDProperty(Map<String, Object> map) {
+		owner = UUID.fromString((String) map.get("owner"));
+		key = (String) map.get("key");
+		value = map.get("value");
 	}
 	
 	
@@ -47,6 +58,17 @@ public class UUIDProperty {
 	 */
 	public void setValue(Object value) { 
 		this.value = value; 
+	}
+
+
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("owner", owner.toString());
+		map.put("key", key);
+		map.put("value", value);
+		
+		return map;
 	}
 	
 }

@@ -1,8 +1,13 @@
 package io.xchris6041x.devin.data;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class UUIDPropertyCollection {
 
@@ -73,6 +78,26 @@ public class UUIDPropertyCollection {
 		}
 		
 		if(!foundMatch) properties.add(new UUIDProperty(owner, key, value));
+	}
+	
+	public void load(File configFile) {
+		FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+		if(config.isSet("properties")){
+			@SuppressWarnings("unchecked")
+			List<UUIDProperty> properties = (List<UUIDProperty>) config.get("properties");
+			
+			this.properties.clear();
+			for(UUIDProperty property : properties) {
+				this.properties.add(property);
+			}
+		}
+	}
+	
+	public void save(File configFile) throws IOException {
+		FileConfiguration config = new YamlConfiguration();
+		config.set("properties", properties);
+		
+		config.save(configFile);
 	}
 	
 }

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 
-public class PlayerData extends UUIDPropertyData<OfflinePlayer> {
+public class PlayerData extends GenericUUIDPropertyCollection<OfflinePlayer> {
 
 	@Override
 	protected UUID getUUIDFrom(OfflinePlayer obj) {

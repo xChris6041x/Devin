@@ -1,8 +1,5 @@
 name: DEVIN
 version: 0.2.0
 main: io.xchris6041x.devin.Devin
-<<<<<<< Upstream, based on origin/master
 author: xChris6041x
-=======
 load: STARTUP
->>>>>>> 9e424a7 Changed the load property from POSTWORLD to STARTUP.

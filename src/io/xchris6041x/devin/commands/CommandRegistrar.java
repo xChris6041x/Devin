@@ -125,7 +125,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				}
 				// Register Command
 				CommandHandler root = registerCommand(handler);
-				Devin.debug("\t\tRegistered command " + AnsiColor.CYAN + root.getName() + AnsiColor.RESET + " /w Spigot");
+				if(root != null) Devin.debug("\t\tRegistered command " + AnsiColor.CYAN + root.getName() + AnsiColor.RESET + " /w Spigot");
 				
 				Devin.debug(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 			}

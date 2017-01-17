@@ -7,7 +7,8 @@ DEVIN is a framework for Spigot 1.10+ that gives developers the tools to build b
 | `MessageSender` Simplifies sending messages with multi-messages and prefixes. |
 | A powerful annotated command framework that can automatically register commands and permissions without `plugin.yml`. |
 | `CommandUtils` is a utility class that has common yet complicated tasks such as pagination |
-| Linking temporary or persistent data to Players, Worlds, and other objects that use UUID's to identify them. |
+| Dependency Injections with events, commands, and anything else using `Injector`'s |
+| Linking temporary and persistent data to Players, Worlds, and other objects that use UUID's to identify them. |
 
 ## Requirements
 - Server is running Java 8.

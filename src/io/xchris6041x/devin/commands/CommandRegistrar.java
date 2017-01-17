@@ -18,24 +18,18 @@ import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.injection.InjectedObject;
-import io.xchris6041x.devin.injection.Injector;
 
 /**
- * The main class responsible for registering command methods and auto-injecting fields.
+ * The main class responsible for registering command methods.
  * @author Christopher Bishop
  */
 public class CommandRegistrar extends CommandHandlerContainer {
 	
 	private JavaPlugin plugin;
-	private Injector injector;
 	
-	public CommandRegistrar(JavaPlugin plugin, MessageSender msgSender){
+	public CommandRegistrar(JavaPlugin plugin, MessageSender msgSender) {
 		super(null, msgSender);
 		this.plugin = plugin;
-		this.injector = new Injector();
-		
-		injector.add(msgSender);
-		injector.add(plugin);
 	}
 	
 	/**
@@ -43,31 +37,11 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	 * Note: This must be done before calling registerCommands.
 	 * 
 	 * @param obj
-	 * @deprecated As of v0.3.0 and will be removed in v0.4.0. Use addInjection instead.
+	 * @deprecated As of v0.3.0 and will be removed in v0.4.0. Use Devin.getInjector().add instead.
 	 */
 	@Deprecated
 	public void inject(Object obj) {
-		injector.add(obj);
-	}
-	
-	/**
-	 * Inject this object into commands that will be registered. 
-	 * Note: This must be done before calling registerCommands.
-	 * 
-	 * @param obj
-	 * @param name - The name of the field in the Commandable.
-	 */
-	public void addInjection(Object obj, String name) {
-		injector.add(obj, name);
-	}
-	/**
-	 * Inject this object into commands that will be registered. 
-	 * Note: This must be done before calling registerCommands.
-	 * 
-	 * @param obj
-	 */
-	public void addInjection(Object obj) {
-		injector.add(obj);
+		Devin.getInjector(plugin).add(obj);
 	}
 	
 	/**
@@ -80,7 +54,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		Devin.debug("---------------------------------------------------------------");
 
 		// Inject objects.
-		injector.inject(commandable, new InjectedObject(msgSender));
+		Devin.getInjector(plugin).inject(commandable, new InjectedObject(msgSender));
 		
 		Devin.debug(" ");
 		Devin.debug("Looking for @Command...");

@@ -52,9 +52,9 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	/**
 	 * Register all command methods so they can be ran when the command is used.
 	 * @param commandable - The class to get all the command methods from.
-	 * @param registerPermissions - Whether to register permissions on the commands. 
+	 * @param msgSender - A MessageSender for these commands only.
 	 */
-	public void registerCommands(Commandable commandable) {
+	public void registerCommands(Commandable commandable, MessageSender msgSender) {
 		Devin.debug("Registering " + commandable.getClass().getCanonicalName() + ": ");
 		Devin.debug("---------------------------------------------------------------");
 		Devin.debug("Looking for @DevinInject...");
@@ -66,7 +66,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 			
 			if(field.getType().isAssignableFrom(getMessageSender().getClass())) {
 				try {
-					field.set(commandable, getMessageSender());
+					field.set(commandable, msgSender);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
@@ -115,6 +115,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				String[] struct = command.struct().split(" ");
 				
 				CommandHandler handler = getHandler(struct);
+				handler.setMessageSender(msgSender);
 				handler.setAliases(Arrays.copyOf(command.aliases(), command.aliases().length));
 				handler.setMethod(commandMethod);
 				
@@ -135,6 +136,14 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		}
 		
 		Devin.debug(" ");
+	}
+	
+	/**
+	 * Register all command methods so they can be ran when the command is used.
+	 * @param commandable - The class to get all the command methods from.
+	 */
+	public void registerCommands(Commandable commandable) {
+		registerCommands(commandable, getMessageSender());
 	}
 	
 	private CommandHandler registerCommand(CommandHandler handler) throws DevinException {

@@ -42,6 +42,9 @@ class CommandHandlerContainer {
 	public MessageSender getMessageSender() {
 		return msgSender;
 	}
+	public void setMessageSender(MessageSender msgSender) {
+		this.msgSender = msgSender;
+	}
 	
 	
 	public CommandHandlerContainer getParent() {

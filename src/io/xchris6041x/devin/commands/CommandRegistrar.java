@@ -4,7 +4,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -25,20 +27,34 @@ import io.xchris6041x.devin.MessageSender;
 public class CommandRegistrar extends CommandHandlerContainer {
 	
 	private JavaPlugin plugin;
+	private List<Object> injectionObjects;
 	
 	public CommandRegistrar(JavaPlugin plugin, MessageSender msgSender){
 		super(null, msgSender);
 		this.plugin = plugin;
+		this.injectionObjects = new ArrayList<Object>();
+	}
+	
+	/**
+	 * Inject this object into commands that will be registered.
+	 * Note: This must be done before calling registerCommands.
+	 * 
+	 * @param obj
+	 */
+	public void inject(Object obj) {
+		for(Object injectObject : injectionObjects) {
+			if(injectObject.getClass().equals(obj.getClass())) throw new IllegalArgumentException("Cannot inject two objects of the same type.");
+		}
+		
+		injectionObjects.add(obj);
 	}
 	
 	/**
 	 * Register all command methods so they can be ran when the command is used.
-	 * Note: The commands must be in the plugin.yml.
-	 * 
 	 * @param commandable - The class to get all the command methods from.
-	 * @param registerPermissions - Whether to register permissions on the commands. 
+	 * @param msgSender - A MessageSender for these commands only.
 	 */
-	public void registerCommands(Commandable commandable) {
+	public void registerCommands(Commandable commandable, MessageSender msgSender) {
 		Devin.debug("Registering " + commandable.getClass().getCanonicalName() + ": ");
 		Devin.debug("---------------------------------------------------------------");
 		Devin.debug("Looking for @DevinInject...");
@@ -50,7 +66,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 			
 			if(field.getType().isAssignableFrom(getMessageSender().getClass())) {
 				try {
-					field.set(commandable, getMessageSender());
+					field.set(commandable, msgSender);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
@@ -63,8 +79,24 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				}
 			}
 			else{
-				Devin.debug(AnsiColor.RED + "\t\tFAILED: Cannot auto-inject type " + field.getType().getCanonicalName() + AnsiColor.RESET);
-				continue;
+				boolean injected = false;
+				for(Object injectObject : injectionObjects) {
+					if(field.getType().isAssignableFrom(injectObject.getClass())) {
+						try {
+							field.set(commandable, injectObject);
+							
+							injected = true;
+							break;
+						} catch (IllegalArgumentException | IllegalAccessException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+				if(!injected) {
+					Devin.debug(AnsiColor.RED + "\t\tFAILED: Cannot auto-inject type " + field.getType().getCanonicalName() + AnsiColor.RESET);
+					continue;
+				}
 			}
 			
 			Devin.debug(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
@@ -83,6 +115,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				String[] struct = command.struct().split(" ");
 				
 				CommandHandler handler = getHandler(struct);
+				handler.setMessageSender(msgSender);
 				handler.setAliases(Arrays.copyOf(command.aliases(), command.aliases().length));
 				handler.setMethod(commandMethod);
 				
@@ -93,7 +126,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				}
 				// Register Command
 				CommandHandler root = registerCommand(handler);
-				Devin.debug("\t\tRegistered command " + AnsiColor.CYAN + root.getName() + AnsiColor.RESET + " /w Spigot");
+				if(root != null) Devin.debug("\t\tRegistered command " + AnsiColor.CYAN + root.getName() + AnsiColor.RESET + " /w Spigot");
 				
 				Devin.debug(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
 			}
@@ -103,6 +136,14 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		}
 		
 		Devin.debug(" ");
+	}
+	
+	/**
+	 * Register all command methods so they can be ran when the command is used.
+	 * @param commandable - The class to get all the command methods from.
+	 */
+	public void registerCommands(Commandable commandable) {
+		registerCommands(commandable, getMessageSender());
 	}
 	
 	private CommandHandler registerCommand(CommandHandler handler) throws DevinException {

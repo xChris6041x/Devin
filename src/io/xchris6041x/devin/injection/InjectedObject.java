@@ -1,5 +1,10 @@
 package io.xchris6041x.devin.injection;
 
+/**
+ * Basic object for keeping injection data.
+ * 
+ * @author Christopher Bishop
+ */
 public class InjectedObject {
 
 	private String name;

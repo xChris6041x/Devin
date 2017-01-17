@@ -6,11 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks fields so that the CommandRegistrar can inject objects.
- * 
- * Supported Data Types (this includes all sub-classes of these types):
- *  - JavaPlugin
- *  - MessageSender
+ * Marks fields so that the Injector can inject objects.
  * 
  * @author Christopher Bishop
  */

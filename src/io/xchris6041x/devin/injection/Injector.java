@@ -7,6 +7,11 @@ import java.util.List;
 import io.xchris6041x.devin.AnsiColor;
 import io.xchris6041x.devin.Devin;
 
+/**
+ * Injects objects into fields with the Inject annotation.
+ * 
+ * @author Christopher Bishop
+ */
 public class Injector {
 
 	private List<InjectedObject> injections;

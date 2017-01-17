@@ -4,9 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -19,6 +17,8 @@ import io.xchris6041x.devin.AnsiColor;
 import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
+import io.xchris6041x.devin.injection.InjectedObject;
+import io.xchris6041x.devin.injection.Injector;
 
 /**
  * The main class responsible for registering command methods and auto-injecting fields.
@@ -27,12 +27,15 @@ import io.xchris6041x.devin.MessageSender;
 public class CommandRegistrar extends CommandHandlerContainer {
 	
 	private JavaPlugin plugin;
-	private List<Object> injectionObjects;
+	private Injector injector;
 	
 	public CommandRegistrar(JavaPlugin plugin, MessageSender msgSender){
 		super(null, msgSender);
 		this.plugin = plugin;
-		this.injectionObjects = new ArrayList<Object>();
+		this.injector = new Injector();
+		
+		injector.add(msgSender);
+		injector.add(plugin);
 	}
 	
 	/**
@@ -40,13 +43,31 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	 * Note: This must be done before calling registerCommands.
 	 * 
 	 * @param obj
+	 * @deprecated As of v0.3.0 and will be removed in v0.4.0. Use addInjection instead.
 	 */
+	@Deprecated
 	public void inject(Object obj) {
-		for(Object injectObject : injectionObjects) {
-			if(injectObject.getClass().equals(obj.getClass())) throw new IllegalArgumentException("Cannot inject two objects of the same type.");
-		}
-		
-		injectionObjects.add(obj);
+		injector.add(obj);
+	}
+	
+	/**
+	 * Inject this object into commands that will be registered. 
+	 * Note: This must be done before calling registerCommands.
+	 * 
+	 * @param obj
+	 * @param name - The name of the field in the Commandable.
+	 */
+	public void addInjection(Object obj, String name) {
+		injector.add(obj, name);
+	}
+	/**
+	 * Inject this object into commands that will be registered. 
+	 * Note: This must be done before calling registerCommands.
+	 * 
+	 * @param obj
+	 */
+	public void addInjection(Object obj) {
+		injector.add(obj);
 	}
 	
 	/**
@@ -57,50 +78,9 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	public void registerCommands(Commandable commandable, MessageSender msgSender) {
 		Devin.debug("Registering " + commandable.getClass().getCanonicalName() + ": ");
 		Devin.debug("---------------------------------------------------------------");
-		Devin.debug("Looking for @DevinInject...");
-		for(Field field : commandable.getClass().getFields()) {
-			DevinInject inject = field.getAnnotation(DevinInject.class);
-			if(inject == null) continue;
-			
-			Devin.debug("\tAttempting to auto-inject " + AnsiColor.DARK_CYAN + field.getName() + AnsiColor.RESET + ":");
-			
-			if(field.getType().isAssignableFrom(getMessageSender().getClass())) {
-				try {
-					field.set(commandable, msgSender);
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			}
-			else if(field.getType().isAssignableFrom(plugin.getClass())) {
-				try {
-					field.set(commandable, plugin);
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
-				}
-			}
-			else{
-				boolean injected = false;
-				for(Object injectObject : injectionObjects) {
-					if(field.getType().isAssignableFrom(injectObject.getClass())) {
-						try {
-							field.set(commandable, injectObject);
-							
-							injected = true;
-							break;
-						} catch (IllegalArgumentException | IllegalAccessException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				
-				if(!injected) {
-					Devin.debug(AnsiColor.RED + "\t\tFAILED: Cannot auto-inject type " + field.getType().getCanonicalName() + AnsiColor.RESET);
-					continue;
-				}
-			}
-			
-			Devin.debug(AnsiColor.GREEN + "\t\tSUCCESS" + AnsiColor.RESET);
-		}
+
+		// Inject objects.
+		injector.inject(commandable, new InjectedObject(msgSender));
 		
 		Devin.debug(" ");
 		Devin.debug("Looking for @Command...");

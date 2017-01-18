@@ -1,6 +1,6 @@
 ![DEVIN](http://gdurl.com/yp4P)
 
-DEVIN is a framework for Spigot 1.10+ that gives developers the tools to build better and bigger plugins more efficiently. DEVIN takes care of a lot of the cumbersome code that developers would have to traditionally write so they can spend more time developing a better plugin.
+DEVIN is a framework for Spigot 1.8+ that gives developers the tools to build better and bigger plugins more efficiently. DEVIN takes care of a lot of the cumbersome code that developers would have to traditionally write so they can spend more time developing a better plugin.
 
 | Features |
 | --- |
@@ -12,7 +12,7 @@ DEVIN is a framework for Spigot 1.10+ that gives developers the tools to build b
 
 ## Requirements
 - Server is running Java 8.
-- Server is running SpigotMC 1.10+
+- Server is running SpigotMC 1.8+
 
 ## Start Developing
 If you are just learning how to develop with DEVIN then you should read over the [wiki](https://github.com/xChris6041x/Devin/wiki).

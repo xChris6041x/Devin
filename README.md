@@ -28,8 +28,8 @@ Here is a quick overview of what the command framework can do with comments teac
 // All command classes must implement Commandable
 public class DemoCommands implements Commandable {
 
-    @DevinInject
-    public MessageSender messageSender; // Grabs the message sender from the registrar.
+    @Inject
+    private MessageSender messageSender; // Grabs the message sender from the registrar.
    
     // All commands must use @Command
     // This command will have an auto generated usage of /demo <message> [message type] [player].
@@ -72,8 +72,8 @@ Without comments:
 ```JAVA
 public class DemoCommands implements Commandable {
 
-    @DevinInject
-    public MessageSender messageSender;
+    @Inject
+    private MessageSender messageSender;
    
     @Command(struct = "demo", params = { "message", "message type", "player" }, perms = "devin.demo", aliases = { "d", "dem" })
     public CommandResult demo(CommandSender sender, String str, @OptionalArg("0") int i, @OptionalArg Player p) {

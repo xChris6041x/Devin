@@ -68,7 +68,31 @@ public class MessageSender {
 	}
 	
 	/**
-	 * Broadcast messages to CommandSenders with the permission.
+	 * Broadcast a message to a group of CommandSenders with the permission.
+	 * @param senders
+	 * @param message
+	 * @param permission
+	 */
+	public void broadcast(CommandSender[] senders, String message, String permission) {
+		for(CommandSender sender : senders) {
+			if(sender.hasPermission(permission)) {
+				send(sender, message);
+			}
+		}
+	}
+	/**
+	 * Broadcast a message to a group.
+	 * @param senders
+	 * @param message
+	 */
+	public void broadcast(CommandSender[] senders, String message) {
+		for(CommandSender sender : senders) {
+			send(sender, message);
+		}
+	}
+	
+	/**
+	 * Broadcast a message to CommandSenders with the permission.
 	 * @param message
 	 * @param permission
 	 */
@@ -81,6 +105,24 @@ public class MessageSender {
 	 */
 	public void broadcast(String message) {
 		Bukkit.broadcastMessage(message);
+	}
+	
+	/**
+	 * Broadcast an info message to a group.
+	 * @param senders
+	 * @param message
+	 * @param permission
+	 */
+	public void info(CommandSender[] senders, String message, String permission) {
+		broadcast(senders, infoPrefix + message, permission);
+	}
+	/**
+	 * Broadcast an info message to a group.
+	 * @param senders
+	 * @param message
+	 */
+	public void info(CommandSender[] senders, String message) {
+		broadcast(senders, infoPrefix + message);
 	}
 	
 	/**
@@ -97,6 +139,24 @@ public class MessageSender {
 	 */
 	public void info(String message) {
 		broadcast(infoPrefix + message);
+	}
+	
+	/**
+	 * Broadcast an error message to a group.
+	 * @param senders
+	 * @param message
+	 * @param permission
+	 */
+	public void error(CommandSender[] senders, String message, String permission) {
+		broadcast(senders, errorPrefix + message, permission);
+	}
+	/**
+	 * Broadcast an error message to a group.
+	 * @param senders
+	 * @param message
+	 */
+	public void error(CommandSender[] senders, String message) {
+		broadcast(senders, errorPrefix + message);
 	}
 	
 	/**

@@ -3,6 +3,8 @@ package io.xchris6041x.devin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import net.md_5.bungee.api.ChatColor;
+
 /**
  * A class for sending messages to players and consoles, with info and error headers.
  * @author Christopher Bishop
@@ -13,7 +15,7 @@ public class MessageSender {
 	private String errorPrefix;
 	
 	public MessageSender() {
-		this("", "");
+		this("", ChatColor.RED + "");
 	}
 	public MessageSender(String infoPrefix, String errorPrefix) {
 		this.infoPrefix = (infoPrefix == null) ? "" : infoPrefix;

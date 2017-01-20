@@ -120,19 +120,14 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				con.setAccessible(true);
 				
 				cmd = con.newInstance(root.getName(), plugin);
+				cmd.setLabel(root.getName());
+				cmd.setExecutor(root);
+				CommandMap commandMap = getCommandMap();
 				
-				// Register Command
-				Field commandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-				commandMap.setAccessible(true);
-				
-				((CommandMap) commandMap.get(Bukkit.getServer())).register(handler.getName(), cmd);
-				
-				// Cleanup
-				con.setAccessible(false);
-				commandMap.setAccessible(false);
+				commandMap.register(root.getName(), cmd);
 				
 				wasRegistered = true;
-			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
+			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				throw new DevinException(e.getClass().getSimpleName() + " - " + e.getMessage(), e);
 			}
 		}
@@ -140,11 +135,14 @@ public class CommandRegistrar extends CommandHandlerContainer {
 			if(cmd.getPlugin() != plugin) throw new DevinException("Your plugin does not own \"" + root.getName() + "\"");
 		}
 		
-		cmd.setExecutor(root);
 		if(isRoot) {
+			CommandMap commandMap = getCommandMap();
+			cmd.unregister(commandMap);
+			
 			cmd.setAliases(Arrays.asList(root.getAliases()));
 			cmd.setUsage(handler.getMethod().getUsage());
-			cmd.setExecutor(root);
+			
+			commandMap.register(root.getName(), cmd);
 		}
 		return (wasRegistered) ? root : null;
 	}
@@ -157,6 +155,22 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		}
 		else{
 			return getHandler(container.getHandler(structure[offset], true), structure, offset + 1);
+		}
+	}
+	
+	private CommandMap getCommandMap() throws DevinException {
+		// Register Command
+		try {
+			Field commandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+			
+			commandMap.setAccessible(true);
+			CommandMap map = ((CommandMap) commandMap.get(Bukkit.getServer()));
+			commandMap.setAccessible(false);
+			
+			return map;
+		}
+		catch(IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			throw new DevinException(e.getClass().getSimpleName() + " - " + e.getMessage(), e);
 		}
 	}
 	

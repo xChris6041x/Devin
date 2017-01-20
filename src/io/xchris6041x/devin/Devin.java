@@ -16,6 +16,7 @@ import io.xchris6041x.devin.commands.ArgumentStream;
 import io.xchris6041x.devin.commands.Commandable;
 import io.xchris6041x.devin.commands.ObjectParsing;
 import io.xchris6041x.devin.data.UUIDProperty;
+import io.xchris6041x.devin.injection.InjectedObject;
 import io.xchris6041x.devin.injection.Injector;
 
 /**
@@ -145,12 +146,23 @@ public class Devin extends JavaPlugin implements Commandable {
 	// Registering
 	//
 	/**
-	 * Registers the events with Spigot and injects them with the global Injector.
+	 * Registers the events with Spigot and injects them with the global injector.
 	 * @param listener
 	 * @param plugin
 	 */
 	public static void registerEvents(Listener listener, Plugin plugin) {
 		getInjector(plugin).inject(listener);
+		Bukkit.getPluginManager().registerEvents(listener, plugin);
+	}
+	
+	/**
+	 * Registers the events with Spigot and injects them with the global injector and a MessageSender.
+	 * @param listsner
+	 * @param plugin
+	 * @param msgSender
+	 */
+	public static void registerEvents(Listener listener, Plugin plugin, MessageSender msgSender) {
+		getInjector(plugin).inject(listener, new InjectedObject(msgSender));
 		Bukkit.getPluginManager().registerEvents(listener, plugin);
 	}
 }

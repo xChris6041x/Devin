@@ -1,4 +1,4 @@
-![DEVIN](http://gdurl.com/yp4P)
+![DEVIN](https://s26.postimg.org/ctcko1hrd/devin.png)
 
 DEVIN is a framework for Spigot 1.8+ that gives developers the tools to build better and bigger plugins more efficiently. DEVIN takes care of a lot of the cumbersome code that developers would have to traditionally write so they can spend more time developing a better plugin.
 

@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 
-import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.MessageSender;
 
 /**

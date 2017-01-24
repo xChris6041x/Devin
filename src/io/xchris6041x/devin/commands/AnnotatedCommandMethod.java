@@ -26,7 +26,6 @@ class AnnotatedCommandMethod implements CommandMethod {
 	
 	private int optionalOffset = -1;
 	private Object[] defaults = { };
-	private boolean endless = false;
 	
 	private AnnotatedCommandMethod() {
 	}
@@ -46,11 +45,8 @@ class AnnotatedCommandMethod implements CommandMethod {
 		return method.getAnnotation(Command.class);
 	}
 	
-	public int minSize() {
+	private int minSize() {
 		return (optionalOffset < 0) ? method.getParameterCount() - 1: optionalOffset;
-	}
-	public int maxSize() {
-		return (endless) ? Integer.MAX_VALUE : method.getParameterCount() - 1;
 	}
 	
 	/**
@@ -223,7 +219,6 @@ class AnnotatedCommandMethod implements CommandMethod {
 		
 		cm.permissions = Arrays.copyOf(cmd.perms(), cmd.perms().length);
 		cm.usage = usage;
-		cm.endless = expectedEnd;
 		
 		if(optionalOffset > -1) {
 			cm.optionalOffset = optionalOffset;

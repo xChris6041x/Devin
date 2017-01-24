@@ -1,5 +1,5 @@
 name: DEVIN
-version: 0.3.0
+version: 0.4.0
 main: io.xchris6041x.devin.Devin
 author: xChris6041x
 load: STARTUP

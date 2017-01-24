@@ -48,13 +48,17 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 		else {
 			try {
 				method.invoke(sender, args, getMessageSender());
-				return true;
 			} catch (DevinException e) {
-				if(e.getCause() != null) e.printStackTrace();
-				else getMessageSender().error(sender, e.getMessage());
-				
-				return false;
+				if(e.getCause() != null) {
+					e.printStackTrace();
+					getMessageSender().error(sender, "Internal server error.");
+				}
+				else {
+					getMessageSender().error(sender, e.getMessage());
+				}
 			}
+			
+			return true;
 		}
 	}
 	

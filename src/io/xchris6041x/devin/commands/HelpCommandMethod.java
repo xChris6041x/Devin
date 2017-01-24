@@ -35,6 +35,10 @@ class HelpCommandMethod implements CommandMethod {
 			page = Integer.parseInt(rawArgs[0]);
 		}
 		
+		int maxPages = (int) Math.ceil(helpMessages.size() / 7f) + 1;
+		
+		msgSender.info(sender, root.getName().toUpperCase() + " Commands | Page " + page + "/" + maxPages);
+		msgSender.send(sender, "------------------------------------------------");
 		msgSender.send(sender, CommandUtils.pagination(helpMessages, 7, page));
 	}
 	

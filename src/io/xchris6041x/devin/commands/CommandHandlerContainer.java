@@ -40,6 +40,24 @@ class CommandHandlerContainer {
 		this.aliases = aliases;
 	}
 	
+	/**
+	 * @param name - The name to check.
+	 * @return whether {@code name} matches any valid name or alias.
+	 */
+	public boolean isValidName(String name) {
+		if(name.equals(this.name)) {
+			return true;
+		}
+		
+		for(String str : this.aliases) {
+			if(name.equals(str)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	public String getDescription() {
 		return description;
 	}
@@ -92,15 +110,7 @@ class CommandHandlerContainer {
 	public CommandHandler getHandler(String name, boolean create) {
 		for(CommandHandlerContainer handler : children) {
 			if(!(handler instanceof CommandHandler)) continue;
-			if(name.equals(handler.getName())) {
-				return (CommandHandler) handler;
-			}
-			
-			for(String str : handler.getAliases()) {
-				if(name.equals(str)) {
-					return (CommandHandler) handler;
-				}
-			}
+			if(handler.isValidName(name)) return (CommandHandler) handler;
 		}
 		
 		if(create) {

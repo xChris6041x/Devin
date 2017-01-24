@@ -35,7 +35,7 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 					newArgs[i - 1] = args[i];
 				}
 				
-				handler.onCommand(sender, cmd, label + " " + sub, newArgs);
+				return handler.onCommand(sender, cmd, label + " " + sub, newArgs);
 			}
 		}
 		

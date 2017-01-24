@@ -100,7 +100,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		
 		CommandHandler root = getHandler(name);
 		if(root == null) {
-			Devin.debug(AnsiColor.RED + "\tFailed: Cannot find command. Is it registered?");
+			Devin.debug(AnsiColor.RED + "\tFailed: Cannot find command. Is it registered?" + AnsiColor.RESET);
 			return;
 		}
 		
@@ -109,7 +109,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		handler.setMessageSender(msgSender);
 		handler.setMethod(new HelpCommandMethod(root, helpName));
 		
-		Devin.debug(AnsiColor.GREEN + "\tSUCCESS");
+		Devin.debug(AnsiColor.GREEN + "\tSUCCESS" + AnsiColor.RESET);
 		Devin.debug();
 	}
 	

@@ -142,6 +142,8 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				cmd = con.newInstance(root.getName(), plugin);
 				cmd.setLabel(root.getName());
 				cmd.setExecutor(root);
+				cmd.setTabCompleter(root);
+				
 				CommandMap commandMap = getCommandMap();
 				
 				commandMap.register(root.getName(), cmd);

@@ -1,15 +1,22 @@
 package io.xchris6041x.devin.commands;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.util.StringUtil;
+
+import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.MessageSender;
 
 /**
  * A class that contains CommandHandlers.
  * @author Christopher Bishop
  */
-class CommandHandlerContainer {
+class CommandHandlerContainer implements TabCompleter {
 	
 	private String name;
 	private String[] aliases = new String[0];
@@ -121,6 +128,46 @@ class CommandHandlerContainer {
 		}
 		else {
 			return null;
+		}
+	}
+
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		// Check if it belongs to sub-command.
+		if(args.length > 1) {
+			String sub = args[0];
+			
+			CommandHandlerContainer child = null;
+			for(CommandHandlerContainer chc : children) {
+				if(chc.isValidName(args[0])) {
+					child = chc;
+					break;
+				}
+			}
+			
+			if(child != null) {
+				// Remove first arg.
+				String[] newArgs = new String[args.length - 1];
+				for(int i = 1; i < args.length; i++) {
+					newArgs[i - 1] = args[i];
+				}
+				
+				return child.onTabComplete(sender, cmd, label + " " + sub, newArgs);
+			}
+			return new ArrayList<String>();
+		}
+		else {
+			List<String> commands = new ArrayList<String>();
+			for(CommandHandlerContainer child : children) {
+				commands.add(child.getName());
+			}
+			
+			final List<String> completions = new ArrayList<String>(commands);
+			StringUtil.copyPartialMatches(args[0], commands, completions);
+			
+			Collections.sort(completions);
+			return completions;
 		}
 	}
 	

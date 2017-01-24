@@ -6,7 +6,7 @@ DEVIN is a framework for Spigot 1.8+ that gives developers the tools to build be
 - Powerful annotated command and sub command framework with automatic tab completion and help command.
 - Connect information to specific players or worlds for temporary or persistent use.
 - Dependency Injection for any and all objects. Automatically used when registering commands and events.
-- A MessageSender class for sending messages to one person, a group, or to everyone easily with prefixes.
+- A `MessageSender` class for sending messages to one person, a group, or to everyone easily with prefixes.
 - Overall faster development and improved maintainability.
 
 ## Requirements

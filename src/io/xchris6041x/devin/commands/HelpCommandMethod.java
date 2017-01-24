@@ -54,7 +54,7 @@ class HelpCommandMethod implements CommandMethod {
 	private void buildHelpMessages(List<String> helpMessages, CommandHandlerContainer container) {
 		if(container instanceof CommandHandler) {
 			CommandHandler handler = (CommandHandler) container;
-			helpMessages.add(handler.getMethod().getUsage() + " - " + handler.getDescription());
+			helpMessages.add(handler.getMethod().getUsage() + (handler.getDescription().length() > 0 ? " - " + handler.getDescription() : ""));
 		}
 		
 		// Build messages for children.

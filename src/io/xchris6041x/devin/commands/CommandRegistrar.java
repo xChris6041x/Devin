@@ -93,8 +93,9 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	 * Register a help command for {@code name}'s command.
 	 * @param name - The label for the root command.
 	 * @param helpName - The name of the sub command for help.
+	 * @param msgSender - The MessageSender this command will use.
 	 */
-	public void registerHelpCommand(String name, String helpName, String[] aliases, MessageSender msgSender) {
+	public void registerHelpCommand(String name, String helpName, MessageSender msgSender) {
 		Devin.debug("Registering Help Command For: /" + name);
 		Devin.debugHr();
 		
@@ -105,12 +106,19 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		}
 		
 		CommandHandler handler = getHandler(new String[] { root.getName(), helpName });
-		handler.setAliases(aliases);
 		handler.setMessageSender(msgSender);
 		handler.setMethod(new HelpCommandMethod(root, helpName));
 		
 		Devin.debug(AnsiColor.GREEN + "\tSUCCESS" + AnsiColor.RESET);
 		Devin.debug();
+	}
+	/**
+	 * Register a help command for {@code name}'s command.
+	 * @param name - The label for the root command.
+	 * @param helpName - The name of the sub command for help..
+	 */
+	public void registerHelpCommand(String name, String helpName) {
+		registerHelpCommand(name, helpName, getMessageSender());
 	}
 	
 	private CommandHandler registerCommand(CommandHandler handler) throws DevinException {

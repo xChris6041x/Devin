@@ -162,7 +162,7 @@ class CommandHandlerContainer implements TabCompleter {
 				commands.add(child.getName());
 			}
 			
-			final List<String> completions = new ArrayList<String>(commands);
+			final List<String> completions = new ArrayList<String>();
 			StringUtil.copyPartialMatches(args[0], commands, completions);
 			
 			Collections.sort(completions);

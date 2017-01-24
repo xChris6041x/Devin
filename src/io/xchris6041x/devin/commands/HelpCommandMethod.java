@@ -29,17 +29,25 @@ class HelpCommandMethod implements CommandMethod {
 		List<String> helpMessages = new ArrayList<String>();
 		buildHelpMessages(helpMessages, root);
 		
+		int pageLength = 7;
+		int maxPages = (int) Math.ceil(helpMessages.size() / (double) pageLength);
 		int page = 0;
+		
 		if(rawArgs.length > 0) {
 			if(!Validator.isInteger(rawArgs[0], sender, msgSender)) return;
-			page = Integer.parseInt(rawArgs[0]);
+			page = Integer.parseInt(rawArgs[0]) - 1;
 		}
 		
-		int maxPages = (int) Math.ceil(helpMessages.size() / 7f) + 1;
+		if(page > maxPages - 1) {
+			page = maxPages - 1;
+		}
+		else if(page < 0) {
+			page = 0;
+		}
 		
-		msgSender.info(sender, root.getName().toUpperCase() + " Commands | Page " + page + "/" + maxPages);
+		msgSender.info(sender, root.getName().toUpperCase() + " Commands | Page " + (page + 1) + "/" + maxPages);
 		msgSender.send(sender, "------------------------------------------------");
-		msgSender.send(sender, CommandUtils.pagination(helpMessages, 7, page));
+		msgSender.send(sender, CommandUtils.pagination(helpMessages, pageLength, page));
 	}
 	
 	

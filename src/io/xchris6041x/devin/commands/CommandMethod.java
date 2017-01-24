@@ -18,6 +18,6 @@ interface CommandMethod {
 	 * @param rawArgs - The arguments being passed into the method, in string form.
 	 * @throws DevinException
 	 */
-	public void invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException;
+	public void invoke(CommandHandler handler, CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException;
 	
 }

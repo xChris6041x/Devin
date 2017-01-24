@@ -47,7 +47,7 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 		}
 		else {
 			try {
-				method.invoke(sender, args, getMessageSender());
+				method.invoke(this, sender, args, getMessageSender());
 			} catch (DevinException e) {
 				if(e.getCause() != null) {
 					e.printStackTrace();

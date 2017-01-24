@@ -52,7 +52,7 @@ class AnnotatedCommandMethod implements CommandMethod {
 	/**
 	 * @see CommandMethod#invoke(CommandSender, String[], MessageSender)
 	 */
-	public void invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
+	public void invoke(CommandHandler handler, CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
 		// Check whether this is being validly invoked.
 		if(!method.getParameterTypes()[0].isInstance(sender)){
 			msgSender.error(sender, "Only " + method.getParameterTypes()[0].getSimpleName() + " can use this command.");

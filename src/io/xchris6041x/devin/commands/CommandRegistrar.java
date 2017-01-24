@@ -33,18 +33,6 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	}
 	
 	/**
-	 * Inject this object into commands that will be registered.
-	 * Note: This must be done before calling registerCommands.
-	 * 
-	 * @param obj
-	 * @deprecated As of v0.3.0 and will be removed in v0.4.0. Use Devin.getInjector().add instead.
-	 */
-	@Deprecated
-	public void inject(Object obj) {
-		Devin.getInjector(plugin).add(obj);
-	}
-	
-	/**
 	 * Register all command methods so they can be ran when the command is used.
 	 * @param commandable - The class to get all the command methods from.
 	 * @param msgSender - A MessageSender for these commands only.

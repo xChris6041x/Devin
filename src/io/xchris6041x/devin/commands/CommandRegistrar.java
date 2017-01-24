@@ -71,6 +71,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 				CommandHandler handler = getHandler(struct);
 				handler.setMessageSender(msgSender);
 				handler.setAliases(Arrays.copyOf(command.aliases(), command.aliases().length));
+				handler.setDescription(command.desc());
 				handler.setMethod(commandMethod);
 				
 				// Register permissions
@@ -141,6 +142,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 			
 			cmd.setAliases(Arrays.asList(root.getAliases()));
 			cmd.setUsage(handler.getMethod().getUsage());
+			cmd.setDescription(handler.getDescription());
 			
 			commandMap.register(root.getName(), cmd);
 		}

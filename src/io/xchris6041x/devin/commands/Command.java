@@ -33,4 +33,9 @@ public @interface Command {
 	 */
 	public String[] params() default { };
 	
+	/**
+	 * @return The description of this command.
+	 */
+	public String desc() default "";
+	
 }

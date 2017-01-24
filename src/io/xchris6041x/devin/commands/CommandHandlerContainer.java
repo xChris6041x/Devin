@@ -13,6 +13,7 @@ class CommandHandlerContainer {
 	
 	private String name;
 	private String[] aliases = new String[0];
+	private String description = "";
 	
 	private MessageSender msgSender;
 	
@@ -37,6 +38,13 @@ class CommandHandlerContainer {
 	}
 	public void setAliases(String[] aliases) {
 		this.aliases = aliases;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public MessageSender getMessageSender() {

@@ -14,7 +14,7 @@ class HelpCommandMethod implements CommandMethod {
 	private String usage;
 	
 	public HelpCommandMethod(CommandHandler root, String name) {
-		this.usage = root.getName() + " " + name + " [page]";
+		this.usage = "/" + root.getName() + " " + name + " [page]";
 	}
 	
 	@Override
@@ -30,8 +30,9 @@ class HelpCommandMethod implements CommandMethod {
 		buildHelpMessages(helpMessages, root);
 		
 		int page = 0;
-		if(rawArgs.length > 0 && Validator.isInteger(rawArgs[0], sender, msgSender)) {
-			page = Integer.parseInt(rawArgs[0]) - 1;
+		if(rawArgs.length > 0) {
+			if(!Validator.isInteger(rawArgs[0], sender, msgSender)) return;
+			page = Integer.parseInt(rawArgs[0]);
 		}
 		
 		msgSender.send(sender, CommandUtils.pagination(helpMessages, 7, page));

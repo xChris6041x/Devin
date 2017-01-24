@@ -1,5 +1,7 @@
 package io.xchris6041x.devin;
 
+import org.bukkit.command.CommandSender;
+
 /**
  * A static class that validates data.
  * @author Christopher Bishop
@@ -11,13 +13,13 @@ public final class Validator {
 	 * @param msgSender - The message sender used to send a message on failed.
 	 * @return whether the string is an integer.
 	 */
-	public static boolean isInteger(String str, MessageSender msgSender) {
+	public static boolean isInteger(String str, CommandSender sender, MessageSender msgSender) {
 		try {
 			Integer.parseInt(str);
 			return true;
 		}
 		catch (NumberFormatException e) {
-			if(msgSender != null) msgSender.error("Invalid integer \"" + str + "\".");
+			if(sender != null && msgSender != null) msgSender.error(sender, "Invalid integer \"" + str + "\".");
 			return false;
 		}
 	}
@@ -26,7 +28,7 @@ public final class Validator {
 	 * @return whether the string is an integer.
 	 */
 	public static boolean isInteger(String str) {
-		return isInteger(str, null);
+		return isInteger(str, null, null);
 	}
 	
 	/**
@@ -34,13 +36,13 @@ public final class Validator {
 	 * @param msgSender - The message sender used to send a message on failed.
 	 * @return whether the string is an integer.
 	 */
-	public static boolean isFloat(String str, MessageSender msgSender) {
+	public static boolean isFloat(String str, CommandSender sender, MessageSender msgSender) {
 		try {
 			Float.parseFloat(str);
 			return true;
 		}
 		catch (NumberFormatException e) {
-			if(msgSender != null) msgSender.error("Invalid integer \"" + str + "\".");
+			if(sender != null && msgSender != null) msgSender.error(sender, "Invalid integer \"" + str + "\".");
 			return false;
 		}
 	}
@@ -49,7 +51,7 @@ public final class Validator {
 	 * @return whether the string is an integer.
 	 */
 	public static boolean isFloat(String str) {
-		return isFloat(str, null);
+		return isFloat(str, null, null);
 	}
 	
 	/**
@@ -57,13 +59,13 @@ public final class Validator {
 	 * @param msgSender - The message sender used to send a message on failed.
 	 * @return whether the string is a double.
 	 */
-	public static boolean isDouble(String str, MessageSender msgSender) {
+	public static boolean isDouble(String str, CommandSender sender, MessageSender msgSender) {
 		try {
 			Double.parseDouble(str);
 			return true;
 		}
 		catch (NumberFormatException e) {
-			if(msgSender != null) msgSender.error("Invalid number \"" + str + "\".");
+			if(sender != null && msgSender != null) msgSender.error(sender, "Invalid number \"" + str + "\".");
 			return false;
 		}
 	}
@@ -72,7 +74,7 @@ public final class Validator {
 	 * @return whether the string is a double.
 	 */
 	public static boolean isDouble(String str) {
-		return isDouble(str, null);
+		return isDouble(str, null, null);
 	}
 	
 	/**
@@ -80,13 +82,13 @@ public final class Validator {
 	 * @param msgSender - The message sender used to send a message on failed.
 	 * @return whether the string is a boolean.
 	 */
-	public static boolean isBoolean(String str, MessageSender msgSender) {
+	public static boolean isBoolean(String str, CommandSender sender, MessageSender msgSender) {
 		try {
 			Boolean.parseBoolean(str);
 			return true;
 		}
 		catch (NumberFormatException e) {
-			if(msgSender != null) msgSender.error("Invalid number \"" + str + "\".");
+			if(sender != null && msgSender != null) msgSender.error(sender, "Invalid number \"" + str + "\".");
 			return false;
 		}
 	}
@@ -95,7 +97,7 @@ public final class Validator {
 	 * @return whether the string is a boolean.
 	 */
 	public static boolean isBoolean(String str) {
-		return isBoolean(str, null);
+		return isBoolean(str, null, null);
 	}
 	
 }

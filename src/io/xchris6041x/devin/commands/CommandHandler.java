@@ -8,16 +8,16 @@ import io.xchris6041x.devin.MessageSender;
 
 class CommandHandler extends CommandHandlerContainer implements CommandExecutor {
 	
-	private ICommandMethod method;
+	private CommandMethod method;
 	
 	public CommandHandler(String name, MessageSender msgSender){
 		super(name, msgSender);
 	}
 	
-	public ICommandMethod getMethod() {
+	public CommandMethod getMethod() {
 		return method;
 	}
-	public void setMethod(CommandMethod method) {
+	public void setMethod(AnnotatedCommandMethod method) {
 		this.method = method;
 	}
 	

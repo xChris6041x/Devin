@@ -52,7 +52,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 			Devin.debug("\tAttempting to register " + AnsiColor.CYAN + method.getName() + AnsiColor.RESET + ":");
 			
 			try {
-				CommandMethod commandMethod = CommandMethod.build(commandable, method);
+				AnnotatedCommandMethod commandMethod = AnnotatedCommandMethod.build(commandable, method);
 				Command command = commandMethod.getCommandAnnotation();
 				String[] struct = command.struct().split(" ");
 				

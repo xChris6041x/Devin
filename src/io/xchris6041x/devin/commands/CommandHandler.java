@@ -23,7 +23,6 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 	
 	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
-		
 		// Check if it belongs to sub-command.
 		if(args.length > 0) {
 			String sub = args[0];
@@ -36,14 +35,13 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 					newArgs[i - 1] = args[i];
 				}
 				
-				return handler.onCommand(sender, cmd, label + " " + sub, newArgs);
+				handler.onCommand(sender, cmd, label + " " + sub, newArgs);
 			}
 		}
 		
 		// Execute command.
 		if(method == null) {
 			getMessageSender().error("Invalid command " + label);
-			return true;
 		}
 		else {
 			try {
@@ -57,9 +55,9 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 					getMessageSender().error(sender, e.getMessage());
 				}
 			}
-			
-			return true;
 		}
+		
+		return true;
 	}
 	
 }

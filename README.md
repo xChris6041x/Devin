@@ -2,23 +2,28 @@
 
 DEVIN is a framework for Spigot 1.8+ that gives developers the tools to build better and bigger plugins more efficiently. DEVIN takes care of a lot of the cumbersome code that developers would have to traditionally write so they can spend more time developing a better plugin.
 
-| Features |
-| --- |
-| `MessageSender` Simplifies sending messages with multi-messages and prefixes. |
-| A powerful annotated command framework that can automatically register commands and permissions without `plugin.yml`. |
-| `CommandUtils` is a utility class that has common yet complicated tasks such as pagination |
-| Dependency Injections with events, commands, and anything else using `Injector`'s |
-| Linking temporary and persistent data to Players, Worlds, and other objects that use UUID's to identify them. |
+## Features
+- Powerful annotated command and sub command framework with automatic tab completion and help command.
+- Connect information to specific players or worlds for temporary or persistent use.
+- Dependency Injection for any and all objects. Automatically used when registering commands and events.
+
+- A MessageSender class for sending messages to one person, a group, or to everyone easily with prefixes.
+
+- Overall faster development and improved maintainability.
 
 ## Requirements
 - Server is running Java 8.
-- Server is running SpigotMC 1.8+
+- Server is running Spigot 1.8+
 
-## Start Developing
+## Getting Started
 If you are just learning how to develop with DEVIN then you should read over the [wiki](https://github.com/xChris6041x/Devin/wiki).
 
-### Setting Up
-1. Download the latest Devin.jar from the [spigot resource](https://www.spigotmc.org/resources/devin.29241/) and install on the server.
+### Setting Up for Owners
+1. Download the latest Devin.jar from the [spigot resource](https://www.spigotmc.org/resources/devin.29241/).
+2. Place the plugin in your plugins folder on your server.
+
+### Setting Up for Developers
+1. Download the latest Devin.jar from the [spigot resource](https://www.spigotmc.org/resources/devin.29241/) and install on the server (see above).
 2. Create a new Spigot project.
 3. Add the Devin.jar as an external reference.
 

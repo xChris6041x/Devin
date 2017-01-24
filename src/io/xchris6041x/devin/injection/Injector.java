@@ -69,6 +69,8 @@ public class Injector {
 				Devin.debug(AnsiColor.RED + "\t\tFAILED: Cannot inject type " + field.getType().getCanonicalName() + " with name " + field.getName() + AnsiColor.RESET);
 			}
 		}
+		
+		Devin.debug();
 	}
 	
 	/**

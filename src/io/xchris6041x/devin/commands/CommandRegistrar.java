@@ -44,7 +44,6 @@ public class CommandRegistrar extends CommandHandlerContainer {
 		// Inject objects.
 		Devin.getInjector(plugin).inject(commandable, new InjectedObject(msgSender));
 		
-		Devin.debug(" ");
 		Devin.debug("Looking for @Command...");
 		for(Method method : commandable.getClass().getMethods()) {
 			Command cmd = method.getAnnotation(Command.class);

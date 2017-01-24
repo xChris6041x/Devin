@@ -39,7 +39,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	 */
 	public void registerCommands(Commandable commandable, MessageSender msgSender) {
 		Devin.debug("Registering " + commandable.getClass().getCanonicalName() + ": ");
-		Devin.debug("---------------------------------------------------------------");
+		Devin.debugHr();
 
 		// Inject objects.
 		Devin.getInjector(plugin).inject(commandable, new InjectedObject(msgSender));
@@ -78,7 +78,7 @@ public class CommandRegistrar extends CommandHandlerContainer {
 			}
 		}
 		
-		Devin.debug(" ");
+		Devin.debug();
 	}
 	
 	/**
@@ -87,6 +87,30 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	 */
 	public void registerCommands(Commandable commandable) {
 		registerCommands(commandable, getMessageSender());
+	}
+	
+	/**
+	 * Register a help command for {@code name}'s command.
+	 * @param name - The label for the root command.
+	 * @param helpName - The name of the sub command for help.
+	 */
+	public void registerHelpCommand(String name, String helpName, String[] aliases, MessageSender msgSender) {
+		Devin.debug("Registering Help Command For: /" + name);
+		Devin.debugHr();
+		
+		CommandHandler root = getHandler(name);
+		if(root == null) {
+			Devin.debug(AnsiColor.RED + "\tFailed: Cannot find command. Is it registered?");
+			return;
+		}
+		
+		CommandHandler handler = getHandler(new String[] { root.getName(), helpName });
+		handler.setAliases(aliases);
+		handler.setMessageSender(msgSender);
+		handler.setMethod(new HelpCommandMethod(root, helpName));
+		
+		Devin.debug(AnsiColor.GREEN + "\tSUCCESS");
+		Devin.debug();
 	}
 	
 	private CommandHandler registerCommand(CommandHandler handler) throws DevinException {

@@ -70,6 +70,13 @@ class CommandHandlerContainer {
 	}
 	
 	/**
+	 * @return all the children in this container.
+	 */
+	public CommandHandlerContainer[] getChildren() {
+		return children.toArray(new CommandHandlerContainer[0]);
+	}
+	
+	/**
 	 * Get child with the name or aliase of {@code name}
 	 * @param name
 	 * @return

@@ -116,6 +116,20 @@ public class Devin extends JavaPlugin implements Commandable {
 	}
 	
 	/**
+	 * Print a new line to the console if DEVIN is in debug mode.
+	 */
+	public static void debug() {
+		Devin.debug(" ");
+	}
+	
+	/**
+	 * Print a horizontal rule to the console if DEVIN is in debug mode.
+	 */
+	public static void debugHr() {
+		Devin.debug("---------------------------------------------------------------");
+	}
+	
+	/**
 	 * @return The message sender DEVIN uses.
 	 */
 	public static MessageSender getMessageSender() {

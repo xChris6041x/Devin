@@ -16,7 +16,7 @@ import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.commands.CommandResult.Status;
 
-class CommandMethod {
+class CommandMethod implements ICommandMethod {
 
 	private Commandable commandable;
 	private Method method;
@@ -54,11 +54,7 @@ class CommandMethod {
 	}
 	
 	/**
-	 * Execute the CommandMethod.
-	 * @param sender - The CommandSender who executed the command.
-	 * @param rawArgs - The arguments being passed into the method, in string form.
-	 * @return whatever the method returns.
-	 * @throws DevinException
+	 * @see ICommandMethod#invoke(CommandSender, String[], MessageSender)
 	 */
 	public void invoke(CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
 		// Check whether this is being validly invoked.

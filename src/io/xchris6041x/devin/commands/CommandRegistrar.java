@@ -119,6 +119,21 @@ public class CommandRegistrar extends CommandHandlerContainer {
 	public void registerHelpCommand(String name, String helpName) {
 		registerHelpCommand(name, helpName, getMessageSender());
 	}
+	/**
+	 * Register all the help commands for currently registered commands.
+	 * @param helpName - The name of the help command.
+	 */
+	public void registerHelpCommands(String helpName) {
+		for(CommandHandlerContainer child : getChildren()) {
+			registerHelpCommand(child.getName(), helpName);
+		}
+	}
+	/**
+	 * Register all the help commands for currently registered commands.
+	 */
+	public void registerHelpCommands() {
+		registerHelpCommands("help");
+	}
 	
 	private CommandHandler registerCommand(CommandHandler handler) throws DevinException {
 		// Find the root handler.

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
-import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.Validator;

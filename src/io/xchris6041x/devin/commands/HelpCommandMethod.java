@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.Validator;
@@ -52,7 +53,7 @@ class HelpCommandMethod implements CommandMethod {
 	
 	
 	private void buildHelpMessages(List<String> helpMessages, CommandHandlerContainer container) {
-		if(container instanceof CommandHandler) {
+		if(container instanceof CommandHandler && ((CommandHandler)container).getMethod() != null) {
 			CommandHandler handler = (CommandHandler) container;
 			helpMessages.add(handler.getMethod().getUsage() + (handler.getDescription().length() > 0 ? " - " + handler.getDescription() : ""));
 		}

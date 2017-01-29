@@ -13,7 +13,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.xchris6041x.devin.commands.ArgumentStream;
-import io.xchris6041x.devin.commands.Commandable;
 import io.xchris6041x.devin.commands.ObjectParsing;
 import io.xchris6041x.devin.data.UUIDProperty;
 import io.xchris6041x.devin.injection.InjectedObject;
@@ -23,7 +22,7 @@ import io.xchris6041x.devin.injection.Injector;
  * Main plugin class for DEVIN.
  * @author Christopher Bishop
  */
-public class Devin extends JavaPlugin implements Commandable {
+public class Devin extends JavaPlugin {
 
 	private static Devin instance;
 	

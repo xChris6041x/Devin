@@ -17,7 +17,7 @@ public class Frame {
 	private int rows;
 	
 	public Frame(String title, int rows) {
-		if(rows > MAX_ROWS) throw new IllegalArgumentException("GUI's cannot have more than " + MAX_ROWS + " rows.");
+		if(rows > MAX_ROWS) throw new IllegalArgumentException("Frame's cannot have more than " + MAX_ROWS + " rows.");
 		
 		this.title = title;
 		this.rows = rows;

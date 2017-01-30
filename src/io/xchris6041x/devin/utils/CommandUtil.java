@@ -1,16 +1,13 @@
-package io.xchris6041x.devin.commands;
+package io.xchris6041x.devin.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A class with all static methods to simplify complex tasks that many commands have such as pagination.
- * 
- * @deprecated Moved to the io.xchris6041x.devin.utils package {@link io.xchris6041x.devin.utils.CommandUtil}. Will be removed by v0.6.0
  * @author Christopher Bishop
  */
-@Deprecated
-public final class CommandUtils {
+public final class CommandUtil {
 	
 	
 	/**

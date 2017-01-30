@@ -1,33 +1,19 @@
 package io.xchris6041x.devin.gui.controls;
 
-import java.util.List;
-
-import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import io.xchris6041x.devin.gui.FrameHolder;
 
 public abstract class Control {
 
-	private Material material;
-	private short durability;
+	private IIconBuilder builder;
 	
-	private int amount;
+	public Control(IIconBuilder builder) {
+		this.builder = builder;
+	}
 	
-	private List<String> lore;
-	
-	
-	public ItemStack buildIcon() {
-		ItemStack icon = new ItemStack(material, amount);
-		icon.setDurability(durability);
-		
-		ItemMeta meta = icon.getItemMeta();
-		meta.setLore(lore);
-		icon.setItemMeta(meta);
-		
-		return icon;
+	public IIconBuilder getIconBuilder() {
+		return builder;
 	}
 	
 	public abstract boolean onTrigger(FrameHolder holder, InventoryClickEvent e); 

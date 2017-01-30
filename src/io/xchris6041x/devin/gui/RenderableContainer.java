@@ -25,7 +25,7 @@ public abstract class RenderableContainer extends Container {
 	public void render(Inventory inventory) {
 		// Render controls.
 		for(Entry<Integer, Control> control : controls.entrySet()) {
-			inventory.setItem(control.getKey(), control.getValue().buildIcon());
+			inventory.setItem(control.getKey(), control.getValue().getIconBuilder().getIcon());
 		}
 		// Render children above this container.
 		for(Container container : getChildren()) {

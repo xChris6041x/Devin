@@ -30,6 +30,6 @@ public abstract class Control {
 		return icon;
 	}
 	
-	public abstract boolean onTrigger(FrameHolder frameHolder, InventoryClickEvent e); 
+	public abstract boolean onTrigger(FrameHolder holder, InventoryClickEvent e); 
 	
 }

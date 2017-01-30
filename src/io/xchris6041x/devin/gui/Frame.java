@@ -9,15 +9,14 @@ import org.bukkit.inventory.Inventory;
  * 
  * @author Christopher Bishop
  */
-public class Frame {
-
-	public static final int MAX_ROWS = 6;
+public class Frame extends PageableContainer {
 	
 	private String title;
 	private int rows;
 	
 	public Frame(String title, int rows) {
-		if(rows > MAX_ROWS) throw new IllegalArgumentException("GUI's cannot have more than " + MAX_ROWS + " rows.");
+		if(rows < 1) throw new IllegalArgumentException("GUI's cannot have less than 1 row.");
+		if(rows > Container.MAX_HEIGHT) throw new IllegalArgumentException("GUI's cannot have more than " + Container.MAX_HEIGHT + " rows.");
 		
 		this.title = title;
 		this.rows = rows;
@@ -46,6 +45,21 @@ public class Frame {
 		Inventory inventory = Bukkit.createInventory(frameHolder, rows * 9, title);
 		
 		player.openInventory(inventory);
+	}
+	
+	
+	@Override
+	public void setParent(Container parent) {
+		if(parent == null) return;
+		throw new UnsupportedOperationException("Cannot set the parent of a Frame.");
+	}
+	@Override
+	public int getWidth() {
+		return Container.MAX_WIDTH;
+	}
+	@Override
+	public int getHeight() {
+		return Container.MAX_HEIGHT;
 	}
 	
 }

@@ -51,17 +51,16 @@ public class Frame implements IContainer<FullContainer> {
 		
 		player.openInventory(inventory);
 	}
+	
 
 	@Override
 	public int getWidth() {
 		return IContainer.MAX_WIDTH;
 	}
-
 	@Override
 	public int getHeight() {
 		return IContainer.MAX_HEIGHT;
 	}
-
 	@Override
 	public List<FullContainer> getContainers() {
 		return containers;

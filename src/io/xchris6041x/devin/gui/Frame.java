@@ -1,8 +1,5 @@
 package io.xchris6041x.devin.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -12,16 +9,15 @@ import org.bukkit.inventory.Inventory;
  * 
  * @author Christopher Bishop
  */
-public class Frame implements IContainer<FullContainer> {
+public class Frame {
+
+	public static final int MAX_ROWS = 6;
 	
-	private List<FullContainer> containers;
 	private String title;
 	private int rows;
 	
 	public Frame(String title, int rows) {
-		if(rows > IContainer.MAX_HEIGHT) throw new IllegalArgumentException("Frame's cannot have more than " + IContainer.MAX_HEIGHT + " rows.");
-		
-		this.containers = new ArrayList<FullContainer>();
+		if(rows > MAX_ROWS) throw new IllegalArgumentException("GUI's cannot have more than " + MAX_ROWS + " rows.");
 		
 		this.title = title;
 		this.rows = rows;
@@ -50,20 +46,6 @@ public class Frame implements IContainer<FullContainer> {
 		Inventory inventory = Bukkit.createInventory(frameHolder, rows * 9, title);
 		
 		player.openInventory(inventory);
-	}
-	
-
-	@Override
-	public int getWidth() {
-		return IContainer.MAX_WIDTH;
-	}
-	@Override
-	public int getHeight() {
-		return IContainer.MAX_HEIGHT;
-	}
-	@Override
-	public List<FullContainer> getContainers() {
-		return containers;
 	}
 	
 }

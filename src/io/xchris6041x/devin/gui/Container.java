@@ -3,6 +3,9 @@ package io.xchris6041x.devin.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
+
 public abstract class Container {
 
 	public static final int MAX_WIDTH = 9;
@@ -45,6 +48,12 @@ public abstract class Container {
 		}
 	}
 	
+	/**
+	 * @return the children of this container.
+	 */
+	public Container[] getChildren() {
+		return children.toArray(new Container[0]);
+	}
 	
 	/**
 	 * @return the width of the container.
@@ -55,6 +64,19 @@ public abstract class Container {
 	 * @return the height of the container.
 	 */
 	public abstract int getHeight();
+	
+	/**
+	 * Add the controls to the {@code inventory}.
+	 * @param inventory
+	 */
+	public abstract void render(Inventory inventory);
+	
+	/**
+	 * Trigger this container.
+	 * @param holder - The holder of the inventory and frame
+	 * @param e - The event fired
+	 */
+	public abstract boolean onTrigger(FrameHolder holder, InventoryClickEvent e);
 	
 	/**
 	 * @param container

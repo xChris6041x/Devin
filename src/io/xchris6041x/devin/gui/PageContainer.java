@@ -1,6 +1,6 @@
 package io.xchris6041x.devin.gui;
 
-public class PageContainer extends Container {
+public class PageContainer extends RenderableContainer {
 
 	@Override
 	public int getWidth() {

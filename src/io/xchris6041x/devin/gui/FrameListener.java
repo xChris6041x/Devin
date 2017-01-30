@@ -9,10 +9,14 @@ public class FrameListener implements Listener {
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
 		if(e.getInventory().getHolder() instanceof FrameHolder) {
-			e.setCancelled(true); // This will be removed when dragable controls are added.
-			
 			FrameHolder holder = (FrameHolder) e.getInventory().getHolder();
-			holder.getFrame().onClick(holder, e);
+			if(e.getRawSlot() < holder.getFrame().getRows() * Container.MAX_WIDTH) {
+				e.setCancelled(true); // This will change when draggable controls are added.
+				holder.getFrame().onClick(holder, e);
+			}
+			else {
+				e.setCancelled(true);
+			}
 		}
 	}
 

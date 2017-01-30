@@ -9,12 +9,12 @@ public class Button extends Control {
 
 	private ClickAction action;
 	
-	public Button(IIconBuilder builder, ClickAction action) {
-		super(builder);
+	public Button(IIconBuilder builder, String text, ClickAction action) {
+		super(builder, text);
 		this.action = action;
 	}
-	public Button(ItemStack icon, ClickAction action) {
-		super(icon);
+	public Button(ItemStack icon, String text, ClickAction action) {
+		super(icon, text);
 		this.action = action;
 	}
 

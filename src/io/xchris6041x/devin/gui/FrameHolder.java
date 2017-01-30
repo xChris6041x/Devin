@@ -3,13 +3,18 @@ package io.xchris6041x.devin.gui;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-class FrameHolder implements InventoryHolder {
+public class FrameHolder implements InventoryHolder {
 
 	private Frame frame;
 	private Inventory inventory;
 	
 	public FrameHolder(Frame frame) {
 		this.frame = frame;
+	}
+
+	public void refresh() {
+		inventory.clear();
+		frame.render(inventory);
 	}
 	
 	public Frame getFrame() {
@@ -20,7 +25,7 @@ class FrameHolder implements InventoryHolder {
 	public Inventory getInventory() {
 		return inventory;
 	}
-	public void setInventory(Inventory inventory) {
+	protected void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
 	

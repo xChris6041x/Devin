@@ -39,7 +39,7 @@ public abstract class RenderableContainer extends Container {
 			if(container.onClick(holder, e)) return true;
 		}
 		for(Entry<Integer, Control> control : controls.entrySet()) {
-			if(e.getSlot() == control.getKey()) {
+			if(e.getRawSlot() == control.getKey()) {
 				if(control.getValue().onClick(holder, e)) return true;
 			}
 		}

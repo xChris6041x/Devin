@@ -7,13 +7,13 @@ import io.xchris6041x.devin.gui.FrameHolder;
 
 public class Button extends Control {
 
-	private OnClickAction action;
+	private ClickAction action;
 	
-	public Button(IIconBuilder builder, OnClickAction action) {
+	public Button(IIconBuilder builder, ClickAction action) {
 		super(builder);
 		this.action = action;
 	}
-	public Button(ItemStack icon, OnClickAction action) {
+	public Button(ItemStack icon, ClickAction action) {
 		super(icon);
 		this.action = action;
 	}

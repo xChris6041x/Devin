@@ -34,13 +34,13 @@ public abstract class RenderableContainer extends Container {
 	}
 	
 	@Override
-	public boolean onTrigger(FrameHolder holder, InventoryClickEvent e) {
+	public boolean onClick(FrameHolder holder, InventoryClickEvent e) {
 		for(Container container : getChildren()) {
-			if(container.onTrigger(holder, e)) return true;
+			if(container.onClick(holder, e)) return true;
 		}
 		for(Entry<Integer, Control> control : controls.entrySet()) {
 			if(e.getSlot() == control.getKey()) {
-				if(control.getValue().onTrigger(holder, e)) return true;
+				if(control.getValue().onClick(holder, e)) return true;
 			}
 		}
 		

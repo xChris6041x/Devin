@@ -16,6 +16,6 @@ public abstract class Control {
 		return builder;
 	}
 	
-	public abstract boolean onTrigger(FrameHolder holder, InventoryClickEvent e); 
+	public abstract boolean onClick(FrameHolder holder, InventoryClickEvent e); 
 	
 }

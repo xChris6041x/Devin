@@ -59,9 +59,9 @@ public class PageableContainer extends Container {
 	}
 	
 	@Override
-	public boolean onTrigger(FrameHolder holder, InventoryClickEvent e) {
+	public boolean onClick(FrameHolder holder, InventoryClickEvent e) {
 		// TODO Trigger controls for paging.
-		return getChildren()[page].onTrigger(holder, e);
+		return getChildren()[page].onClick(holder, e);
 	}
 	
 	

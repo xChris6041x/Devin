@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.xchris6041x.devin.commands.ArgumentStream;
 import io.xchris6041x.devin.commands.ObjectParsing;
 import io.xchris6041x.devin.data.UUIDProperty;
+import io.xchris6041x.devin.gui.FrameListener;
 import io.xchris6041x.devin.injection.InjectedObject;
 import io.xchris6041x.devin.injection.Injector;
 
@@ -102,6 +103,14 @@ public class Devin extends JavaPlugin {
 				return p;
 			}
 		});
+	}
+	
+	@Override
+	public void onEnable() {
+		//
+		// Setup Event Listeners
+		//
+		Bukkit.getPluginManager().registerEvents(new FrameListener(), this);
 	}
 
 	

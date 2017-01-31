@@ -7,11 +7,11 @@ import io.xchris6041x.devin.gui.FrameHolder;
 
 public class Label extends Control {
 
-	public Label(IIconBuilder builder, String text) {
-		super(builder, text);
+	public Label(IIconBuilder builder, int pos, String text) {
+		super(builder, pos, text);
 	}
-	public Label(ItemStack icon, String text) {
-		super(icon, text);
+	public Label(ItemStack icon, int pos, String text) {
+		super(icon, pos, text);
 	}
 
 	@Override

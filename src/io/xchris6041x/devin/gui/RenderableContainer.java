@@ -1,8 +1,7 @@
 package io.xchris6041x.devin.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -11,25 +10,21 @@ import io.xchris6041x.devin.gui.controls.Control;
 
 public abstract class RenderableContainer extends Container {
 
-	private Map<Integer, Control> controls = new HashMap<Integer, Control>(); // THIS IS FOR TESTING ONLY
+	private List<Control> controls = new ArrayList<Control>();
 	
-	public void addControl(Control control, int pos) {
-		if(pos < 0 || pos >= Container.WIDTH * getHeight()) throw new IllegalArgumentException("Cannot place control outside bounds.");
-		controls.put(pos, control);
-	}
-	public void addControl(Control control, int x, int y) {
-		addControl(control, y * Container.WIDTH + x);
+	public void addControl(Control control) {
+		controls.add(control);
 	}
 	
 	@Override
-	public void render(Inventory inventory) {
+	public void render(Inventory inv) {
 		// Render controls.
-		for(Entry<Integer, Control> control : controls.entrySet()) {
-			inventory.setItem(control.getKey(), control.getValue().getIcon());
+		for(Control control : controls) {
+			control.render(inv, 0, Container.WIDTH * getHeight());
 		}
 		// Render children above this container.
 		for(Container container : getChildren()) {
-			container.render(inventory);
+			container.render(inv);
 		}
 	}
 	
@@ -38,10 +33,8 @@ public abstract class RenderableContainer extends Container {
 		for(Container container : getChildren()) {
 			if(container.onClick(holder, e)) return true;
 		}
-		for(Entry<Integer, Control> control : controls.entrySet()) {
-			if(e.getRawSlot() == control.getKey()) {
-				if(control.getValue().onClick(holder, e)) return true;
-			}
+		for(Control control : controls) {
+			control.click(holder, e, 0);
 		}
 		
 		return false;

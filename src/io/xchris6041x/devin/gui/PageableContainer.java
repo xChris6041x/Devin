@@ -15,13 +15,13 @@ public class PageableContainer extends Container {
 	private int page = 0;
 	
 	public PageableContainer() {
-		next = new Button(new ItemStack(Material.GLASS), "Next", (holder, e) -> {
+		next = new Button(new ItemStack(Material.GLASS), Container.WIDTH * getHeight() - 1, "Next", (holder, e) -> {
 			setPageNumber(++page);
 			holder.refresh();
 			
 			return true;
 		});
-		prev = new Button(new ItemStack(Material.GLASS), "Previous", (holder, e) -> {
+		prev = new Button(new ItemStack(Material.GLASS), Container.WIDTH * getHeight() - Container.WIDTH, "Previous", (holder, e) -> {
 			setPageNumber(--page);
 			holder.refresh();
 			

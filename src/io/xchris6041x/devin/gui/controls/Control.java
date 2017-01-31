@@ -1,6 +1,7 @@
 package io.xchris6041x.devin.gui.controls;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -8,22 +9,25 @@ import io.xchris6041x.devin.gui.FrameHolder;
 
 public abstract class Control {
 
+	private int pos;
+	
 	private String text;
 	private IIconBuilder builder;
 	
-	public Control(IIconBuilder builder, String text) {
+	public Control(IIconBuilder builder, int pos, String text) {
 		this.builder = builder;
+		this.pos = pos;
 		this.text = text;
 	}
-	public Control(IIconBuilder builder) {
-		this(builder, null);
+	public Control(IIconBuilder builder, int pos) {
+		this(builder, pos, null);
 	}
 	
-	public Control(ItemStack icon, String text) {
-		this(new IconBuilder(icon), text);
+	public Control(ItemStack icon, int pos, String text) {
+		this(new IconBuilder(icon), pos, text);
 	}
-	public Control(ItemStack icon) {
-		this(new IconBuilder(icon));
+	public Control(ItemStack icon, int pos) {
+		this(new IconBuilder(icon), pos);
 	}
 	
 	public String getText() {
@@ -49,6 +53,37 @@ public abstract class Control {
 		return stack;
 	}
 	
-	public abstract boolean onClick(FrameHolder holder, InventoryClickEvent e); 
+	/**
+	 * Render this control to the inventory {@code inv} with an offset of {@code offset}.
+	 * This control won't be rendered if the {@code position + offset} is less than 0 or greater
+	 * than or equal to {@code max}
+	 * @param inv
+	 * @param offset
+	 * @param max - The upper bounds of the container (exclusive).
+	 */
+	public void render(Inventory inv, int offset, int max) {
+		if(pos >= 0 && pos < max) {
+			inv.setItem(pos + offset, getIcon());
+		}
+	}
+	
+	/**
+	 * Send the click information to this control. If the slot is correct, then
+	 * perform onClick.
+	 * @param holder
+	 * @param e
+	 * @param offset
+	 * @return whether the click was consumed. Just because there is a false return doesn't mean there is nothing there.
+	 */
+	public boolean click(FrameHolder holder, InventoryClickEvent e, int offset) {
+		if(e.getRawSlot() == pos + offset) {
+			return onClick(holder, e);
+		}
+		else {
+			return false;
+		}
+	}
+	
+	protected abstract boolean onClick(FrameHolder holder, InventoryClickEvent e); 
 	
 }

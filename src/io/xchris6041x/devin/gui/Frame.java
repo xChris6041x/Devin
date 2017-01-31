@@ -40,11 +40,11 @@ public class Frame extends PageableContainer {
 	 * @param player
 	 */
 	public void open(Player player) {
-		FrameHolder frameHolder = new FrameHolder(this);
+		FrameHolder frameHolder = new FrameHolder(this, player);
 		Inventory inventory = Bukkit.createInventory(frameHolder, getSize(), title);
 		frameHolder.setInventory(inventory);
 		
-		render(inventory);
+		render(inventory, player);
 		
 		player.openInventory(inventory);
 	}

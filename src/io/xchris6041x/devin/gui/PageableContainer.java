@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -103,15 +104,15 @@ public abstract class PageableContainer extends Container {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Inventory inventory) {
+	public void render(Inventory inventory, Player p) {
 		if(next.getPosition() < 0) next.setPosition(getSize() - 1);
 		if(prev.getPosition() < 0) prev.setPosition(getSize() - Container.WIDTH);
 		
-		pages.get(page).render(inventory);
+		pages.get(page).render(inventory, p);
 
 		if(isMultiPaged()) {
-			prev.render(inventory, 0, getSize());
-			next.render(inventory, 0, getSize());
+			prev.render(inventory, p, 0, getSize());
+			next.render(inventory, p, 0, getSize());
 		}
 	}
 	

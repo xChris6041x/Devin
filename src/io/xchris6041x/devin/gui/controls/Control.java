@@ -1,5 +1,6 @@
 package io.xchris6041x.devin.gui.controls;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -92,8 +93,8 @@ public abstract class Control {
 	/**
 	 * @return the icon that will be used when rendering to the inventory.
 	 */
-	public ItemStack getIcon() {
-		ItemStack stack = builder.getIcon();
+	public ItemStack getIcon(Player player) {
+		ItemStack stack = builder.getIcon(player);
 		
 		ItemMeta meta = stack.getItemMeta();
 		if(!meta.hasDisplayName() && text != null) {
@@ -112,10 +113,10 @@ public abstract class Control {
 	 * @param offset
 	 * @param max - The upper bounds of the container (exclusive).
 	 */
-	public void render(Inventory inventory, int offset, int max) {
+	public void render(Inventory inventory, Player player, int offset, int max) {
 		int pos = this.pos + offset;
 		if(pos >= 0 && pos < max) {
-			inventory.setItem(pos, getIcon());
+			inventory.setItem(pos, getIcon(player));
 		}
 	}
 	

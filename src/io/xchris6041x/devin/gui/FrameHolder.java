@@ -1,5 +1,6 @@
 package io.xchris6041x.devin.gui;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -11,13 +12,16 @@ import org.bukkit.inventory.InventoryHolder;
 public class FrameHolder implements InventoryHolder {
 
 	private Frame frame;
+	private Player p;
+	
 	private Inventory inventory;
 	
 	/**
 	 * @param frame - the frame that created the inventory that this holds.
 	 */
-	public FrameHolder(Frame frame) {
+	public FrameHolder(Frame frame, Player player) {
 		this.frame = frame;
+		this.p = player;
 	}
 
 	/**
@@ -25,7 +29,7 @@ public class FrameHolder implements InventoryHolder {
 	 */
 	public void refresh() {
 		inventory.clear();
-		frame.render(inventory);
+		frame.render(inventory, p);
 	}
 	
 	/**
@@ -33,6 +37,13 @@ public class FrameHolder implements InventoryHolder {
 	 */
 	public Frame getFrame() {
 		return frame;
+	}
+	
+	/**
+	 * @return the player that opened the frame.
+	 */
+	public Player getPlayer() {
+		return p;
 	}
 	
 	/**

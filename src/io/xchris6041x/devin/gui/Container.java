@@ -1,5 +1,6 @@
 package io.xchris6041x.devin.gui;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -29,8 +30,9 @@ public abstract class Container {
 	/**
 	 * Add the controls to the {@code inventory}.
 	 * @param inventory
+	 * @param player - The player who rendered the container.
 	 */
-	public abstract void render(Inventory inventory);
+	public abstract void render(Inventory inventory, Player player);
 	
 	/**
 	 * Trigger this container.

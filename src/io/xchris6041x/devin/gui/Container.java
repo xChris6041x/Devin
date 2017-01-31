@@ -24,6 +24,6 @@ public abstract class Container {
 	 * @param holder - The holder of the inventory and frame
 	 * @param e - The event fired
 	 */
-	public abstract boolean onClick(FrameHolder holder, InventoryClickEvent e);
+	public abstract boolean click(FrameHolder holder, InventoryClickEvent e);
 	
 }

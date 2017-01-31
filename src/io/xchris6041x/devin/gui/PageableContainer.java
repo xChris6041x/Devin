@@ -91,7 +91,7 @@ public abstract class PageableContainer extends Container {
 	}
 	
 	@Override
-	public boolean onClick(FrameHolder holder, InventoryClickEvent e) {
+	public boolean click(FrameHolder holder, InventoryClickEvent e) {
 		if(e.getRawSlot() == Container.WIDTH * getHeight() - Container.WIDTH) {
 			return prev.onClick(holder, e);
 		}
@@ -99,7 +99,7 @@ public abstract class PageableContainer extends Container {
 			return next.onClick(holder, e);
 		}
 		else {
-			return getChildren()[page].onClick(holder, e);
+			return getChildren()[page].click(holder, e);
 		}
 	}
 	

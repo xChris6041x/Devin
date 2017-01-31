@@ -15,7 +15,7 @@ public class StaticPageContainer extends PageContainer {
 	}
 
 	@Override
-	public boolean onClick(FrameHolder holder, InventoryClickEvent e) {
+	public boolean click(FrameHolder holder, InventoryClickEvent e) {
 		return getControlManager().click(holder, e, 0);
 	}
 	

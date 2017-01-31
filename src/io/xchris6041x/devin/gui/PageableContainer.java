@@ -74,6 +74,10 @@ public abstract class PageableContainer extends Container {
 		this.page = page;
 	}
 
+	public boolean isMultiPaged() {
+		return pages.size() > 1;
+	}
+	
 	
 	@Override
 	public void render(Inventory inventory) {
@@ -81,15 +85,19 @@ public abstract class PageableContainer extends Container {
 		if(prev.getPosition() < 0) prev.setPosition(getSize() - Container.WIDTH);
 		
 		pages.get(page).render(inventory);
-		
-		prev.render(inventory, 0, getSize());
-		next.render(inventory, 0, getSize());
+
+		if(isMultiPaged()) {
+			prev.render(inventory, 0, getSize());
+			next.render(inventory, 0, getSize());
+		}
 	}
 	
 	@Override
 	public boolean click(FrameHolder holder, InventoryClickEvent e) {
-		if(next.click(holder, e, 0)) return true;
-		if(prev.click(holder, e, 0)) return true;
+		if(isMultiPaged()) {
+			if(next.click(holder, e, 0)) return true;
+			if(prev.click(holder, e, 0)) return true;
+		}
 		
 		return pages.get(page).click(holder, e);
 	}

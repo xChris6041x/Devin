@@ -22,25 +22,18 @@ public abstract class PageableContainer extends Container {
 	public PageableContainer() {
 		this.pages = new ArrayList<PageContainer>();
 		
-		next = new Button(new ItemStack(Material.GLASS), Container.WIDTH * getHeight() - 1, "Next", (holder, e) -> {
+		next = new Button(new ItemStack(Material.GLASS), -1, "Next", (holder, e) -> {
 			setPageNumber(++page);
 			holder.refresh();
 			
 			return true;
 		});
-		prev = new Button(new ItemStack(Material.GLASS), Container.WIDTH * getHeight() - Container.WIDTH, "Previous", (holder, e) -> {
+		prev = new Button(new ItemStack(Material.GLASS), -1, "Previous", (holder, e) -> {
 			setPageNumber(--page);
 			holder.refresh();
 			
 			return true;
 		});
-	}
-	
-	/**
-	 * @return the children of this container.
-	 */
-	public PageContainer[] getChildren() {
-		return pages.toArray(new PageContainer[0]);
 	}
 	
 	/**
@@ -76,7 +69,7 @@ public abstract class PageableContainer extends Container {
 	 */
 	public void setPageNumber(int page) {
 		if(page < 0) page = 0;
-		else if(page >= getChildren().length) page = getChildren().length - 1;
+		else if(page >= pages.size()) page = pages.size() - 1;
 		
 		this.page = page;
 	}
@@ -84,23 +77,21 @@ public abstract class PageableContainer extends Container {
 	
 	@Override
 	public void render(Inventory inventory) {
-		getChildren()[page].render(inventory);
+		if(next.getPosition() < 0) next.setPosition(getSize() - 1);
+		if(prev.getPosition() < 0) prev.setPosition(getSize() - Container.WIDTH);
 		
-		prev.render(inventory, 0, Container.WIDTH * getHeight());
-		next.render(inventory, 0, Container.WIDTH * getHeight());
+		pages.get(page).render(inventory);
+		
+		prev.render(inventory, 0, getSize());
+		next.render(inventory, 0, getSize());
 	}
 	
 	@Override
 	public boolean click(FrameHolder holder, InventoryClickEvent e) {
-		if(e.getRawSlot() == Container.WIDTH * getHeight() - Container.WIDTH) {
-			return prev.onClick(holder, e);
-		}
-		else if(e.getRawSlot() == Container.WIDTH * getHeight() - 1) {
-			return next.onClick(holder, e);
-		}
-		else {
-			return getChildren()[page].click(holder, e);
-		}
+		if(next.click(holder, e, 0)) return true;
+		if(prev.click(holder, e, 0)) return true;
+		
+		return pages.get(page).click(holder, e);
 	}
 	
 }

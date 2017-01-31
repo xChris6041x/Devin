@@ -30,6 +30,14 @@ public abstract class Control {
 		this(new IconBuilder(icon), pos);
 	}
 	
+	
+	public int getPosition() {
+		return pos;
+	}
+	public void setPosition(int pos) {
+		this.pos = pos;
+	}
+	
 	public String getText() {
 		return text;
 	}
@@ -62,8 +70,9 @@ public abstract class Control {
 	 * @param max - The upper bounds of the container (exclusive).
 	 */
 	public void render(Inventory inv, int offset, int max) {
+		int pos = this.pos + offset;
 		if(pos >= 0 && pos < max) {
-			inv.setItem(pos + offset, getIcon());
+			inv.setItem(pos, getIcon());
 		}
 	}
 	

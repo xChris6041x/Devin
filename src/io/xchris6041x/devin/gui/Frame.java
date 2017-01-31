@@ -14,6 +14,10 @@ public class Frame extends PageableContainer {
 	private String title;
 	private int height;
 	
+	/**
+	 * @param title - The title of the Frame.
+	 * @param height - How tall the Frame is in slots.
+	 */
 	public Frame(String title, int height) {
 		super();
 		
@@ -45,6 +49,9 @@ public class Frame extends PageableContainer {
 		player.openInventory(inventory);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getHeight() {
 		return height;

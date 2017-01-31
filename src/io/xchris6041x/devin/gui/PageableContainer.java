@@ -10,6 +10,13 @@ import org.bukkit.inventory.ItemStack;
 
 import io.xchris6041x.devin.gui.controls.Button;
 
+/**
+ * An abstract class for the pagination of containers
+ * with automatic next and previous page controls. Those
+ * controls are only shown when there are multiple pages.
+ * 
+ * @author Christopher Bishop
+ */
 public abstract class PageableContainer extends Container {
 	
 	private Button next;
@@ -85,11 +92,16 @@ public abstract class PageableContainer extends Container {
 		this.page = page;
 	}
 
+	/**
+	 * @return whether this container has multiple pages.
+	 */
 	public boolean isMultiPaged() {
 		return pages.size() > 1;
 	}
 	
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void render(Inventory inventory) {
 		if(next.getPosition() < 0) next.setPosition(getSize() - 1);
@@ -103,6 +115,9 @@ public abstract class PageableContainer extends Container {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean click(FrameHolder holder, InventoryClickEvent e) {
 		if(isMultiPaged()) {

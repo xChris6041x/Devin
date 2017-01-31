@@ -3,6 +3,12 @@ package io.xchris6041x.devin.gui;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+/**
+ * Container's render ItemStacks to the inventory and handle click events from
+ * the inventory.
+ * 
+ * @author Christopher Bishop
+ */
 public abstract class Container {
 
 	public static final int WIDTH = 9;

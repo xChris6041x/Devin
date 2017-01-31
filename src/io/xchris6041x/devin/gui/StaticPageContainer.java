@@ -3,8 +3,16 @@ package io.xchris6041x.devin.gui;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+/**
+ * A simple {@link PageContainer} class.
+ * 
+ * @author Christopher Bishop
+ */
 public class StaticPageContainer extends PageContainer {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public StaticPageContainer(PageableContainer parent) {
 		super(parent);
 	}

@@ -8,6 +8,12 @@ import org.bukkit.inventory.Inventory;
 
 import io.xchris6041x.devin.gui.FrameHolder;
 
+/**
+ * A class in charge of managing, rendering, and triggering many
+ * controls properly.
+ * 
+ * @author Christopher Bishop
+ */
 public class ControlManager {
 
 	private List<Control> controls = new ArrayList<Control>();

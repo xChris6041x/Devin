@@ -7,6 +7,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import io.xchris6041x.devin.gui.FrameHolder;
 
+/**
+ * An interactive ItemStack, which contains position information
+ * for where it will be in the inventory.
+ * 
+ * @author Christopher Bishop
+ */
 public abstract class Control {
 
 	private int pos;
@@ -14,23 +20,49 @@ public abstract class Control {
 	private String text;
 	private IIconBuilder builder;
 	
-	public Control(IIconBuilder builder, int pos, String text) {
+	/**
+	 * Create a control.
+	 * @param builder - What builds the icon.
+	 * @param position - The position in the inventory.
+	 * @param text - The text of the icon.
+	 */
+	public Control(IIconBuilder builder, int position, String text) {
 		this.builder = builder;
-		this.pos = pos;
+		this.pos = position;
 		this.text = text;
 	}
-	public Control(IIconBuilder builder, int pos) {
-		this(builder, pos, null);
+	
+	/**
+	 * Create a control.
+	 * @param builder - What builds the icon.
+	 * @param position - The position in the inventory.
+	 */
+	public Control(IIconBuilder builder, int position) {
+		this(builder, position, null);
 	}
 	
-	public Control(ItemStack icon, int pos, String text) {
-		this(new IconBuilder(icon), pos, text);
-	}
-	public Control(ItemStack icon, int pos) {
-		this(new IconBuilder(icon), pos);
+	/**
+	 * Create a control.
+	 * @param icon - The icon that will be used.
+	 * @param position - The position in the inventory.
+	 * @param text - The text of the icon.
+	 */
+	public Control(ItemStack icon, int position, String text) {
+		this(new IconBuilder(icon), position, text);
 	}
 	
+	/**
+	 * Create a control.
+	 * @param icon - The icon that will be used.
+	 * @param position - The position in the inventory.
+	 */
+	public Control(ItemStack icon, int position) {
+		this(new IconBuilder(icon), position);
+	}
 	
+	/**
+	 * @return the position of the control in the inventory.
+	 */
 	public int getPosition() {
 		return pos;
 	}
@@ -38,6 +70,11 @@ public abstract class Control {
 		this.pos = pos;
 	}
 	
+	/**
+	 * @return the text is the display name of the ItemStack if the
+	 * ItemStack does not have a name. If the text is null, no change
+	 * will happen to the ItemStack display name.
+	 */
 	public String getText() {
 		return text;
 	}
@@ -45,10 +82,16 @@ public abstract class Control {
 		this.text = text;
 	}
 	
+	/**
+	 * @return the builder of the icon.
+	 */
 	public IIconBuilder getIconBuilder() {
 		return builder;
 	}
 	
+	/**
+	 * @return the icon that will be used when rendering to the inventory.
+	 */
 	public ItemStack getIcon() {
 		ItemStack stack = builder.getIcon();
 		
@@ -62,17 +105,17 @@ public abstract class Control {
 	}
 	
 	/**
-	 * Render this control to the inventory {@code inv} with an offset of {@code offset}.
+	 * Render this control to the inventory {@code inventory} with an offset of {@code offset}.
 	 * This control won't be rendered if the {@code position + offset} is less than 0 or greater
 	 * than or equal to {@code max}
-	 * @param inv
+	 * @param inventory
 	 * @param offset
 	 * @param max - The upper bounds of the container (exclusive).
 	 */
-	public void render(Inventory inv, int offset, int max) {
+	public void render(Inventory inventory, int offset, int max) {
 		int pos = this.pos + offset;
 		if(pos >= 0 && pos < max) {
-			inv.setItem(pos, getIcon());
+			inventory.setItem(pos, getIcon());
 		}
 	}
 	

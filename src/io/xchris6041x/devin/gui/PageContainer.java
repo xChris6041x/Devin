@@ -23,9 +23,4 @@ public class PageContainer extends RenderableContainer {
 		return getParent().getHeight();
 	}
 	
-	@Override
-	public boolean isValidParent(Container container) {
-		return container instanceof PageableContainer;
-	}
-	
 }

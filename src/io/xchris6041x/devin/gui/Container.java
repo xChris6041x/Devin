@@ -26,20 +26,4 @@ public abstract class Container {
 	 */
 	public abstract boolean onClick(FrameHolder holder, InventoryClickEvent e);
 	
-	/**
-	 * @param container
-	 * @return whether the {@code container} is suitable to be a parent of this container.
-	 */
-	public boolean isValidParent(Container container) {
-		return true;
-	}
-	
-	/**
-	 * @param container
-	 * @return whether the {@code container} is suitable to be a child of this container.
-	 */
-	public boolean isValidChild(Container container) {
-		return true;
-	}
-	
 }

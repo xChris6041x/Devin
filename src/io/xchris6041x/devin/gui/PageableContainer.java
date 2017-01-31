@@ -103,10 +103,4 @@ public abstract class PageableContainer extends Container {
 		}
 	}
 	
-	
-	@Override
-	public boolean isValidChild(Container container) {
-		return container instanceof PageContainer;
-	}
-	
 }

@@ -15,6 +15,8 @@ public class Frame extends PageableContainer {
 	private int rows;
 	
 	public Frame(String title, int rows) {
+		super();
+		
 		if(rows < 1) throw new IllegalArgumentException("GUI's cannot have less than 1 row.");
 		if(rows > Container.MAX_HEIGHT) throw new IllegalArgumentException("GUI's cannot have more than " + Container.MAX_HEIGHT + " rows.");
 		
@@ -43,6 +45,7 @@ public class Frame extends PageableContainer {
 	public void open(Player player) {
 		FrameHolder frameHolder = new FrameHolder(this);
 		Inventory inventory = Bukkit.createInventory(frameHolder, rows * 9, title);
+		frameHolder.setInventory(inventory);
 		
 		render(inventory);
 		

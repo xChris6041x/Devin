@@ -67,11 +67,6 @@ public class PageableContainer extends Container {
 	}
 	
 	@Override
-	public int getWidth() {
-		return getParent().getWidth();
-	}
-
-	@Override
 	public int getHeight() {
 		return getParent().getHeight();
 	}
@@ -80,16 +75,16 @@ public class PageableContainer extends Container {
 	@Override
 	public void render(Inventory inventory) {
 		getChildren()[page].render(inventory);
-		inventory.setItem(getWidth() * getHeight() - getWidth(), prev.getIcon());
-		inventory.setItem(getWidth() * getHeight() - 1, next.getIcon());
+		inventory.setItem(Container.WIDTH * getHeight() - Container.WIDTH, prev.getIcon());
+		inventory.setItem(Container.WIDTH * getHeight() - 1, next.getIcon());
 	}
 	
 	@Override
 	public boolean onClick(FrameHolder holder, InventoryClickEvent e) {
-		if(e.getRawSlot() == getWidth() * getHeight() - getWidth()) {
+		if(e.getRawSlot() == Container.WIDTH * getHeight() - Container.WIDTH) {
 			return prev.onClick(holder, e);
 		}
-		else if(e.getRawSlot() == getWidth() * getHeight() - 1) {
+		else if(e.getRawSlot() == Container.WIDTH * getHeight() - 1) {
 			return next.onClick(holder, e);
 		}
 		else {

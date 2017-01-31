@@ -14,11 +14,11 @@ public abstract class RenderableContainer extends Container {
 	private Map<Integer, Control> controls = new HashMap<Integer, Control>(); // THIS IS FOR TESTING ONLY
 	
 	public void addControl(Control control, int pos) {
-		if(pos < 0 || pos >= getWidth() * getHeight()) throw new IllegalArgumentException("Cannot place control outside bounds.");
+		if(pos < 0 || pos >= Container.WIDTH * getHeight()) throw new IllegalArgumentException("Cannot place control outside bounds.");
 		controls.put(pos, control);
 	}
 	public void addControl(Control control, int x, int y) {
-		addControl(control, y * getWidth() + x);
+		addControl(control, y * Container.WIDTH + x);
 	}
 	
 	@Override

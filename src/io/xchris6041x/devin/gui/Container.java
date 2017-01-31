@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 
 public abstract class Container {
 
-	public static final int MAX_WIDTH = 9;
+	public static final int WIDTH = 9;
 	public static final int MAX_HEIGHT = 6;
 	
 	private Container parent;
@@ -54,11 +54,6 @@ public abstract class Container {
 	public Container[] getChildren() {
 		return children.toArray(new Container[0]);
 	}
-	
-	/**
-	 * @return the width of the container.
-	 */
-	public abstract int getWidth();
 	
 	/**
 	 * @return the height of the container.

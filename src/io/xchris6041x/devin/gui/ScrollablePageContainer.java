@@ -25,18 +25,20 @@ public class ScrollablePageContainer extends PageContainer {
 	
 	/**
 	 * {@inheritDoc}
+	 * @param material - The material of the scroll up and down buttons.
+	 * @param durability - The durability of the scroll up and down buttons.
 	 */
-	public ScrollablePageContainer(PageableContainer parent) {
+	public ScrollablePageContainer(PageableContainer parent, Material material, short durability) {
 		super(parent);
 		if(parent.getHeight() < 3) throw new IllegalArgumentException("Cannot add a ScrollablePageContainer to a PageableContainer with a height less than 3.");
 		
-		this.up = new Button(new ItemStack(Material.EMERALD_BLOCK), Container.WIDTH - 1, "Scroll Up", (holder, e) -> {
+		this.up = new Button(new ItemStack(material, 1, durability), Container.WIDTH - 1, "Scroll Up", (holder, e) -> {
 			setYOffset(yOffset - 1);
 			holder.refresh();
 			
 			return true;
 		});
-		this.down = new Button(new ItemStack(Material.EMERALD_BLOCK), 0, "Scroll Down", (holder, e) -> {
+		this.down = new Button(new ItemStack(material, 1, durability), 0, "Scroll Down", (holder, e) -> {
 			setYOffset(yOffset + 1);
 			holder.refresh();
 			

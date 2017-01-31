@@ -1,6 +1,7 @@
 package io.xchris6041x.devin.gui;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -15,11 +16,12 @@ public class Frame extends PageableContainer {
 	private int height;
 	
 	/**
+	 * {@inheritDoc}
 	 * @param title - The title of the Frame.
 	 * @param height - How tall the Frame is in slots.
 	 */
-	public Frame(String title, int height) {
-		super();
+	public Frame(String title, int height, Material material, short durability) {
+		super(material, durability);
 		
 		if(height < 1) throw new IllegalArgumentException("GUI's height cannot be less than 1.");
 		if(height > Container.MAX_HEIGHT) throw new IllegalArgumentException("GUI's height cannot be more than " + Container.MAX_HEIGHT);

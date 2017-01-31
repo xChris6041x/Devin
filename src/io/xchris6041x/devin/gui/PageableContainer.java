@@ -27,16 +27,20 @@ public abstract class PageableContainer extends Container {
 	
 	private List<PageContainer> pages;
 	
-	public PageableContainer() {
+	/**
+	 * @param material - The material of the previous and next buttons.
+	 * @param durability - The durability of the previous and next buttons.
+	 */
+	public PageableContainer(Material material, short durability) {
 		this.pages = new ArrayList<PageContainer>();
 		
-		next = new Button(new ItemStack(Material.GLASS), -1, "Next", (holder, e) -> {
+		next = new Button(new ItemStack(material, 1, durability), -1, "Next", (holder, e) -> {
 			setPageNumber(++page);
 			holder.refresh();
 			
 			return true;
 		});
-		prev = new Button(new ItemStack(Material.GLASS), -1, "Previous", (holder, e) -> {
+		prev = new Button(new ItemStack(material, 1, durability), -1, "Previous", (holder, e) -> {
 			setPageNumber(--page);
 			holder.refresh();
 			
@@ -57,10 +61,12 @@ public abstract class PageableContainer extends Container {
 	
 	/**
 	 * Add a scrollable page to this container.
+	 * @param material - The material of scroll up and down buttons.
+	 * @param durability - The durability of the scroll up and down buttons.
 	 * @return the page that was created.
 	 */
-	public ScrollablePageContainer addScrollablePage() {
-		ScrollablePageContainer page = new ScrollablePageContainer(this);
+	public ScrollablePageContainer addScrollablePage(Material material, short durability) {
+		ScrollablePageContainer page = new ScrollablePageContainer(this, material, durability);
 		pages.add(page);
 		
 		return page;

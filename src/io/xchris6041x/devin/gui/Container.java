@@ -9,6 +9,13 @@ public abstract class Container {
 	public static final int MAX_HEIGHT = 6;
 	
 	/**
+	 * @return the number of slots.
+	 */
+	public int getSize() {
+		return Container.WIDTH * getHeight();
+	}
+	
+	/**
 	 * @return the height of the container.
 	 */
 	public abstract int getHeight();

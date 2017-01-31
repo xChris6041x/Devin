@@ -1,5 +1,6 @@
 package io.xchris6041x.devin.gui.controls;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -16,8 +17,8 @@ public class IconBuilder implements IIconBuilder {
 	}
 	
 	@Override
-	public ItemStack getIcon() {
-		return icon.clone();
+	public ItemStack getIcon(Player player) {
+		return icon;
 	}
 	public void setIcon(ItemStack icon) {
 		this.icon = icon;

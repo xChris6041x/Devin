@@ -48,7 +48,7 @@ public abstract class PageableContainer extends Container {
 	 * @return the page that was created.
 	 */
 	public PageContainer addPage() {
-		PageContainer page = new PageContainer(this);
+		PageContainer page = new StaticPageContainer(this);
 		pages.add(page);
 		
 		return page;

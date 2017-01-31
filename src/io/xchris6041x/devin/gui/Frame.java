@@ -45,12 +45,6 @@ public class Frame extends PageableContainer {
 		player.openInventory(inventory);
 	}
 	
-	
-	@Override
-	public void setParent(Container parent) {
-		if(parent == null) return;
-		throw new UnsupportedOperationException("Cannot set the parent of a Frame.");
-	}
 	@Override
 	public int getHeight() {
 		return height;

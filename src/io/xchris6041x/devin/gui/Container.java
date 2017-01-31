@@ -1,8 +1,5 @@
 package io.xchris6041x.devin.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -10,50 +7,6 @@ public abstract class Container {
 
 	public static final int WIDTH = 9;
 	public static final int MAX_HEIGHT = 6;
-	
-	private Container parent;
-	private List<Container> children;
-	
-	public Container(Container parent) {
-		this.children = new ArrayList<Container>();
-		this.setParent(parent);
-	}
-	public Container() {
-		this(null);
-	}
-	
-	/**
-	 * @return the parent of this container.
-	 */
-	public Container getParent() {
-		return parent;
-	}
-	
-	/**
-	 * Sets this containers parent to {@code parent}.
-	 * @param parent
-	 */
-	public void setParent(Container parent) {
-		if(parent == null) {
-			if(this.parent != null) this.parent.children.remove(this);
-			this.parent = null;
-		}
-		else {
-			if(!this.isValidParent(parent)) throw new IllegalArgumentException("Illegal parent.");
-			if(!parent.isValidChild(this)) throw new IllegalArgumentException("Illegal Child");
-			
-			if(this.parent != null) this.parent.children.remove(this);
-			this.parent = parent;
-			if(this.parent != null) this.parent.children.add(this);
-		}
-	}
-	
-	/**
-	 * @return the children of this container.
-	 */
-	public Container[] getChildren() {
-		return children.toArray(new Container[0]);
-	}
 	
 	/**
 	 * @return the height of the container.

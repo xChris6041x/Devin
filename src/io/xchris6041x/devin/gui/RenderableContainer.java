@@ -22,21 +22,13 @@ public abstract class RenderableContainer extends Container {
 		for(Control control : controls) {
 			control.render(inv, 0, Container.WIDTH * getHeight());
 		}
-		// Render children above this container.
-		for(Container container : getChildren()) {
-			container.render(inv);
-		}
 	}
 	
 	@Override
 	public boolean onClick(FrameHolder holder, InventoryClickEvent e) {
-		for(Container container : getChildren()) {
-			if(container.onClick(holder, e)) return true;
-		}
 		for(Control control : controls) {
 			control.click(holder, e, 0);
 		}
-		
 		return false;
 	}
 	

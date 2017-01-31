@@ -1,5 +1,8 @@
 package io.xchris6041x.devin.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -7,14 +10,18 @@ import org.bukkit.inventory.ItemStack;
 
 import io.xchris6041x.devin.gui.controls.Button;
 
-public class PageableContainer extends Container {
+public abstract class PageableContainer extends Container {
 	
 	private Button next;
 	private Button prev;
 	
 	private int page = 0;
 	
+	private List<PageContainer> pages;
+	
 	public PageableContainer() {
+		this.pages = new ArrayList<PageContainer>();
+		
 		next = new Button(new ItemStack(Material.GLASS), Container.WIDTH * getHeight() - 1, "Next", (holder, e) -> {
 			setPageNumber(++page);
 			holder.refresh();
@@ -30,12 +37,19 @@ public class PageableContainer extends Container {
 	}
 	
 	/**
+	 * @return the children of this container.
+	 */
+	public PageContainer[] getChildren() {
+		return pages.toArray(new PageContainer[0]);
+	}
+	
+	/**
 	 * Add a page to this container.
 	 * @return the page that was created.
 	 */
 	public PageContainer addPage() {
-		PageContainer page = new PageContainer();
-		page.setParent(this);
+		PageContainer page = new PageContainer(this);
+		pages.add(page);
 		
 		return page;
 	}
@@ -45,6 +59,7 @@ public class PageableContainer extends Container {
 	 * @param page
 	 */
 	public void removePage(PageContainer page) {
+		pages.remove(page);
 		page.setParent(null);
 	}
 	
@@ -65,18 +80,14 @@ public class PageableContainer extends Container {
 		
 		this.page = page;
 	}
-	
-	@Override
-	public int getHeight() {
-		return getParent().getHeight();
-	}
 
 	
 	@Override
 	public void render(Inventory inventory) {
 		getChildren()[page].render(inventory);
-		inventory.setItem(Container.WIDTH * getHeight() - Container.WIDTH, prev.getIcon());
-		inventory.setItem(Container.WIDTH * getHeight() - 1, next.getIcon());
+		
+		prev.render(inventory, 0, Container.WIDTH * getHeight());
+		next.render(inventory, 0, Container.WIDTH * getHeight());
 	}
 	
 	@Override

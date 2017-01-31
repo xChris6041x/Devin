@@ -37,11 +37,22 @@ public abstract class PageableContainer extends Container {
 	}
 	
 	/**
-	 * Add a page to this container.
+	 * Add a static page to this container.
 	 * @return the page that was created.
 	 */
-	public PageContainer addPage() {
-		PageContainer page = new StaticPageContainer(this);
+	public StaticPageContainer addPage() {
+		StaticPageContainer page = new StaticPageContainer(this);
+		pages.add(page);
+		
+		return page;
+	}
+	
+	/**
+	 * Add a scrollable page to this container.
+	 * @return the page that was created.
+	 */
+	public ScrollablePageContainer addScrollablePage() {
+		ScrollablePageContainer page = new ScrollablePageContainer(this);
 		pages.add(page);
 		
 		return page;

@@ -47,6 +47,20 @@ public abstract class PageableContainer extends Container {
 		});
 	}
 	
+	/**
+	 * @param material - The material of the previous and next buttons. The durability is 0.
+	 */
+	public PageableContainer(Material material) {
+		this(material, (short) 0);
+	}
+	
+	/**
+	 * The next and previous buttons will use black stained glass pane for the icon.
+	 */
+	public PageableContainer() {
+		this(Material.STAINED_GLASS_PANE, (short) 15);
+	}
+	
 	protected List<PageContainer> getPages() {
 		return pages;
 	}

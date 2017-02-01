@@ -47,6 +47,22 @@ public class ScrollablePageContainer extends PageContainer {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 * @param material - The material of the scroll up and down buttons. The durability for the item will be 0.
+	 */
+	public ScrollablePageContainer(PageableContainer parent, Material material) {
+		this(parent, material, (short) 0);
+	}
+	
+	/**
+	 * The icon that will be used will be black stained glass pane.
+	 * {@inheritDoc}
+	 */
+	public ScrollablePageContainer(PageableContainer parent) {
+		this(parent, Material.STAINED_GLASS_PANE, (short) 15);
+	}
+	
+	/**
 	 * @return the y-offset of the controls.
 	 */
 	public int getYOffset() {

@@ -24,7 +24,6 @@ public abstract class PageableContainer extends Container {
 	private Button prev;
 	
 	private int page = 0;
-	
 	private List<PageContainer> pages;
 	
 	/**
@@ -50,35 +49,6 @@ public abstract class PageableContainer extends Container {
 	
 	protected List<PageContainer> getPages() {
 		return pages;
-	}
-	
-	/**
-	 * Add a static page to this container.
-	 * @return the page that was created.
-	 */
-	public StaticPageContainer addPage() {
-		StaticPageContainer page = new StaticPageContainer(this);
-		return page;
-	}
-	
-	/**
-	 * Add a scrollable page to this container.
-	 * @param material - The material of scroll up and down buttons.
-	 * @param durability - The durability of the scroll up and down buttons.
-	 * @return the page that was created.
-	 */
-	public ScrollablePageContainer addScrollablePage(Material material, short durability) {
-		ScrollablePageContainer page = new ScrollablePageContainer(this, material, durability);
-		return page;
-	}
-	
-	/**
-	 * Remove a {@code page} from this container.
-	 * @param page
-	 */
-	public void removePage(PageContainer page) {
-		pages.remove(page);
-		page.setParent(null);
 	}
 	
 	/**

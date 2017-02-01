@@ -19,10 +19,12 @@ public class ControlManager {
 
 	private List<Control> controls = new ArrayList<Control>();
 	
+	/**
+	 * @return a list of the controls.
+	 */
 	public List<Control> getControls() {
 		return controls;
 	}
-	
 
 	/**
 	 * Render the controls. If two or more controls share the same position, the last

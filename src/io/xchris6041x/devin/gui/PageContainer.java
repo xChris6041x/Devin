@@ -30,10 +30,18 @@ public abstract class PageContainer extends Container {
 	public final PageableContainer getParent() {
 		return parent;
 	}
+	
+	/**
+	 * Set the parent of this container. This will automatically add and remove
+	 * this page from the new and old parent respectively.
+	 * @param parent
+	 */
 	public final void setParent(PageableContainer parent) {
+		if(parent == null) throw new IllegalArgumentException("PageContainers must have a parent.");
 		if(this.parent != null) this.parent.getPages().remove(this);
+		
 		this.parent = parent;
-		if(this.parent != null) this.parent.getPages().add(this);
+		this.parent.getPages().add(this);
 	}
 	
 	/**

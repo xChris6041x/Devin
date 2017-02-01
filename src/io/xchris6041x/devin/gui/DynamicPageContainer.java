@@ -10,12 +10,12 @@ import io.xchris6041x.devin.gui.controls.ControlManager;
  * 
  * @author Christopher Bishop
  */
-public abstract class PlayerPageContainer extends PageContainer {
+public abstract class DynamicPageContainer extends PageContainer {
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public PlayerPageContainer(PageableContainer parent) {
+	public DynamicPageContainer(PageableContainer parent) {
 		super(parent);
 	}
 
@@ -25,7 +25,7 @@ public abstract class PlayerPageContainer extends PageContainer {
 	@Override
 	public void render(FrameHolder holder, Inventory inventory) {
 		getControlManager().render(holder, inventory, 0, getSize());
-		getRelativeControlManager(holder).render(holder, inventory, 0, getSize());
+		getDynamicControlManager(holder).render(holder, inventory, 0, getSize());
 	}
 
 	/**
@@ -33,7 +33,7 @@ public abstract class PlayerPageContainer extends PageContainer {
 	 */
 	@Override
 	public boolean click(FrameHolder holder, InventoryClickEvent e) {
-		if(getRelativeControlManager(holder).click(holder, e, 0)) return true;
+		if(getDynamicControlManager(holder).click(holder, e, 0)) return true;
 		return getControlManager().click(holder, e, 0);
 	}
 	
@@ -41,6 +41,6 @@ public abstract class PlayerPageContainer extends PageContainer {
 	 * @param p
 	 * @return a ControlManager that is driven by a player.
 	 */
-	public abstract ControlManager getRelativeControlManager(FrameHolder holder);
+	public abstract ControlManager getDynamicControlManager(FrameHolder holder);
 	
 }

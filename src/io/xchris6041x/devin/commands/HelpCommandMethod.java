@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 import io.xchris6041x.devin.Validator;
-import io.xchris6041x.devin.utils.CommandUtil;
 
 class HelpCommandMethod implements CommandMethod {
 
@@ -48,7 +47,7 @@ class HelpCommandMethod implements CommandMethod {
 		
 		msgSender.info(sender, root.getName().toUpperCase() + " Commands | Page " + (page + 1) + "/" + maxPages);
 		msgSender.send(sender, "------------------------------------------------");
-		msgSender.send(sender, CommandUtil.pagination(helpMessages, pageLength, page));
+		msgSender.send(sender, CommandUtils.pagination(helpMessages, pageLength, page));
 	}
 	
 	

@@ -31,6 +31,24 @@ public class Frame extends PageableContainer {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 * @param title - The title of the Frame.
+	 * @param height - How tall the Frame is in slots.
+	 */
+	public Frame (String title, int height, Material material) {
+		this(title, height, material, (short) 0);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @param title - The title of the Frame.
+	 * @param height - How tall the Frame is in slots.
+	 */
+	public Frame(String title, int height) {
+		this(title, height, Material.STAINED_GLASS_PANE, (short) 15);
+	}
+	
+	/**
 	 * @return the title of the inventory.
 	 */
 	public String getTitle() {

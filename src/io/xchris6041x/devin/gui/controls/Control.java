@@ -113,10 +113,10 @@ public abstract class Control {
 	 * @param offset
 	 * @param max - The upper bounds of the container (exclusive).
 	 */
-	public void render(Inventory inventory, Player player, int offset, int max) {
+	public void render(FrameHolder holder, Inventory inventory, int offset, int max) {
 		int pos = this.pos + offset;
 		if(pos >= 0 && pos < max) {
-			inventory.setItem(pos, getIcon(player));
+			inventory.setItem(pos, getIcon(holder.getPlayer()));
 		}
 	}
 	

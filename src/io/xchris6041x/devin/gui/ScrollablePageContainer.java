@@ -1,7 +1,6 @@
 package io.xchris6041x.devin.gui;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -108,14 +107,14 @@ public class ScrollablePageContainer extends PageContainer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Inventory inventory, Player p) {
+	public void render(FrameHolder holder, Inventory inventory) {
 		int offset = -yOffset * Container.WIDTH;
 		
-		getControlManager().render(inventory, p, offset, getSize());
-		up.render(inventory, p, 0, getSize());
+		getControlManager().render(holder, inventory, offset, getSize());
+		up.render(holder, inventory, 0, getSize());
 		
 		down.setPosition(getSize() - 1);
-		down.render(inventory, p, 0, getSize());
+		down.render(holder, inventory, 0, getSize());
 	}
 	
 	/**

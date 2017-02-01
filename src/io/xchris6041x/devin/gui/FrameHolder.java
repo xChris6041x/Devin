@@ -14,6 +14,8 @@ public class FrameHolder implements InventoryHolder {
 	private Frame frame;
 	private Player p;
 	
+	private int page = 0;
+	
 	private Inventory inventory;
 	
 	/**
@@ -29,7 +31,7 @@ public class FrameHolder implements InventoryHolder {
 	 */
 	public void refresh() {
 		inventory.clear();
-		frame.render(inventory, p);
+		frame.render(this, inventory);
 	}
 	
 	/**
@@ -44,6 +46,24 @@ public class FrameHolder implements InventoryHolder {
 	 */
 	public Player getPlayer() {
 		return p;
+	}
+	
+	/**
+	 * @return the current page that the frame is on starting at 0.
+	 */
+	public int getPage() {
+		return page;
+	}
+	
+	/**
+	 * Set the page that will be rendered the next refresh.
+	 * @param page - A page number that starts at 0. This will be clipped automatically to the bounds.
+	 */
+	public void setPage(int page) {
+		if(page < 0) page = 0;
+		else if(page >= frame.getPages().size()) page = frame.getPages().size() - 1;
+		
+		this.page = page;
 	}
 	
 	/**

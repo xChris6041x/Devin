@@ -1,6 +1,5 @@
 package io.xchris6041x.devin.gui;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -24,9 +23,9 @@ public abstract class PlayerPageContainer extends PageContainer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Inventory inventory, Player player) {
-		getControlManager().render(inventory, player, 0, getSize());
-		getRelativeControlManager(player).render(inventory, player, 0, getSize());
+	public void render(FrameHolder holder, Inventory inventory) {
+		getControlManager().render(holder, inventory, 0, getSize());
+		getRelativeControlManager(holder).render(holder, inventory, 0, getSize());
 	}
 
 	/**
@@ -34,7 +33,7 @@ public abstract class PlayerPageContainer extends PageContainer {
 	 */
 	@Override
 	public boolean click(FrameHolder holder, InventoryClickEvent e) {
-		if(getRelativeControlManager(holder.getPlayer()).click(holder, e, 0)) return true;
+		if(getRelativeControlManager(holder).click(holder, e, 0)) return true;
 		return getControlManager().click(holder, e, 0);
 	}
 	
@@ -42,6 +41,6 @@ public abstract class PlayerPageContainer extends PageContainer {
 	 * @param p
 	 * @return a ControlManager that is driven by a player.
 	 */
-	public abstract ControlManager getRelativeControlManager(Player p);
+	public abstract ControlManager getRelativeControlManager(FrameHolder holder);
 	
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +22,6 @@ public abstract class PageableContainer extends Container {
 	private Button next;
 	private Button prev;
 	
-	private int page = 0;
 	private List<PageContainer> pages;
 	
 	/**
@@ -34,13 +32,13 @@ public abstract class PageableContainer extends Container {
 		this.pages = new ArrayList<PageContainer>();
 		
 		next = new Button(new ItemStack(material, 1, durability), -1, "Next", (holder, e) -> {
-			setPageNumber(++page);
+			holder.setPage(holder.getPage() + 1);
 			holder.refresh();
 			
 			return true;
 		});
 		prev = new Button(new ItemStack(material, 1, durability), -1, "Previous", (holder, e) -> {
-			setPageNumber(--page);
+			holder.setPage(holder.getPage() - 1);
 			holder.refresh();
 			
 			return true;
@@ -64,24 +62,6 @@ public abstract class PageableContainer extends Container {
 	protected List<PageContainer> getPages() {
 		return pages;
 	}
-	
-	/**
-	 * @return the page number that this container is on.
-	 */
-	public int getPageNumber() {
-		return page;
-	}
-	
-	/**
-	 * Set the page number of the page being rendered.
-	 * @param page - The page to be set too.
-	 */
-	public void setPageNumber(int page) {
-		if(page < 0) page = 0;
-		else if(page >= pages.size()) page = pages.size() - 1;
-		
-		this.page = page;
-	}
 
 	/**
 	 * @return whether this container has multiple pages.
@@ -94,15 +74,15 @@ public abstract class PageableContainer extends Container {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(Inventory inventory, Player p) {
+	public void render(FrameHolder holder, Inventory inventory) {
 		if(next.getPosition() < 0) next.setPosition(getSize() - 1);
 		if(prev.getPosition() < 0) prev.setPosition(getSize() - Container.WIDTH);
 		
-		pages.get(page).render(inventory, p);
+		pages.get(holder.getPage()).render(holder, inventory);
 
 		if(isMultiPaged()) {
-			prev.render(inventory, p, 0, getSize());
-			next.render(inventory, p, 0, getSize());
+			prev.render(holder, inventory, 0, getSize());
+			next.render(holder, inventory, 0, getSize());
 		}
 	}
 	
@@ -116,7 +96,7 @@ public abstract class PageableContainer extends Container {
 			if(prev.click(holder, e, 0)) return true;
 		}
 		
-		return pages.get(page).click(holder, e);
+		return pages.get(holder.getPage()).click(holder, e);
 	}
 	
 }

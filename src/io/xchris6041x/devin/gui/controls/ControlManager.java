@@ -3,7 +3,6 @@ package io.xchris6041x.devin.gui.controls;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -33,10 +32,10 @@ public class ControlManager {
 	 * @param offset
 	 * @param max
 	 */
-	public void render(Inventory inv, Player player, int offset, int max) {
+	public void render(FrameHolder holder, Inventory inv, int offset, int max) {
 		// Render controls.
 		for(Control control : controls) {
-			control.render(inv, player, offset, max);
+			control.render(holder, inv, offset, max);
 		}
 	}
 	

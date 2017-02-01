@@ -48,14 +48,16 @@ public abstract class PageableContainer extends Container {
 		});
 	}
 	
+	protected List<PageContainer> getPages() {
+		return pages;
+	}
+	
 	/**
 	 * Add a static page to this container.
 	 * @return the page that was created.
 	 */
 	public StaticPageContainer addPage() {
 		StaticPageContainer page = new StaticPageContainer(this);
-		pages.add(page);
-		
 		return page;
 	}
 	
@@ -67,8 +69,6 @@ public abstract class PageableContainer extends Container {
 	 */
 	public ScrollablePageContainer addScrollablePage(Material material, short durability) {
 		ScrollablePageContainer page = new ScrollablePageContainer(this, material, durability);
-		pages.add(page);
-		
 		return page;
 	}
 	

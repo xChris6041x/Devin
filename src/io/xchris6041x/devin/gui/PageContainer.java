@@ -27,11 +27,13 @@ public abstract class PageContainer extends Container {
 	/**
 	 * @return the parent of this container.
 	 */
-	public PageableContainer getParent() {
+	public final PageableContainer getParent() {
 		return parent;
 	}
-	protected void setParent(PageableContainer parent) {
+	public final void setParent(PageableContainer parent) {
+		if(this.parent != null) this.parent.getPages().remove(this);
 		this.parent = parent;
+		if(this.parent != null) this.parent.getPages().add(this);
 	}
 	
 	/**

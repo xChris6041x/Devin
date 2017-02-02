@@ -114,7 +114,7 @@ public class ScrollablePageContainer extends PageContainer {
 	}
 	
 	/**
-	 * {@inheritDoc}
+     * {@inheritDoc}
 	 */
 	@Override
 	public void render(FrameHolder holder, Inventory inventory) {

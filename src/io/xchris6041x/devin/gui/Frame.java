@@ -1,9 +1,12 @@
 package io.xchris6041x.devin.gui;
 
+import io.xchris6041x.devin.utils.ItemBuilder;
+import io.xchris6041x.devin.utils.ItemDyeColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Manages controls and containers that the GUI will have when shown.
@@ -20,8 +23,8 @@ public class Frame extends PageableContainer {
 	 * @param title - The title of the Frame.
 	 * @param height - How tall the Frame is in slots.
 	 */
-	public Frame(String title, int height, Material material, short durability) {
-		super(material, durability);
+	public Frame(String title, int height, ItemStack nextButton, ItemStack previousButton) {
+		super(nextButton, previousButton);
 		
 		if(height < 1) throw new IllegalArgumentException("GUI's height cannot be less than 1.");
 		if(height > Container.MAX_HEIGHT) throw new IllegalArgumentException("GUI's height cannot be more than " + Container.MAX_HEIGHT);
@@ -35,8 +38,8 @@ public class Frame extends PageableContainer {
 	 * @param title - The title of the Frame.
 	 * @param height - How tall the Frame is in slots.
 	 */
-	public Frame (String title, int height, Material material) {
-		this(title, height, material, (short) 0);
+	public Frame (String title, int height, ItemStack button) {
+		this(title, height, button, button);
 	}
 	
 	/**
@@ -45,7 +48,7 @@ public class Frame extends PageableContainer {
 	 * @param height - How tall the Frame is in slots.
 	 */
 	public Frame(String title, int height) {
-		this(title, height, Material.STAINED_GLASS_PANE, (short) 15);
+		this(title, height, new ItemBuilder(Material.STAINED_GLASS_PANE).setColor(ItemDyeColor.BLACK).get());
 	}
 	
 	/**
@@ -57,7 +60,7 @@ public class Frame extends PageableContainer {
 	
 	/**
 	 * Open the GUI to the {@code player}.
-	 * @param player
+	 * @param player - The player opening the frame.
 	 */
 	public void open(Player player) {
 		FrameHolder frameHolder = new FrameHolder(this, player);

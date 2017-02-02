@@ -3,6 +3,8 @@ package io.xchris6041x.devin.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.xchris6041x.devin.utils.ItemBuilder;
+import io.xchris6041x.devin.utils.ItemDyeColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -23,40 +25,50 @@ public abstract class PageableContainer extends Container {
 	private Button prev;
 	
 	private List<PageContainer> pages;
-	
+
 	/**
-	 * @param material - The material of the previous and next buttons.
-	 * @param durability - The durability of the previous and next buttons.
+	 * @param nextItem - The item that represents the next button. The display name is automatically set.
+	 * @param previousItem - The item that represents the previous button. The display name is automatically set.
 	 */
-	public PageableContainer(Material material, short durability) {
-		this.pages = new ArrayList<PageContainer>();
-		
-		next = new Button(new ItemStack(material, 1, durability), -1, "Next", (holder, e) -> {
+	public PageableContainer(ItemStack nextItem, ItemStack previousItem) {
+		this.pages = new ArrayList<>();
+
+		nextItem = new ItemBuilder(nextItem)
+				.setDisplayName("next")
+				.get();
+
+		previousItem = new ItemBuilder(previousItem)
+				.setDisplayName("Previous")
+				.get();
+
+		next = new Button(nextItem, -1, (holder, e) -> {
 			holder.setPage(holder.getPage() + 1);
 			holder.refresh();
 			
 			return true;
 		});
-		prev = new Button(new ItemStack(material, 1, durability), -1, "Previous", (holder, e) -> {
+		prev = new Button(previousItem, -1, (holder, e) -> {
 			holder.setPage(holder.getPage() - 1);
 			holder.refresh();
 			
 			return true;
 		});
 	}
-	
+
 	/**
-	 * @param material - The material of the previous and next buttons. The durability is 0.
+	 * @param button - The item that represents both previous and next buttons. The display names will be set automatically.
 	 */
-	public PageableContainer(Material material) {
-		this(material, (short) 0);
+	public PageableContainer(ItemStack button) {
+		this(button, button);
 	}
 	
 	/**
 	 * The next and previous buttons will use black stained glass pane for the icon.
 	 */
 	public PageableContainer() {
-		this(Material.STAINED_GLASS_PANE, (short) 15);
+		this(new ItemBuilder(Material.STAINED_GLASS_PANE)
+				.setColor(ItemDyeColor.BLACK)
+				.get());
 	}
 	
 	protected List<PageContainer> getPages() {

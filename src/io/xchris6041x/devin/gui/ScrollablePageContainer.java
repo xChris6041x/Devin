@@ -1,5 +1,7 @@
 package io.xchris6041x.devin.gui;
 
+import io.xchris6041x.devin.utils.ItemBuilder;
+import io.xchris6041x.devin.utils.ItemDyeColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -24,20 +26,28 @@ public class ScrollablePageContainer extends PageContainer {
 	
 	/**
 	 * {@inheritDoc}
-	 * @param material - The material of the scroll up and down buttons.
-	 * @param durability - The durability of the scroll up and down buttons.
+	 * @param scrollUpItem - The item that represents the scroll up button. The display name is change automatically.
+     * @param scrollDownItem - The item that represents the scroll down button. The display name is changed automatically.
 	 */
-	public ScrollablePageContainer(PageableContainer parent, Material material, short durability) {
+	public ScrollablePageContainer(PageableContainer parent, ItemStack scrollUpItem, ItemStack scrollDownItem) {
 		super(parent);
 		if(parent.getHeight() < 3) throw new IllegalArgumentException("Cannot add a ScrollablePageContainer to a PageableContainer with a height less than 3.");
-		
-		this.up = new Button(new ItemStack(material, 1, durability), Container.WIDTH - 1, "Scroll Up", (holder, e) -> {
+
+		scrollUpItem = new ItemBuilder(scrollUpItem)
+				.setDisplayName("Scroll Up")
+				.get();
+
+		scrollDownItem = new ItemBuilder(scrollDownItem)
+				.setDisplayName("Scroll Down")
+				.get();
+
+		this.up = new Button(scrollUpItem, Container.WIDTH - 1, (holder, e) -> {
 			setYOffset(yOffset - 1);
 			holder.refresh();
 			
 			return true;
 		});
-		this.down = new Button(new ItemStack(material, 1, durability), 0, "Scroll Down", (holder, e) -> {
+		this.down = new Button(scrollDownItem, 0, (holder, e) -> {
 			setYOffset(yOffset + 1);
 			holder.refresh();
 			
@@ -47,18 +57,18 @@ public class ScrollablePageContainer extends PageContainer {
 	
 	/**
 	 * {@inheritDoc}
-	 * @param material - The material of the scroll up and down buttons. The durability for the item will be 0.
+	 * @param button - The item which represents both scroll up and down buttons. The display name is changed automatically.
 	 */
-	public ScrollablePageContainer(PageableContainer parent, Material material) {
-		this(parent, material, (short) 0);
+	public ScrollablePageContainer(PageableContainer parent, ItemStack button) {
+		this(parent, button, button);
 	}
 	
 	/**
-	 * The icon that will be used will be black stained glass pane.
+	 * The icon will be black stained glass pane.
 	 * {@inheritDoc}
 	 */
 	public ScrollablePageContainer(PageableContainer parent) {
-		this(parent, Material.STAINED_GLASS_PANE, (short) 15);
+		this(parent, new ItemBuilder(Material.STAINED_GLASS_PANE).setColor(ItemDyeColor.BLACK).get());
 	}
 	
 	/**
@@ -85,7 +95,7 @@ public class ScrollablePageContainer extends PageContainer {
 	
 	/**
 	 * Set the y-offset of the controls.
-	 * @param yOffset
+	 * @param yOffset - The vertical offset.
 	 */
 	public void setYOffset(int yOffset) {
 		int maxYOffset = getMaxYOffset();
@@ -123,10 +133,7 @@ public class ScrollablePageContainer extends PageContainer {
 	@Override
 	public boolean click(FrameHolder holder, InventoryClickEvent e) {
 		int offset = -yOffset * Container.WIDTH;
-		if(up.click(holder, e, 0)) return true;
-		if(down.click(holder, e, 0)) return true;
-		
-		return getControlManager().click(holder, e, offset);
+		return up.click(holder, e, 0) || down.click(holder, e, 0) || getControlManager().click(holder, e, offset);
 	}
 
 }

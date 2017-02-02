@@ -18,16 +18,16 @@ public class Button extends Control {
 	 * {@inheritDoc}
 	 * @param action - The action that is called when this control is clicked.
 	 */
-	public Button(IIconBuilder builder, int pos, String text, ClickAction action) {
-		super(builder, pos, text);
+	public Button(IIconBuilder builder, int pos, ClickAction action) {
+		super(builder, pos);
 		this.action = action;
 	}
 	/**
 	 * {@inheritDoc}
 	 * @param action - The action that is called when this control is clicked.
 	 */
-	public Button(ItemStack icon, int pos, String text, ClickAction action) {
-		super(icon, pos, text);
+	public Button(ItemStack icon, int pos, ClickAction action) {
+		super(icon, pos);
 		this.action = action;
 	}
 

@@ -13,11 +13,11 @@ import io.xchris6041x.devin.gui.FrameHolder;
  */
 public class Label extends Control {
 
-	public Label(IIconBuilder builder, int pos, String text) {
-		super(builder, pos, text);
+	public Label(IIconBuilder builder, int pos) {
+		super(builder, pos);
 	}
-	public Label(ItemStack icon, int pos, String text) {
-		super(icon, pos, text);
+	public Label(ItemStack icon, int pos) {
+		super(icon, pos);
 	}
 
 	@Override

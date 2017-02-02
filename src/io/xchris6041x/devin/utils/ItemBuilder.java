@@ -10,7 +10,7 @@ public class ItemBuilder {
 
 	private ItemStack stack;
 	private ItemMeta meta;
-	
+
 	public ItemBuilder(Material type) {
 		this.stack = new ItemStack(type);
 		this.meta = stack.getItemMeta();
@@ -21,10 +21,9 @@ public class ItemBuilder {
 		return stack;
 	}
 	public ItemMeta getMeta() {
-		return meta;
+	    return meta;
 	}
-	
-	
+
 	public ItemBuilder setDurability(short durability) {
 		stack.setDurability(durability);
 		return this;

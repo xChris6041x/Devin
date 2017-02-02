@@ -1,5 +1,6 @@
 package io.xchris6041x.devin.gui.controls;
 
+import io.xchris6041x.devin.gui.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -67,10 +68,54 @@ public abstract class Control {
 	public int getPosition() {
 		return pos;
 	}
+
+    /**
+     * Set the position of the control.
+     * @param pos - The position of the control.
+     */
 	public void setPosition(int pos) {
 		this.pos = pos;
 	}
-	
+
+    /**
+     * Set the position of the control using x and y coordinates.
+     * @param x - The x value in slots.
+     * @param y - The y value in slots.
+     */
+	public void setPosition(int x, int y) {
+	    setPosition(x + y * Container.WIDTH);
+    }
+
+    /**
+     * @return the x value in slots where the control is.
+     */
+	public int getX() {
+	    return pos - getY() * Container.WIDTH;
+    }
+
+    /**
+     * Set the x value of this control.
+     * @param x - The x value in slots.
+     */
+    public void setX(int x) {
+        setPosition(x, getY());
+    }
+
+    /**
+     * @return the y value in slots where the control is.
+     */
+	public int getY() {
+	    return (int) Math.floor(pos / (float) Container.WIDTH);
+    }
+
+    /**
+     * Set the y value of this control
+     * @param y - The y value in slots.
+     */
+    public void setY(int y) {
+	    setPosition(getX(), y);
+    }
+
 	/**
 	 * @return the text is the display name of the ItemStack if the
 	 * ItemStack does not have a name. If the text is null, no change

@@ -19,6 +19,8 @@ hs_err_pid*
 /.settings/*.prefs
 
 # IntelliJ Project Files
+/out/
+/out/*
 *.iml
 /.idea/
 /.idea/*

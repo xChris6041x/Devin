@@ -28,8 +28,8 @@ public abstract class Container {
 	
 	/**
 	 * Add the controls to the {@code inventory}.
-	 * @param inventory
-	 * @param player - The player who rendered the container.
+     * @param holder - The holder of the Frame and inventory.
+	 * @param inventory - The inventory being rendered on.
 	 */
 	public abstract void render(FrameHolder holder, Inventory inventory);
 	

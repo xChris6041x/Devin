@@ -39,8 +39,8 @@ public abstract class Control {
 	 * @param position - The position in the inventory.
 	 */
 	public Control(IIconBuilder builder, int position) {
-		this(builder, position, null);
-	}
+        this(builder, position, null);
+    }
 	
 	/**
 	 * Create a control.
@@ -109,8 +109,9 @@ public abstract class Control {
 	 * Render this control to the inventory {@code inventory} with an offset of {@code offset}.
 	 * This control won't be rendered if the {@code position + offset} is less than 0 or greater
 	 * than or equal to {@code max}
-	 * @param inventory
-	 * @param offset
+     * @param holder - The holder of the Frame and Inventory.
+	 * @param inventory - The inventory being rendered on.
+	 * @param offset - The offset of the items.
 	 * @param max - The upper bounds of the container (exclusive).
 	 */
 	public void render(FrameHolder holder, Inventory inventory, int offset, int max) {
@@ -123,18 +124,13 @@ public abstract class Control {
 	/**
 	 * Send the click information to this control. If the slot is correct, then
 	 * perform onClick.
-	 * @param holder
-	 * @param e
-	 * @param offset
+	 * @param holder - The holder of the frame and inventory.
+	 * @param e - The click event.
+	 * @param offset - The offset of the items.
 	 * @return whether the click was consumed. Just because there is a false return doesn't mean there is nothing there.
 	 */
 	public boolean click(FrameHolder holder, InventoryClickEvent e, int offset) {
-		if(e.getRawSlot() == pos + offset) {
-			return onClick(holder, e);
-		}
-		else {
-			return false;
-		}
+		return e.getRawSlot() == pos + offset && onClick(holder, e);
 	}
 	
 	protected abstract boolean onClick(FrameHolder holder, InventoryClickEvent e); 

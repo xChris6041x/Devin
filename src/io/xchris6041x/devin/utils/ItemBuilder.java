@@ -2,6 +2,7 @@ package io.xchris6041x.devin.utils;
 
 import java.util.Arrays;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -11,9 +12,12 @@ public class ItemBuilder {
 	protected ItemStack stack;
 	protected ItemMeta meta;
 
-	protected ItemBuilder(ItemStack stack) {
+	public ItemBuilder(ItemStack stack) {
 	    this.stack = stack;
         this.meta = stack.getItemMeta();
+    }
+    public ItemBuilder(Material type) {
+	    this(new ItemStack(type));
     }
 	
 	public ItemStack get() {
@@ -26,6 +30,10 @@ public class ItemBuilder {
 
     public ItemBuilder setAmount(int amount) {
         stack.setAmount(amount);
+        return this;
+    }
+    public ItemBuilder setColor(ItemDyeColor color) {
+        setDurability(color.getDurability());
         return this;
     }
     public ItemBuilder setDurability(short durability) {

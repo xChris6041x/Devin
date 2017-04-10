@@ -44,7 +44,7 @@ public class DemoCommands implements Commandable {
     public CommandResult demo(CommandSender sender /* Who sent the command */,
             String str /* First argument. */,
             @OptionalArg("0") int i /* Optional argument. Must be an int and 0 if missing. */,
-            @OptionalArg Player p /* Optinal argument, must be a player name (converted to player) and null if missing. */) {
+            @OptionalArg Player p /* Optional argument, must be a player name (converted to player) and null if missing. */) {
        
         CommandSender cs = (p == null) ? sender : p;
         switch (i) {

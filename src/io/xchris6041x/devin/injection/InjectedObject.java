@@ -25,7 +25,7 @@ public class InjectedObject {
 		return obj;
 	}
 	
-	public boolean isSimalarTo(String name, Object obj) {
+	public boolean isSimilarTo(String name, Object obj) {
 		return (this.name.equalsIgnoreCase(name) && this.obj.getClass().equals(obj));
 	}
 	

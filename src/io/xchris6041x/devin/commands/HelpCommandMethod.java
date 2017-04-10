@@ -22,11 +22,15 @@ class HelpCommandMethod implements CommandMethod {
 		return usage;
 	}
 
+	@Override
+	public Class<?>[] getArgumentTypes() {
+		return new Class<?>[]{ Integer.class };
+	}
 	
 	@Override
 	public void invoke(CommandHandler handler, CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
 		CommandHandlerContainer root = handler.getParent();
-		List<String> helpMessages = new ArrayList<String>();
+		List<String> helpMessages = new ArrayList<>();
 		buildHelpMessages(helpMessages, root);
 		
 		int pageLength = 7;

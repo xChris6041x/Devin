@@ -24,7 +24,7 @@ class CommandHandlerContainer implements TabCompleter {
 	private MessageSender msgSender;
 	
 	private CommandHandlerContainer parent = null;
-	private List<CommandHandlerContainer> children = new ArrayList<CommandHandlerContainer>();
+	private List<CommandHandlerContainer> children = new ArrayList<>();
 	
 	public CommandHandlerContainer(String name, MessageSender msgSender) {
 		this.name = name;
@@ -101,7 +101,7 @@ class CommandHandlerContainer implements TabCompleter {
 	}
 	
 	/**
-	 * Get child with the name or aliase of {@code name}
+	 * Get child with the name or alias of {@code name}
 	 * @param name
 	 * @return
 	 */
@@ -136,7 +136,7 @@ class CommandHandlerContainer implements TabCompleter {
 		// Check if it belongs to sub-command.
 		if(args.length > 1) {
 			String sub = args[0];
-			
+
 			CommandHandlerContainer child = null;
 			for(CommandHandlerContainer chc : children) {
 				if(chc.isValidName(args[0])) {
@@ -144,27 +144,25 @@ class CommandHandlerContainer implements TabCompleter {
 					break;
 				}
 			}
-			
+
 			if(child != null) {
 				// Remove first arg.
 				String[] newArgs = new String[args.length - 1];
-				for(int i = 1; i < args.length; i++) {
-					newArgs[i - 1] = args[i];
-				}
-				
+                System.arraycopy(args, 1, newArgs, 0, args.length - 1);
+
 				return child.onTabComplete(sender, cmd, label + " " + sub, newArgs);
 			}
-			return new ArrayList<String>();
+			return new ArrayList<>();
 		}
 		else {
-			List<String> commands = new ArrayList<String>();
+			List<String> commands = new ArrayList<>();
 			for(CommandHandlerContainer child : children) {
 				commands.add(child.getName());
 			}
-			
-			final List<String> completions = new ArrayList<String>();
-			StringUtil.copyPartialMatches(args[0], commands, completions);
-			
+
+			final List<String> completions = new ArrayList<>();
+            StringUtil.copyPartialMatches(args[0], commands, completions);
+
 			Collections.sort(completions);
 			return completions;
 		}

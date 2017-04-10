@@ -27,7 +27,7 @@ public final class CommandUtils {
 			pageNumber = maxPages;
 		}
 		
-		List<String> page = new ArrayList<String>();
+		List<String> page = new ArrayList<>();
 		for(int i = 0; i < pageLength; i++) {
 			int index = pageLength * pageNumber + i;
 			if(index >= book.length) break;
@@ -55,43 +55,39 @@ public final class CommandUtils {
 	 * @return the new arguments with combined string arguments.
 	 */
 	public static String[] stringify(String[] args) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		
 		String str = "";
 		char delimiter = '"';
 		boolean insideString = false;
-		for(int i = 0; i < args.length; i++) {
-			String arg = args[i];
-			
-			if(insideString) {
-				if(arg.charAt(arg.length() - 1) == delimiter) {
+		for (String arg1 : args) {
+			String arg = arg1;
+
+			if (insideString) {
+				if (arg.charAt(arg.length() - 1) == delimiter) {
 					arg = arg.substring(0, arg.length() - 1);
-					
+
 					str += " " + arg;
 					list.add(str);
-					
+
 					str = "";
 					insideString = false;
-				}
-				else{
+				} else {
 					str += " " + arg;
 				}
-			}
-			else{
-				if(arg.charAt(0) == '"' || arg.charAt(0) == '\'') {
+			} else {
+				if (arg.charAt(0) == '"' || arg.charAt(0) == '\'') {
 					delimiter = arg.charAt(0);
 					arg = arg.substring(1);
-					
-					if(arg.charAt(arg.length() - 1) == delimiter) {
+
+					if (arg.charAt(arg.length() - 1) == delimiter) {
 						arg = arg.substring(0, arg.length() - 1);
 						list.add(arg);
-					}
-					else {
+					} else {
 						str = arg;
 						insideString = true;
 					}
-				}
-				else{
+				} else {
 					list.add(arg);
 				}
 			}

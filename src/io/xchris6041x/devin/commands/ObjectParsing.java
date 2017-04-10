@@ -11,7 +11,7 @@ import io.xchris6041x.devin.DevinException;
  */
 public final class ObjectParsing {
 
-	private static Map<Class<?>, ObjectParser> parsers = new HashMap<Class<?>, ObjectParser>();
+	private static Map<Class<?>, ObjectParser> parsers = new HashMap<>();
 	
 	private ObjectParsing(){
 	}
@@ -28,7 +28,6 @@ public final class ObjectParsing {
 	/**
 	 * Parse the string {@code str} to a object with the type {@code type}
 	 * @param type
-	 * @param str
 	 * @return
 	 */
 	public static Object parseObject(Class<?> type, ArgumentStream args) throws DevinException {

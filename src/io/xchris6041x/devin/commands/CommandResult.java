@@ -4,6 +4,7 @@ package io.xchris6041x.devin.commands;
  * Used to return the result of a command, this gives DEVIN more information than just true or false.
  * @author Christopher Bishop
  */
+@SuppressWarnings("ALL")
 public class CommandResult {
 	
 	public enum Status {
@@ -49,7 +50,7 @@ public class CommandResult {
 		return success(message, true);
 	}
 	/**
-	 * BUild a SUCCESS CommandResult with no message.
+	 * Build a SUCCESS CommandResult with no message.
 	 * @return the built CommandResult.
 	 */
 	public static CommandResult success() {
@@ -92,7 +93,7 @@ public class CommandResult {
 		return usage(message, true);
 	}
 	/**
-	 * BUild a USAGE CommandResult with no message.
+	 * Build a USAGE CommandResult with no message.
 	 * @return the built CommandResult.
 	 */
 	public static CommandResult usage() {

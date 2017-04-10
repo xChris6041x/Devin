@@ -33,12 +33,10 @@ public abstract class DynamicPageContainer extends PageContainer {
 	 */
 	@Override
 	public boolean click(FrameHolder holder, InventoryClickEvent e) {
-		if(getDynamicControlManager(holder).click(holder, e, 0)) return true;
-		return getControlManager().click(holder, e, 0);
-	}
+        return getDynamicControlManager(holder).click(holder, e, 0) || getControlManager().click(holder, e, 0);
+    }
 	
 	/**
-	 * @param p
 	 * @return a ControlManager that is driven by a player.
 	 */
 	public abstract ControlManager getDynamicControlManager(FrameHolder holder);

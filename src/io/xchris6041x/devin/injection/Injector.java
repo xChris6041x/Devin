@@ -12,12 +12,13 @@ import io.xchris6041x.devin.Devin;
  * 
  * @author Christopher Bishop
  */
+@SuppressWarnings("ALL")
 public class Injector {
 
 	private List<InjectedObject> injections;
 	
 	public Injector() {
-		this.injections = new ArrayList<InjectedObject>();
+		this.injections = new ArrayList<>();
 	}
 	
 	/**
@@ -28,7 +29,7 @@ public class Injector {
 	 */
 	public void add(Object obj, String name) throws IllegalArgumentException {
 		for(InjectedObject io : injections) {
-			if(io.isSimalarTo(name, obj)) throw new IllegalArgumentException("Cannot have two objects with the same name and type.");
+			if(io.isSimilarTo(name, obj)) throw new IllegalArgumentException("Cannot have two objects with the same name and type.");
 		}
 		injections.add(new InjectedObject(name, obj));
 	}
@@ -45,7 +46,7 @@ public class Injector {
 	/**
 	 * Inject an object with available injections.
 	 * @param obj - The object to inject.
-	 * @param localInjections - Injections that will only be applied to this object. These take presinence over the global injections.
+	 * @param localInjections - Injections that will only be applied to this object. These take prescience over the global injections.
 	 */
 	public void inject(Object obj, InjectedObject... localInjections) {
 		Devin.debug("Injecting " + obj.getClass().getCanonicalName() + ": ");
@@ -89,11 +90,11 @@ public class Injector {
 		for(InjectedObject io : injections) {
 			if((io.getName().length() == 0 || field.getName().equalsIgnoreCase(io.getName())) && field.getType().isAssignableFrom(io.getObject().getClass())) {
 				try {
-					boolean accessable = field.isAccessible();
+					boolean accessible = field.isAccessible();
 					
 					field.setAccessible(true);
 					field.set(obj, io.getObject());
-					field.setAccessible(accessable);
+					field.setAccessible(accessible);
 					
 					injected = true;
 					break;

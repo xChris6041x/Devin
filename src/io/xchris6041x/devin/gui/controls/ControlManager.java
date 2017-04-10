@@ -16,7 +16,7 @@ import io.xchris6041x.devin.gui.FrameHolder;
  */
 public class ControlManager {
 
-	private List<Control> controls = new ArrayList<Control>();
+	private List<Control> controls = new ArrayList<>();
 	
 	/**
 	 * @return a list of the controls.

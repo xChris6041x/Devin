@@ -14,6 +14,6 @@ public interface IIconBuilder {
 	/**
 	 * @return an icon as an ItemStack.
 	 */
-	public ItemStack getIcon(Player player);
+    ItemStack getIcon(Player player);
 	
 }

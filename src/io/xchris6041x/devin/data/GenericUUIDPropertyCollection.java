@@ -2,6 +2,7 @@ package io.xchris6041x.devin.data;
 
 import java.util.UUID;
 
+@SuppressWarnings("ALL")
 public abstract class GenericUUIDPropertyCollection<T> extends UUIDPropertyCollection {
 	
 	protected abstract UUID getUUIDFrom(T obj);

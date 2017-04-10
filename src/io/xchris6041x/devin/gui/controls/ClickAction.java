@@ -19,6 +19,6 @@ public interface ClickAction {
 	 * @param e - The event data.
 	 * @return whether the click was consumed.
 	 */
-	public boolean onClick(FrameHolder holder, InventoryClickEvent e);
+    boolean onClick(FrameHolder holder, InventoryClickEvent e);
 	
 }

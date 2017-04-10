@@ -1,9 +1,6 @@
 package io.xchris6041x.devin.commands;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,9 +45,21 @@ class AnnotatedCommandMethod implements CommandMethod {
 	private int minSize() {
 		return (optionalOffset < 0) ? method.getParameterCount() - 1: optionalOffset;
 	}
-	
+
 	/**
-	 * @see CommandMethod#invoke(CommandSender, String[], MessageSender)
+	 * @see CommandMethod#getArgumentTypes()
+	 */
+	public Class<?>[] getArgumentTypes() {
+		List<Class<?>> types = new ArrayList<>(Arrays.asList(method.getParameterTypes()));
+        System.out.println(types.size());
+
+        types.remove(0);
+
+		return types.toArray(new Class<?>[0]);
+	}
+
+	/**
+	 * @see CommandMethod#invoke(CommandHandler, CommandSender, String[], MessageSender)
 	 */
 	public void invoke(CommandHandler handler, CommandSender sender, String[] rawArgs, MessageSender msgSender) throws DevinException {
 		// Check whether this is being validly invoked.
@@ -137,7 +146,7 @@ class AnnotatedCommandMethod implements CommandMethod {
 	/**
 	 * Build the CommandMethod.
 	 * @param commandable
-	 * @param method
+	 * @param m
 	 * @return
 	 * @throws DevinException
 	 */
@@ -160,7 +169,7 @@ class AnnotatedCommandMethod implements CommandMethod {
 		
 		boolean expectedEnd = false;
 		int optionalOffset = -1;
-		List<Object> defaults = new ArrayList<Object>();
+		List<Object> defaults = new ArrayList<>();
 		
 		// Loop through all parameters to create optionals and check for validity.
 		for(int i = 1; i < m.getParameters().length; i++) {
@@ -170,7 +179,7 @@ class AnnotatedCommandMethod implements CommandMethod {
 			
 			// Check if parameter type can be parsed.
 			Class<?> paramType = param.getType();
-			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("No parser extists for " + paramType.getCanonicalName() + ".");
+			if(!ObjectParsing.parserExistsFor(m.getParameters()[i].getType())) throw new DevinException("No parser exists for " + paramType.getCanonicalName() + ".");
 			if(paramType.isArray() || paramType == ArgumentStream.class) {
 				expectedEnd = true;
 			}

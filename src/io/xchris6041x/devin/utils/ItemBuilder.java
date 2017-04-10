@@ -2,11 +2,11 @@ package io.xchris6041x.devin.utils;
 
 import java.util.Arrays;
 
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+@SuppressWarnings("ALL")
 public class ItemBuilder {
 
 	protected ItemStack stack;

@@ -14,7 +14,7 @@ public class UUIDPropertyCollection {
 	private List<UUIDProperty> properties;
 	
 	public UUIDPropertyCollection() {
-		properties = new ArrayList<UUIDProperty>();
+		properties = new ArrayList<>();
 	}
 	
 	/**

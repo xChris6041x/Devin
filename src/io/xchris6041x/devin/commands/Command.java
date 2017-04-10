@@ -14,28 +14,28 @@ import java.lang.annotation.Target;
 public @interface Command {
 	
 	/**
-	 * @return The structure of the command with sub commands sepereated by spaces.
+	 * @return The structure of the command with sub commands separated by spaces.
 	 */
-	public String struct();
-	
+	String struct();
+
 	/**
-	 * @return The alises for the command (for the last part of the structure).
+	 * @return The aliases for the command (for the last part of the structure).
 	 */
-	public String[] aliases() default { };
-	
+	String[] aliases() default { };
+
 	/**
 	 * @return All the permissions needed to run this command.
 	 */
-	public String[] perms() default { };
-	
+	String[] perms() default { };
+
 	/**
 	 * @return The names of the parameters. This is used when generating the usage message.
 	 */
-	public String[] params() default { };
-	
+	String[] params() default { };
+
 	/**
 	 * @return The description of this command.
 	 */
-	public String desc() default "";
+	String desc() default "";
 	
 }

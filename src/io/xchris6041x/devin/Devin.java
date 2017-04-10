@@ -39,7 +39,7 @@ public class Devin extends JavaPlugin {
 		File config = new File(getDataFolder(), "config.yml");
 		if(!config.exists()) saveDefaultConfig();
 		
-		injectors = new HashMap<Plugin, Injector>();
+		injectors = new HashMap<>();
 		debugMode = getConfig().getBoolean("debug-mode", true);
 		Devin.instance = this;
 		
@@ -55,40 +55,24 @@ public class Devin extends JavaPlugin {
 		// Primitives
 		
 		// boolean
-		ObjectParsing.registerParser(Boolean.TYPE, (args) -> {
-			return Boolean.parseBoolean(args.next());
-		});
+		ObjectParsing.registerParser(Boolean.TYPE, (args) -> Boolean.parseBoolean(args.next()));
 		// byte
-		ObjectParsing.registerParser(Byte.TYPE, (args) -> {
-			return Byte.parseByte(args.next());
-		});
+		ObjectParsing.registerParser(Byte.TYPE, (args) -> Byte.parseByte(args.next()));
 		// short
-		ObjectParsing.registerParser(Short.TYPE, (args) -> {
-			return Short.parseShort(args.next());
-		});
+		ObjectParsing.registerParser(Short.TYPE, (args) -> Short.parseShort(args.next()));
 		// int
-		ObjectParsing.registerParser(Integer.TYPE, (args) -> {
-			return Integer.parseInt(args.next());
-		});
+		ObjectParsing.registerParser(Integer.TYPE, (args) -> Integer.parseInt(args.next()));
 		// float
-		ObjectParsing.registerParser(Float.TYPE, (args) -> {
-			return Float.parseFloat(args.next());
-		});
+		ObjectParsing.registerParser(Float.TYPE, (args) -> Float.parseFloat(args.next()));
 		// long
-		ObjectParsing.registerParser(Long.TYPE, (args) -> {
-			return Long.parseLong(args.next());
-		});
+		ObjectParsing.registerParser(Long.TYPE, (args) -> Long.parseLong(args.next()));
 		// double
-		ObjectParsing.registerParser(Double.TYPE, (args) -> {
-			return Double.parseDouble(args.next());
-		});
+		ObjectParsing.registerParser(Double.TYPE, (args) -> Double.parseDouble(args.next()));
 		
 		// String
-		ObjectParsing.registerParser(String.class, (args) -> { return args.next(); });
+		ObjectParsing.registerParser(String.class, (args) -> args.next());
 		// ArgumentStream
-		ObjectParsing.registerParser(ArgumentStream.class, (args) -> {
-			return args;
-		});
+		ObjectParsing.registerParser(ArgumentStream.class, (args) -> args);
 		
 		// Other useful objects.
 		
@@ -179,7 +163,6 @@ public class Devin extends JavaPlugin {
 	
 	/**
 	 * Registers the events with Spigot and injects them with the global injector and a MessageSender.
-	 * @param listsner
 	 * @param plugin
 	 * @param msgSender
 	 */

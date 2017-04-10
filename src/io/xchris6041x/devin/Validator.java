@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
  * A static class that validates data.
  * @author Christopher Bishop
  */
+@SuppressWarnings("ALL")
 public final class Validator {
 
 	/**

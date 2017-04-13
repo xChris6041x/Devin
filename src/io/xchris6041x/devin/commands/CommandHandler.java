@@ -70,8 +70,9 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
         if(method != null) {
             Class<?>[] types = method.getArgumentTypes();
             if (types.length >= args.length) {
-                Class<?> type = method.getArgumentTypes()[args.length - 1];
+                Class<?> type = types[args.length - 1];
                 if (type == Player.class || type == OfflinePlayer.class) {
+                	// Tab complete players.
                     Collection<? extends Player> players = Bukkit.getOnlinePlayers();
                     for (Player p : players) {
                         String name = p.getName();
@@ -80,6 +81,15 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
                         }
                     }
                 }
+                else if(type.isEnum()) {
+                	// Tab complete enums.
+                	for(Object value : type.getEnumConstants()) {
+                		String str = value.toString();
+                		if(str.toLowerCase().contains(args[args.length - 1].toLowerCase())) {
+                			completions.add(str);
+						}
+					}
+				}
             }
         }
 

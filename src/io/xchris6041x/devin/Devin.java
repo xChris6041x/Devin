@@ -35,7 +35,7 @@ public class Devin extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		if(!getDataFolder().exists()) getDataFolder().mkdir();
-		
+
 		File config = new File(getDataFolder(), "config.yml");
 		if(!config.exists()) saveDefaultConfig();
 		
@@ -88,7 +88,7 @@ public class Devin extends JavaPlugin {
 			}
 		});
 	}
-	
+
 	@Override
 	public void onEnable() {
 		//

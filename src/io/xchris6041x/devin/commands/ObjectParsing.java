@@ -3,6 +3,7 @@ package io.xchris6041x.devin.commands;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.xchris6041x.devin.Devin;
 import io.xchris6041x.devin.DevinException;
 
 /**
@@ -32,17 +33,33 @@ public final class ObjectParsing {
 	 */
 	public static Object parseObject(Class<?> type, ArgumentStream args) throws DevinException {
 		ObjectParser objParser = parsers.get(type);
-		if(objParser == null) throw new DevinException("There is no registered object parser for " + type.getCanonicalName() + ".");
-		
-		return objParser.parseObject(args);
+		if(objParser == null) {
+			if(type.isEnum()) {
+				String arg = args.next();
+
+				// Check if the next string matches one of the enum values.
+				for(Object value : type.getEnumConstants()) {
+                    if(value.toString().equalsIgnoreCase(arg)) {
+						return value;
+					}
+				}
+				throw new DevinException(arg + " is not a valid value.");
+			}
+			else {
+				throw new DevinException("There is no registered object parser for " + type.getCanonicalName() + ".");
+			}
+		}
+		else {
+			return objParser.parseObject(args);
+		}
 	}
 	
 	/**
 	 * @param type
-	 * @return whether a parser exists for {@code type}
+	 * @return whether a parser exists for {@code type} or is an enum.
 	 */
 	public static boolean parserExistsFor(Class<?> type) {
-		return parsers.get(type) != null;
+		return type.isEnum() || parsers.get(type) != null;
 	}
 	
 }

@@ -8,8 +8,9 @@ import io.xchris6041x.devin.DevinException;
 import io.xchris6041x.devin.MessageSender;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 class CommandHandler extends CommandHandlerContainer implements CommandExecutor {
@@ -66,33 +67,34 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+	    //
+        // This method tab completes for arguments such as players and enums
+        //
         List<String> completions =  super.onTabComplete(sender, cmd, label, args);
-        if(method != null) {
-            Class<?>[] types = method.getArgumentTypes();
-            if (types.length >= args.length) {
-                Class<?> type = types[args.length - 1];
-                if (type == Player.class || type == OfflinePlayer.class) {
-                	// Tab complete players.
-                    Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-                    for (Player p : players) {
-                        String name = p.getName();
-                        if (name.toLowerCase().contains(args[args.length - 1].toLowerCase())) {
-                            completions.add(name);
-                        }
-                    }
-                }
-                else if(type.isEnum()) {
-                	// Tab complete enums.
-                	for(Object value : type.getEnumConstants()) {
-                		String str = value.toString();
-                		if(str.toLowerCase().contains(args[args.length - 1].toLowerCase())) {
-                			completions.add(str);
-						}
-					}
-				}
-            }
-        }
+        if(method == null) return completions;
 
+		Class<?>[] types = method.getArgumentTypes();
+		if (types.length >= args.length) {
+			Class<?> type = types[args.length - 1];
+			String arg = args[args.length - 1];
+
+			if (type == Player.class || type == OfflinePlayer.class) {
+				// Tab complete players.
+				List<String> players = new ArrayList<>();
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					players.add(p.getName());
+				}
+				StringUtil.copyPartialMatches(arg, players, completions);
+			}
+			else if(type.isEnum()) {
+				// Tab complete enums.
+				List<String> values = new ArrayList<>();
+				for(Object value : type.getEnumConstants()) {
+					values.add(value.toString());
+				}
+				StringUtil.copyPartialMatches(arg, values, completions);
+            }
+		}
         return completions;
     }
 }

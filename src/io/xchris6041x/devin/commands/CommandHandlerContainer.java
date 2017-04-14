@@ -133,39 +133,30 @@ class CommandHandlerContainer implements TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-		// Check if it belongs to sub-command.
+        //
+        // This method tab completes for sub-commands, then parameters.
+        //
+		List<String> completions = new ArrayList<>();
 		if(args.length > 1) {
 			String sub = args[0];
+			for(CommandHandlerContainer child : children) {
+				if(child.isValidName(args[0])) {
+                    // Remove first arg.
+                    String[] newArgs = new String[args.length - 1];
+                    System.arraycopy(args, 1, newArgs, 0, args.length - 1);
 
-			CommandHandlerContainer child = null;
-			for(CommandHandlerContainer chc : children) {
-				if(chc.isValidName(args[0])) {
-					child = chc;
-					break;
+                    return child.onTabComplete(sender, cmd, label + " " + sub, newArgs);
 				}
 			}
-
-			if(child != null) {
-				// Remove first arg.
-				String[] newArgs = new String[args.length - 1];
-                System.arraycopy(args, 1, newArgs, 0, args.length - 1);
-
-				return child.onTabComplete(sender, cmd, label + " " + sub, newArgs);
-			}
-			return new ArrayList<>();
 		}
 		else {
 			List<String> commands = new ArrayList<>();
-			for(CommandHandlerContainer child : children) {
+			for (CommandHandlerContainer child : children) {
 				commands.add(child.getName());
 			}
-
-			final List<String> completions = new ArrayList<>();
-            StringUtil.copyPartialMatches(args[0], commands, completions);
-
-			Collections.sort(completions);
-			return completions;
+			StringUtil.copyPartialMatches(args[0], commands, completions);
 		}
+		return completions;
 	}
-	
+
 }

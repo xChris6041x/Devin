@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Marks fields so that the Injector can inject objects.
- * 
+ *
  * @author Christopher Bishop
  */
 @Target(ElementType.FIELD)

@@ -5,26 +5,26 @@ import org.bukkit.inventory.Inventory;
 
 /**
  * A simple {@link PageContainer} class.
- * 
+ *
  * @author Christopher Bishop
  */
 public class StaticPageContainer extends PageContainer {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public StaticPageContainer(PageableContainer parent) {
-		super(parent);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public StaticPageContainer(PageableContainer parent) {
+        super(parent);
+    }
 
-	@Override
-	public void render(FrameHolder holder, Inventory inventory) {
-		getControlManager().render(holder, inventory, 0, Container.WIDTH * getHeight());
-	}
+    @Override
+    public void render(FrameHolder holder, Inventory inventory) {
+        getControlManager().render(holder, inventory, 0, Container.WIDTH * getHeight());
+    }
 
-	@Override
-	public boolean click(FrameHolder holder, InventoryClickEvent e) {
-		return getControlManager().click(holder, e, 0);
-	}
-	
+    @Override
+    public boolean click(FrameHolder holder, InventoryClickEvent e) {
+        return getControlManager().click(holder, e, 0);
+    }
+
 }

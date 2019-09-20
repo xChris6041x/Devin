@@ -3,3 +3,4 @@ version: 0.5.0
 main: io.xchris6041x.devin.Devin
 author: xChris6041x
 load: STARTUP
+api-version: 1.13

@@ -64,8 +64,13 @@ public class CommandRegistrar extends CommandHandlerContainer {
 
                 // Register permissions
                 for (String perm : cmd.perms()) {
-                    Bukkit.getPluginManager().addPermission(new Permission(perm));
-                    Devin.debug("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.RESET + " /w Spigot");
+                	if(Bukkit.getPluginManager().getPermission(perm) == null) {
+	                    Bukkit.getPluginManager().addPermission(new Permission(perm));
+	                    Devin.debug("\t\tRegistered permission " + AnsiColor.CYAN + perm + AnsiColor.RESET + " /w Spigot");
+                	}
+                	else {
+                		Devin.debug("\t\tPermission " + AnsiColor.CYAN + perm + AnsiColor.RESET + " already registered /w Spigot");
+                	}
                 }
                 // Register Command
                 CommandHandler root = registerCommand(handler);

@@ -66,7 +66,6 @@ public abstract class PageableContainer extends Container {
      */
     public PageableContainer() {
         this(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
-                .setColor(ItemDyeColor.BLACK)
                 .get());
     }
 

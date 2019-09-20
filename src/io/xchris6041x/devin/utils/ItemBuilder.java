@@ -1,7 +1,9 @@
 package io.xchris6041x.devin.utils;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockDataMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
@@ -34,12 +36,20 @@ public class ItemBuilder {
         stack.setAmount(amount);
         return this;
     }
-
+    
+    /**
+     * @deprecated No longer works since Spigot 1.13. Use Materials instead.
+     */
+    @Deprecated
     public ItemBuilder setColor(ItemDyeColor color) {
         setDurability(color.getDurability());
         return this;
     }
 
+    /**
+     * @deprecated No longer works since Spigot 1.13. Use Materials instead and ItemMeta instead.
+     */
+    @Deprecated
     public ItemBuilder setDurability(short durability) {
         stack.setDurability(durability);
         return this;
@@ -54,5 +64,5 @@ public class ItemBuilder {
         meta.setLore(Arrays.asList(lore));
         return this;
     }
-
+    
 }

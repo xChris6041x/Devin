@@ -47,7 +47,7 @@ class CommandHandler extends CommandHandlerContainer implements CommandExecutor 
 
         // Execute command.
         if (method == null) {
-            getMessageSender().error("Invalid command " + label);
+            getMessageSender().error(sender, "Invalid command " + label);
         } else {
             try {
                 method.invoke(this, sender, args, getMessageSender());

@@ -96,7 +96,7 @@ class AnnotatedCommandMethod implements CommandMethod {
                     args[i] = ObjectParsing.parseObject(method.getParameterTypes()[i], argStream);
                 } catch (DevinException | IllegalArgumentException e) {
                     if (e instanceof NumberFormatException) {
-                        msgSender.error("Invalid number: " + e.getMessage());
+                        msgSender.error(sender, "Invalid number: " + e.getMessage());
                     } else {
                         msgSender.error(sender, e.getMessage());
                     }

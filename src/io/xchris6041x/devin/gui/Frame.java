@@ -52,7 +52,7 @@ public class Frame extends PageableContainer {
      * @param height - How tall the Frame is in slots.
      */
     public Frame(String title, int height) {
-        this(title, height, new ItemBuilder(Material.STAINED_GLASS_PANE).setColor(ItemDyeColor.BLACK).get());
+        this(title, height, new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setColor(ItemDyeColor.BLACK).get());
     }
 
     /**

@@ -70,7 +70,7 @@ public class ScrollablePageContainer extends PageContainer {
      * {@inheritDoc}
      */
     public ScrollablePageContainer(PageableContainer parent) {
-        this(parent, new ItemBuilder(Material.STAINED_GLASS_PANE).setColor(ItemDyeColor.BLACK).get());
+        this(parent, new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setColor(ItemDyeColor.BLACK).get());
     }
 
     /**

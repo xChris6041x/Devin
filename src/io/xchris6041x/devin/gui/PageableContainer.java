@@ -65,7 +65,7 @@ public abstract class PageableContainer extends Container {
      * The next and previous buttons will use black stained glass pane for the icon.
      */
     public PageableContainer() {
-        this(new ItemBuilder(Material.STAINED_GLASS_PANE)
+        this(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
                 .setColor(ItemDyeColor.BLACK)
                 .get());
     }
